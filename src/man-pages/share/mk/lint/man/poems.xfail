@@ -1,0 +1,5 @@
+man5/tzfile.5
+man7/bpf-helpers.7
+man8/tzselect.8
+man8/zdump.8
+man8/zic.8

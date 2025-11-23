@@ -1,0 +1,85 @@
+'\" t
+.\" Copyright, the authors of the Linux man-pages project
+.\"
+.\" SPDX-License-Identifier: GPL-2.0-or-later
+.\"
+.TH wmemcmp 3 2025-09-07 "Linux man-pages (unreleased)"
+.SH NAME
+wmemcmp \- compare two arrays of wide-characters
+.SH LIBRARY
+Standard C library
+.RI ( libc ,\~ \-lc )
+.SH SYNOPSIS
+.nf
+.B #include <wchar.h>
+.P
+.BR "int wmemcmp(" "size_t n;"
+.BI "            const wchar_t " s1 [ n "], const wchar_t " s2 [ n "], size_t " n );
+.fi
+.SH DESCRIPTION
+The
+.BR wmemcmp ()
+function is the wide-character equivalent of the
+.BR memcmp (3)
+function.
+It compares the
+.I n
+wide-characters starting at
+.I s1
+and the
+.I n
+wide-characters starting at
+.IR s2 .
+.SH RETURN VALUE
+The
+.BR wmemcmp ()
+function returns
+zero if the wide-character arrays of size
+.I n
+at
+.I s1
+and
+.I s2
+are equal.
+It returns an integer greater than
+zero if at the first differing position
+.I i
+.RI ( i " <"
+.IR n ),
+the
+corresponding wide-character
+.I s1[i]
+is greater than
+.IR s2[i] .
+It returns an integer less than zero if
+at the first differing position
+.I i
+.RI ( i
+<
+.IR n ),
+the corresponding
+wide-character
+.I s1[i]
+is less than
+.IR s2[i] .
+.SH ATTRIBUTES
+For an explanation of the terms used in this section, see
+.BR attributes (7).
+.TS
+allbox;
+lbx lb lb
+l l l.
+Interface	Attribute	Value
+T{
+.na
+.nh
+.BR wmemcmp ()
+T}	Thread safety	MT-Safe
+.TE
+.SH STANDARDS
+C11, POSIX.1-2008.
+.SH HISTORY
+POSIX.1-2001, C99.
+.SH SEE ALSO
+.BR memcmp (3),
+.BR wcscmp (3)

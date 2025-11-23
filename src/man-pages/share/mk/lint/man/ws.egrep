@@ -1,0 +1,6 @@
+^\.\s+(I|B|IR|RI|BR|RB|IB|BI)\>
+^\.\s+(TH|SH|SS|TP|TQ)\>
+^\.\s+(IP|P|PP|LP)\>
+^\.\s+(UR|UE|RS|RE|EX|EE|MT|ME|SY|YS)\>
+^\.\s+(MR)\>
+^\.\s+(SM|SB)\>

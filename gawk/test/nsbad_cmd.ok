@@ -1,3 +1,0 @@
-gawk: error: identifier foo:bar: namespace separator is two colons, not one
-gawk: error: qualified identifier `foo:::blat' is badly formed
-EXIT CODE: 1

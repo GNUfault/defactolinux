@@ -1,0 +1,76 @@
+.\" Copyright, the authors of the Linux man-pages project
+.\"
+.\" %%%LICENSE_START(FREELY_REDISTRIBUTABLE)
+.\" may be freely modified and distributed
+.\" %%%LICENSE_END
+.\"
+.TH FUTEX_FD 2const 2025-05-30 "Linux man-pages (unreleased)"
+.SH NAME
+FUTEX_FD \- create a file descriptor associated with a futex
+.SH LIBRARY
+Standard C library
+.RI ( libc ,\~ \-lc )
+.SH SYNOPSIS
+.nf
+.BR "#include <linux/futex.h>" "  /* Definition of " FUTEX_* " constants */"
+.BR "#include <sys/syscall.h>" "  /* Definition of " SYS_* " constants */"
+.B #include <unistd.h>
+.P
+.B [[deprecated]]
+.BI "long syscall(SYS_futex, uint32_t *" uaddr ", FUTEX_FD, uint32_t " val );
+.fi
+.SH DESCRIPTION
+This operation creates a file descriptor that is associated with
+the futex at
+.IR uaddr .
+The caller must close the returned file descriptor after use.
+.P
+When another process or thread performs a
+.BR FUTEX_WAKE (2const)
+on the futex word, the file descriptor indicates as being readable with
+.BR select (2),
+.BR poll (2),
+and
+.BR epoll (7)
+.P
+The file descriptor can be used to obtain asynchronous notifications: if
+.I val
+is nonzero, then, when another process or thread executes a
+.BR FUTEX_WAKE (2const),
+the caller will receive the signal number that was passed in
+.IR val .
+.\"
+.SH RETURN VALUE
+On error,
+\-1 is returned,
+and
+.I errno
+is set to indicate the error.
+.P
+On success,
+.B FUTEX_FD
+Returns the new file descriptor associated with the futex.
+.SH ERRORS
+See
+.BR futex (2).
+.TP
+.B EINVAL
+The signal number supplied in
+.I val
+is invalid.
+.TP
+.B ENFILE
+The system-wide limit on the total number of open files has been reached.
+.SH STANDARDS
+Linux.
+.SH HISTORY
+From Linux 2.6.0 up to and including Linux 2.6.25.
+.\" Strictly speaking, from Linux 2.5.x to Linux 2.6.25
+.P
+Because it was inherently racy,
+.B FUTEX_FD
+has been removed
+.\" commit 82af7aca56c67061420d618cc5a30f0fd4106b80
+from Linux 2.6.26 onward.
+.SH SEE ALSO
+.BR futex (2)

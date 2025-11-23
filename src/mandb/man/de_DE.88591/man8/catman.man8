@@ -1,0 +1,116 @@
+.\" Man page for catman
+.\"
+.\" Copyright (C), 1994, Graeme W. Wilford. (Wilf.)
+.\" Deutsche Übersetzung von Anke Steuernagel und Nils Magnus
+.\"
+.\" You may distribute under the terms of the GNU General Public
+.\" License as specified in the file COPYING that comes with the man
+.\" distribution.
+.\"
+.\" Sat Dec 10 14:17:29 GMT 1994  Wilf. (G.Wilford@ee.surrey.ac.uk) 
+.\" 
+.TH catman 8 "%date_de%" "%version%" "Manual Hilfsprogramme"
+.LO 1
+.SH NAME
+catman \- erzeugt oder aktualisiert die formatierten Manualseiten
+.SH SYNTAX
+.B catman
+.RB [\| \-dhV \|] 
+.RB [\| \-M 
+.IR Pfad \|] 
+.RI [\| Abschnitt \|]
+\&.\|.\|.
+.SH BESCHREIBUNG
+.B catman
+wird benutzt, um einen aktuellen Satz von vorformatierten Manualseiten zu
+erzeugen, die als cat-Seiten bezeichnet werden. Die cat-Seiten werden
+wesentlich schneller angezeigt als die unformatierten Manualseiten, benötigen
+aber zusätzlichen Speicherplatz auf der Festplatte. Die Entscheidung zur
+Unterstützung von cat-Seiten liegt beim lokalen Administrator, der für diese
+Seiten passende Verzeichnisse anlegen muß.
+
+Die Optionen für
+.B catman
+geben die Manualseiten und die Abschnitte an, die vorformatiert werden
+sollen. Im Normalfall werden die Manualseiten verwendet, die in der
+Manualkonfigurationsdatei beschrieben sind. Normalerweise werden die
+Abschnitte formatiert, die entweder in der Umgebungsvariable
+.RB $ MANSEC
+stehen oder fest in 
+.BR man (1)
+einkompiliert sind, wenn 
+.RB $ MANSEC
+undefiniert ist. Wird
+.B catman
+eine durch Whitespace abgetrennte Liste von Abschnitten übergeben, so werden
+nur die Manualseiten in den betreffenden Abschnitten bearbeitet.
+
+Um festzustellen, welche Dateien formatiert werden müssen, macht
+.B catman
+Gebrauch von den
+.I Indexdatenbanken
+der jeweiligen Manualseiten.
+.SH OPTIONEN
+.TP
+.B \-d, \-\-debug
+Ausgeben von Fehlerinformationen.
+.TP
+.BI \-M\  Pfad ,\ \-\-manpath= Pfad
+Gibt einen alternativen Manualpfad an. 
+Als Default sind dies alle Pfade, die in der Manualkonfigurationsdatei
+als global deklariert sind. Die Umgebungsvariable
+.RB $ MANPATH
+wird von
+.BR catman 
+nicht benutzt.
+.TP
+.B \-h, \-\-help
+Zeigt einen Hilfstext an.
+.TP
+.B \-V, \-\-version
+Zeigt Programmversion und Autor an.
+.SH DATEIEN
+.TP
+.I /var/catman/\|.\|.\|.\|/index.(bt|db|dir|pag)
+Die
+.B FSSTND
+complianten globalen
+.I Indexdatenbanken.
+.TP
+.I /usr/man/\|.\|.\|.\|/whatis
+Traditionelle
+.I whatis
+Datenbank.
+.SH "SIEHE AUCH"
+.BR man (1),
+.BR manpath (5), 
+.BR mandb (8).
+.SH FEHLER
+Auf Systemen mit kleinem (~4 kByte) Zwischenspeicher für Argumente von
+.BR execve (2)
+kann es nötig sein, daß
+.B catman 
+mehrere kleine im Gegensatz zu wenigen großen Batchjobs ausführen muß. 
+In diesem Fall ist es für
+.B man
+möglich, diesen Eintrag (korrekt) aus einer Datenbank zu löschen (vielleicht
+existiert er in Wirklichkeit gar nicht mehr), der vom aktuellen Aufruf von
+.B catman
+benötigt wird, um die nächste Seite zu bestimmen. Wenn die
+.I Indexdatenbank
+einen Hashtable-Lookup (ndbm, gdbm) benutzt, führt dies zu einem `sich am
+eigenen Schopf aus dem Sumpf ziehen'. Obgleich dies selten auftritt, führt es
+dazu, daß
+.B catman
+nicht mehr die weiteren Seiten des Abschnittes bearbeitet.
+
+Hinweis: 
+.B Linux
+hat einen Zwischenspeicher von 128 kByte für
+.B execve (2)
+Argumente.
+.SH AUTOR
+Wilf. (G.Wilford@ee.surrey.ac.uk),
+die deutsche Übersetzung ist von
+Anke Steuernagel (a_steuer@informatik.uni-kl.de) und
+Nils Magnus (magnus@informatik.uni-kl.de).

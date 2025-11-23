@@ -1,3 +1,0 @@
-ioctl(<fd>, KDGKBTYPE, [KB_101])           = 0
-ioctl(<fd>, KDGKBMODE, [K_XLATE])          = 0
-ioctl(<fd>, KDSKBMODE, K_UNICODE)          = 0

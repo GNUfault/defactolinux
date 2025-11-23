@@ -1,0 +1,85 @@
+From e36449856473bb2c5c4d10492bf3112a4397a5cc Mon Sep 17 00:00:00 2001
+Message-ID: <e36449856473bb2c5c4d10492bf3112a4397a5cc.1761692808.git.alx@kernel.org>
+In-Reply-To: <ogthptdbhro5xqfq37rhiey22nztlolpo7zpq7e22j6pdlpztl@m2t45x3y7bnw>
+References: <ogthptdbhro5xqfq37rhiey22nztlolpo7zpq7e22j6pdlpztl@m2t45x3y7bnw>
+From: Alejandro Colomar <alx@kernel.org>
+Date: Wed, 28 May 2025 20:59:11 +0200
+Subject: [PATCH v1] man/man3/readdir.3, man/man3type/stat.3type: Improve
+ documentation about .d_ino and .st_ino
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+To: <linux-man@vger.kernel.org>,
+    Jan Kara <jack@suse.cz>
+
+Suggested-by: Pali Rohár <pali@kernel.org>
+Co-authored-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Alejandro Colomar <alx@kernel.org>
+---
+ man/man3/readdir.3      | 22 +++++++++++++++++++++-
+ man/man3type/stat.3type | 16 +++++++++++++++-
+ 2 files changed, 36 insertions(+), 2 deletions(-)
+
+diff --git a/man/man3/readdir.3 b/man/man3/readdir.3
+index e1c7d2a6a..368e98e6e 100644
+--- a/man/man3/readdir.3
++++ b/man/man3/readdir.3
+@@ -58,7 +58,27 @@ .SH DESCRIPTION
+ structure are as follows:
+ .TP
+ .I .d_ino
+-This is the inode number of the file.
++This is the inode number of the file,
++which belongs to the filesystem
++.I .st_dev
++(see
++.BR stat (3type))
++of the directory on which
++.BR readdir ()
++was called.
++If the directory entry is the mount point,
++then
++.I .d_ino
++differs from
++.IR .st_ino :
++.I .d_ino
++is the inode number of the underlying mount point,
++while
++.I .st_ino
++is the inode number of the mounted file system.
++According to POSIX,
++this Linux behavior is considered to be a bug,
++but is nevertheless conforming.
+ .TP
+ .I .d_off
+ The value returned in
+diff --git a/man/man3type/stat.3type b/man/man3type/stat.3type
+index f3c312bf0..b87195766 100644
+--- a/man/man3type/stat.3type
++++ b/man/man3type/stat.3type
+@@ -66,7 +66,21 @@ .SH DESCRIPTION
+ macros may be useful to decompose the device ID in this field.)
+ .TP
+ .I .st_ino
+-This field contains the file's inode number.
++This field contains the file's inode number,
++which belongs to the
++.IR .st_dev .
++If
++.BR stat (2)
++was called on the mount point,
++then
++.I .d_ino
++differs from
++.IR .st_ino :
++.I .d_ino
++is the inode number of the underlying mount point,
++while
++.I .st_ino
++is the inode number of the mounted file system.
+ .TP
+ .I .st_mode
+ This field contains the file type and mode.
+-- 
+2.51.0
+

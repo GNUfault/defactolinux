@@ -1,0 +1,147 @@
+# Manpage Makefile for the man_db package.
+#
+# Copyright (C) 1994, 1995, Graeme Wilford.
+#
+# You may distribute under the terms of the GNU General Public
+# License as specified in the COPYING file that comes with this 
+# distribution.  
+#
+# Sat Aug  6 13:28:44 BST 1994 Wilf. (G.Wilford@ee.surrey.ac.uk):
+
+srcdir = @srcdir@
+VPATH = @srcdir@
+top_srcdir = @top_srcdir@
+INSTALL = @INSTALL@
+USE_NLS = @USE_NLS@
+LINGUAS = @LINGUAS@
+
+include ../include/Defines
+
+.PHONY: $(DEFAULT_TARGETS) dirs nlsinstall nlsuninstall
+
+ifeq ($(USE_NLS),yes)
+  ifeq ($(strip $(LINGUAS)),)
+    NLS := $(wildcard $(srcdir)/*_*)
+  else
+    NLS := $(foreach lingua, $(LINGUAS), $(wildcard $(srcdir)/$(lingua)_*))
+  endif
+  NLS := $(shell for x in $(NLS); do [ -e $$x/man1/man.man1 ] && echo $$x; done)
+endif
+
+# force these variables to be resolved here, rather than at each reference.
+man := $(man)
+mandb := $(mandb)
+whatis := $(whatis)
+apropos := $(apropos)
+catman := $(catman)
+manpath := $(manpath)
+zsoelim := $(zsoelim)
+
+# localized dates
+# date_it :=`LANG=it_IT date -d $(datemark) +'%d %B %Y'`
+# date_es :=`LANG=es_ES date -d $(datemark) +'%d %B %Y'`
+# date_de :=`LANG=de_DE date -d $(datemark) +'%d %B %Y'`
+# date_fr :=`LANG=fr_FR date -d $(datemark) +'%d %B %Y'`
+
+# looks like a nice place to define a `canned' command sequence.
+define process_manpage
+sed -e 's,%pager%,$(pager),g' \
+    -e 's,%troff%,$(troff),g' \
+    -e 's/%date%/$(date)/g' \
+    -e 's/%date_es%/$(date_es)/g' \
+    -e 's/%date_it%/$(date_it)/g' \
+    -e 's/%date_de%/$(date_de)/g' \
+    -e 's/%date_fr%/$(date_fr)/g' \
+    -e 's,%version%,$(version),g' \
+    -e 's,%zsoelim%,$(zsoelim),g' \
+    -e 's,%man%,$(man),g' \
+    -e 's,%mandb%,$(mandb),g' \
+    -e 's,%manpath%,$(manpath),g' \
+    -e 's,%catman%,$(catman),g' \
+    -e 's,%apropos%,$(apropos),g' \
+    -e 's,%whatis%,$(whatis),g' \
+    -e 's,%manpath_config_file%,$(config_file),g' \
+$< > $@
+endef
+
+man1 = man manpath apropos whatis zsoelim
+man5 = manpath
+man8 = mandb catman accessdb
+
+man1files = $(addprefix $(path)/man1/, $(addsuffix .1, $(man1)))
+man5files = $(addprefix $(path)/man5/, $(addsuffix .5, $(man5)))
+man8files = $(addprefix $(path)/man8/, $(addsuffix .8, $(man8)))
+
+allmanpages := $(foreach path, . $(NLS), $(man1files) $(man5files) $(man8files))
+allmanpages := $(allmanpages) ./man1/lexgrog.1
+
+# NB manpath.5 is not expanded
+man.1 = $(manroot)/$(nlspath)/$(man1dir)/$(man)$(man1ext)
+manpath.1 = $(manroot)/$(nlspath)/$(man1dir)/$(manpath)$(man1ext)
+apropos.1 = $(manroot)/$(nlspath)/$(man1dir)/$(apropos)$(man1ext)
+whatis.1 = $(manroot)/$(nlspath)/$(man1dir)/$(whatis)$(man1ext)
+zsoelim.1 = $(manroot)/$(nlspath)/$(man1dir)/$(zsoelim)$(man1ext)
+lexgrog.1 = $(manroot)/$(nlspath)/$(man1dir)/lexgrog$(man1ext)
+manpath.5 = $(manroot)/$(nlspath)/$(man5dir)/manpath$(man5ext)
+mandb.8 = $(manroot)/$(nlspath)/$(man8dir)/$(mandb)$(man8ext)
+catman.8 = $(manroot)/$(nlspath)/$(man8dir)/$(catman)$(man8ext)
+accessdb.8 = $(manroot)/$(nlspath)/$(man8dir)/accessdb$(man8ext)
+
+# Rules... We've got some rules 'round here.
+%.1: %.man1
+	$(process_manpage)
+%.5: %.man5
+	$(process_manpage)
+%.8: %.man8
+	$(process_manpage)
+
+# The default programs to build 
+ifeq ($(srcdir),.)
+all: $(allmanpages)
+else
+# Have to create output dirs if using alternate build directory
+all: dirs $(allmanpages)
+dirs:
+	$(MKINSTALLDIRS) $(foreach path, . $(NLS), $(path)/man1)
+	$(MKINSTALLDIRS) $(foreach path, . $(NLS), $(path)/man5)
+	$(MKINSTALLDIRS) $(foreach path, . $(NLS), $(path)/man8)
+endif
+
+# special targets
+nlsinstall:
+	$(MKINSTALLDIRS) $(manroot)/$(nlspath)/$(man1dir)
+	$(MKINSTALLDIRS) $(manroot)/$(nlspath)/$(man5dir)
+	$(MKINSTALLDIRS) $(manroot)/$(nlspath)/$(man8dir)
+	$(INSTALL_DATA) $(nlspath)/man1/man.1 $(man.1)
+	$(INSTALL_DATA) $(nlspath)/man1/manpath.1 $(manpath.1)
+	$(INSTALL_DATA) $(nlspath)/man1/apropos.1 $(apropos.1)
+	$(INSTALL_DATA) $(nlspath)/man1/whatis.1 $(whatis.1)
+	$(INSTALL_DATA) $(nlspath)/man1/zsoelim.1 $(zsoelim.1)
+	-$(INSTALL_DATA) $(nlspath)/man1/lexgrog.1 $(lexgrog.1)
+	$(INSTALL_DATA) $(nlspath)/man5/manpath.5 $(manpath.5)
+	$(INSTALL_DATA) $(nlspath)/man8/mandb.8 $(mandb.8)
+	$(INSTALL_DATA) $(nlspath)/man8/catman.8 $(catman.8)
+	$(INSTALL_DATA) $(nlspath)/man8/accessdb.8 $(accessdb.8)
+
+nlsuninstall:
+	rm -f $(man.1) $(manpath.1) $(apropos.1) $(whatis.1) $(zsoelim.1)
+	rm -f $(lexgrog.1) $(manpath.5) $(mandb.8) $(catman.8) $(accessdb.8)
+
+# The standard targets
+install: all
+	for nlspath in . $(NLS); do \
+	  $(MAKE) nlsinstall nlspath=$$nlspath; \
+	done
+
+uninstall:
+	for nlspath in . $(NLS); do \
+	  $(MAKE) nlsuninstall nlspath=$$nlspath; \
+	done
+
+mostlyclean clean:
+	rm -f $(allmanpages) index.* */index.* *~ man*/*~ */man*/*~ 
+
+realclean distclean: clean
+	rm -f Makefile
+
+TAGS:

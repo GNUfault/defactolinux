@@ -1,3 +1,0 @@
-test1
-gawk: clos1way5.awk:7: fatal: getline: attempt to read from closed read end of two-way pipe
-EXIT CODE: 2

@@ -1,0 +1,115 @@
+.\" Man page for format of the manpath.config data file
+.\"
+.\" Copyright (C), 1994, 1995, Graeme W. Wilford. (Wilf.)
+.\"
+.\" You may distribute under the terms of the GNU General Public
+.\" License as specified in the file COPYING that comes with the
+.\" man_db distribution.
+.\"
+.\" Sat Oct 29 13:09:31 GMT 1994  Wilf. (G.Wilford@ee.surrey.ac.uk) 
+.\" 
+.\" Japanese Version Copyright (c) 1998 NAKANO Takeo all rights reserved.
+.\" Translated Fri 25 Sep 1998 by NAKANO Takeo <nakano@apm.seikei.ac.jp>
+.\" Modified Sun 6 Dec 1998 by NAKANO Takeo <nakano@apm.seikei.ac.jp>
+.\" Updated & Modified Sat 11 Nov 2000 by UCHIDA Norihiro <KY4N-UCD@asahi-net.or.jp>
+.\"
+.\"WORD:	hierarchy	階層
+.\"
+.TH manpath 5 "%date%" "%version%" "%manpath_config_file%"
+.SH 名前
+manpath \- %manpath_config_file% ファイルのフォーマット
+.SH 説明
+manpath 設定ファイルは、ユーザの manpath を実行時に評価したり、
+`global' として扱うマニュアルページ階層 (manpath) を指示したり、
+cat ファイルの保管用ディレクトリを指定するためにマニュアルページ
+ユーティリティにより使用される。
+
+環境変数
+.RB $ MANPATH
+がすでに設定されている場合には、 %manpath_config_file% に含まれている
+情報はそれを上書きしない。
+.SH フォーマット
+現在のところ、以下のフィールドタイプが認識される。
+.TP
+.BI # \ comment
+空行や
+.B #
+で始まる行はコメントとみなされ、無視される。
+.TP
+.BI MANDATORY_MANPATH \ manpath_element
+この形式の行は、自動的に生成される
+.RB $ MANPATH
+には必ず含まれているべき manpath を示す。
+.I /usr/man
+などが典型である。
+.TP
+.BI MANPATH_MAP \ path_element\ manpath_element
+この形式の行は
+.RB $ PATH
+から
+.RB $ MANPATH
+へのマッピングを設定する。それぞれの
+.I path_element
+がユーザの
+.RB $ PATH
+に含まれていると、
+.I manpath_element
+が
+.RB $ MANPATH
+に追加される。
+.TP
+\fBMANDB_MAP \fImanpath_element \fR\|[\| \fIcatpath_element\fR \|]
+この形式の行は、どの manpath を `global' として扱い、またそれらの cat 
+ページをどこに保存するかを指定する (\fIcatpath_element\fR は省略可)。
+この形式のフィールドは、
+.B man
+が setuid されたプログラムの場合は特に重要である。なぜなら、これは
+どの階層を setuid されたユーザー権限でアクセスし、どれを起動ユーザーの
+権限でアクセスするかを指定することになるからである。
+
+`global' なマニュアルページの階層は、通常
+.I /usr
+以下に保管されている。例えば
+.IR /usr/man ,
+.IR /usr/local/man ,
+.I /usr/X11R6/man
+などがこれにあたる。
+
+特定の
+.I manpath_element
+からの cat ページを保管したくない場合や、従来の位置に保管したい場合には、
+.I catpath_element
+は省略する。
+
+従来用いられていた cat ファイルの保管場所 (/usr/man/cat?/ など) は、
+マニュアルページの階層がリードオンリーでマウントされている場合には
+使用することができなかった。このため、保管場所として
+任意のディレクトリ階層を指定することが可能になっている (もちろん指定した
+ディレクトリは有効なものでなければならない)。
+.B Linux FSSTND
+に従う場合には、
+キーワード
+.RB ` FSSTND '
+を実際のディレクトリ名の代わりに用いることができる。
+
+残念ながら、 `global' な man のツリーパスは
+.B すべて
+指定しなければならない。
+他のシステムパス (
+.I /usr/man/sun
+のようなもの) やすべての
+.B NLS ロケール
+パス (
+.I /usr/man/de_DE.88591
+のようなもの) も、それぞれすべて指定する必要がある。
+
+情報は書かれた順に一行ずつ評価されるので、他の階層のサブツリーとなって
+いるような manpath は先に書かなければならない。そうしないとマッチが
+正しく行われない可能性がある。例えば
+.I /usr/man/de_DE.88591
+は
+.I /usr/man
+より先に来なければならない。
+.SH バグ
+上記のルールが正しく守られない場合には、マニュアルページャーの機能は
+正しく動作しない。これらのルールは不必要に難しい。

@@ -1,0 +1,17 @@
+These library source files have various authors but are all covered by the
+GNU copyright and are freely distributable under its terms and conditions.
+
+See the files ../COPYING and ../libdb/COPYING.LIB for relevant information.
+
+glob.[ch], fnmatch.[ch]		from GNU glob.tar.gz
+basename.c			author - Wilf.
+strappend.c, error.h		author - Markus Armbruster
+rename.c			from GNU libiberty (gdb)  
+realpath.c,			from linux libc
+str*.c, flock.c, ansidecl.h	from GNU libc
+putenv.c, getopt*.*, alloca.c,
+error.c, x*.c, memcmp.c		from GNU sh-utils-1.12
+waitpid.c                       author - Carl Edman
+tempfile.c                      author - Colin Watson
+mkdtemp.c, mkstemp.c,
+tempname.c                      from GNU libc

@@ -1,0 +1,52 @@
+
+
+regexp "(.*\/)testsuite" $objdir objdir topdir
+
+
+proc psmisc_v_version { tool } {
+    global topdir
+    set toolpath ${topdir}src/${tool}
+    set tmp [ exec $toolpath -V 2>@1 ]
+    regexp {\(PSmisc\) ([0-9a-z.-]+)} $tmp dummy version
+    clone_output "$toolpath version $version\n"
+}
+
+proc fuser_version {}   { psmisc_v_version fuser }
+proc killall_version {} { psmisc_v_version killall }
+proc pslog_version {}   { psmisc_v_version pslog }
+proc prtstat_version {} { psmisc_v_version prtstat }
+
+proc expect_pass { testname reg } {
+    expect {
+        -re "$reg" { pass "$testname" }
+        default { fail "$testname" }
+                timeout { fail "$testname" }
+    }
+}
+
+proc expect_nothing { test } {
+	expect {
+		-re "\\S" { fail "$test" }
+    	eof { pass "$test" }
+	}
+}
+
+proc kill_process pid {
+    set cmdline "kill $pid"
+    if { [catch { exec /bin/sh -c $cmdline } msg]} {
+        warning "Could not kill process: $msg\n"
+    }
+}
+
+proc make_socketproc { sktpath } {
+    global topdir socketproc_pid socketproc_spawnid testsocket_path
+
+    set testproc_realpath "${topdir}/src/socket_test"
+    set socketproc_pid [ spawn $testproc_realpath $sktpath ]
+}
+
+proc kill_socketproc { } {
+    global socketproc_pid
+    kill_process $socketproc_pid
+}
+

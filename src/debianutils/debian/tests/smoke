@@ -1,0 +1,99 @@
+#!/bin/sh
+
+set -e
+
+cd ${AUTOPKGTEST_TMP}
+
+# Testing which
+mkdir ../Which && cd ../Which
+which sh
+
+PATH="$PATH:/tmp"
+cp /usr/bin/which /tmp
+with_a_arg=$(which -a which)
+echo "$with_a_arg"
+without_a_arg=$(which which)
+echo "$without_a_arg"
+if [ "$with_a_arg" != "$without_a_arg" ]; then
+	echo "Success! 'which -a' works as expected"
+fi
+
+which fakeCommand 2>&1 || echo "Success! 'which fakeCommand' does not exist"
+
+which -s fakeCommand || echo "Success! 'which -s fakeCommand' does not exist"
+which -s fakeCommand &> error_output.txt
+error_length=$(wc -l error_output.txt)
+if [ "$error_length" = "0 error_output.txt" ]; then
+	echo "Success! 'which -s fakeCommand' does not print error output"
+fi
+
+which -s which &> standard_output.txt
+standard_length=$(wc -l standard_output.txt)
+if [ "$standard_length" = "0 standard_output.txt" ]; then
+	echo "Success! 'which -s which' does not print standard output"
+fi
+
+which -sa which &> standard_all_output.txt
+standard_all_length=$(wc -l standard_all_output.txt)
+if [ "$standard_all_length" = "0 standard_all_output.txt" ]; then
+	echo "Success! 'which -sa which' does not print standard output"
+fi
+
+which -f sh 2>&1 || echo "Success! '-f' is an invalid option"
+
+# Testing ischroot
+ischroot --version
+ischroot --help
+
+# Testing tempfile
+mkdir ../Tempfile && cd ../Tempfile
+tempfile --version 2>&1
+tempfile --help 2>&1
+
+tempFile=$(tempfile) 2>&1
+ls -la "$tempFile" && \
+	echo "Success! Temporary file created"
+
+tempFile=$(tempfile -n temporary) 2>&1
+ls -la "$tempFile" | grep -- "temporary" && \
+	echo "Success! Name was set properly"
+
+tempFile=$(tempfile -p my_ -s _file) 2>&1
+ls -la "$tempFile" | grep -- "my_" && \
+	echo "Success! Prefix was set properly"
+ls -la "$tempFile" | grep -- "_file" && \
+	echo "Success! Suffix was set properly"
+
+mkdir tmp
+tempFile=$(tempfile -d tmp) 2>&1
+ls -la "$tempFile" | grep -- "tmp/" && \
+	echo "Success! tempfile created in 'tmp/' directory"
+
+tempFile=$(tempfile -m 644) 2>&1
+ls -la "$tempFile" | grep -- "-rw-r--r--" && \
+	echo "Success! File permissions set as 644, not 600"
+
+# Testing savelog
+mkdir ../Savelog && cd ../Savelog
+
+savelog -h
+
+savelog -t temp
+ls -la temp
+ls -la temp.0
+
+ls -la temp | grep -- "-rw-r--r--" && \
+	echo "Log file permissions set to 644"
+savelog -m 755 temp
+ls -la temp.1.gz
+ls -la temp | grep -- "-rwxr-xr-x" && \
+	echo "Success! Log file permissions changed to 755"
+
+savelog temp
+ls -la temp.1.gz && ls -la temp.2.gz && \
+	echo "Success! Log file was rotated and compressed"
+
+savelog -l temp
+ls -la temp.1.gz 2>&1 || ls -la temp.1 && \
+	ls -la temp.2.gz && ls -la temp.3.gz && \
+	echo "Success! Log file was rotated and not compressed"

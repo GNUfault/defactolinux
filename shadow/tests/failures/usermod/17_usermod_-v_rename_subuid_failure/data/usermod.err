@@ -1,2 +1,0 @@
-rename FAILURE /etc/subuid+ /etc/subuid
-usermod: failure while writing changes to /etc/subuid

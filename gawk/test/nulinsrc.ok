@@ -1,2 +1,0 @@
-gawk: nulinsrc.awk:1: fatal: error: invalid character '\000' in source code
-EXIT CODE: 2

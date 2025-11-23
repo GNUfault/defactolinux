@@ -1,2 +1,0 @@
-usermod: existing lock file /etc/subgid.lock without a PID
-usermod: cannot lock /etc/subgid; try again later.

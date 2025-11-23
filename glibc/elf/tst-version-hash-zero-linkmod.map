@@ -1,7 +1,0 @@
-Base {
-  local: *;
-};
-
-OTHER_VERSION {
-  global: global_variable;
-} Base;

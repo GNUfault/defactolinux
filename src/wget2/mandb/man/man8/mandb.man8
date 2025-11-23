@@ -1,0 +1,177 @@
+'\" t
+.\" Man page for mandb
+.\"
+.\" Copyright (C), 1994, 1995, Graeme W. Wilford. (Wilf.)
+.\"
+.\" You may distribute under the terms of the GNU General Public
+.\" License as specified in the file COPYING that comes with the
+.\" man_db distribution.
+.\" 
+.\" Tue Apr 26 12:56:44 BST 1994  Wilf. (G.Wilford@ee.surrey.ac.uk) 
+.\"
+.TH %mandb% 8 "%date%" "%version%" "Manual pager utils"
+.SH NAME
+%mandb% \- create or update the manual page index caches
+.SH SYNOPSIS
+.B %mandb%  
+.RB [\| \-dqsuc \||\| \-h \||\| \-V\c
+.RI "\|] [\|" manpath \|] 
+.SH DESCRIPTION
+.B %mandb%
+is used to initialise or manually update
+.B index 
+database caches that are usually maintained by 
+.BR %man% .
+The caches contain information relevant to the current state of the manual
+page system and the information stored within them is used by the man_db 
+utilities to enhance their speed and functionality.
+
+When creating or updating an
+.BR index ,
+.B %mandb%
+will warn of bad ROFF .so requests, bogus manual page filenames and 
+manual pages from which the 
+.B whatis 
+cannot be parsed.
+
+Supplying 
+.B %mandb% 
+with an optional colon-delimited path will override the internal system
+manual page hierarchy search path, determined from information found within 
+the man_db configuration file.
+.SH "DATABASE CACHES"
+.B %mandb%
+can be compiled with support for any one of the following database types.
+
+.TS
+tab (@);
+l l l l.
+Name@Type@Async@Filename
+_
+Berkeley db@Binary tree@Yes@\fIindex.bt\fR
+GNU gdbm v >= 1.6@Hashed@Yes@\fIindex.db\fR
+GNU gdbm v <  1.6@Hashed@No@\fIindex.db\fR
+UNIX ndbm@Hashed@No@\fIindex.(dir|pag)\fR
+.TE
+
+Those database types that support asynchronous updates provide enhanced
+speed at the cost of possible corruption in the event of unusual
+termination.
+In an unusual case where this has occured, it may be necessary to rerun 
+.B %mandb% 
+with the 
+.B \-c
+option to re-create the databases from scratch. 
+.SH OPTIONS
+.TP
+.B \-d, \-\-debug
+Produce debugging information.
+.TP
+.B \-q, \-\-quiet
+Produce no warnings.
+.TP
+.B \-s, \-\-no-straycats
+Do not spend time looking for or adding information to the databases
+regarding stray cats.
+.TP
+.B \-p, \-\-no-purge
+Do not spend time checking for deleted manual pages and purging them from
+the databases.
+.TP
+.B \-c, \-\-create
+By default, 
+.B %mandb%
+will try to update any previously created databases.
+If a database does not exist, it will create it.
+This option forces 
+.B %mandb%
+to delete previous databases and re-create them from scratch, and implies
+.B \-\-no-purge.
+This may be necessary if a database becomes corrupt or if a new database
+storage scheme is introduced in the future.
+.TP
+.B \-u, \-\-user-db
+Create user databases only, even with write permissions necessary to create
+system databases.
+.TP
+.B \-t, \-\-test
+Perform correctness checks on manual pages in the hierarchy search path.
+With this option,
+.B %mandb%
+will not alter existing databases.
+.TP
+.B \-h, \-\-help
+Show the usage message, then exit.
+.TP
+.B \-V, \-\-version
+Show the version, then exit.
+.SH DIAGNOSTICS
+The following warning messages can be emitted during database building.
+.TP 
+.B <filename>: whatis parse for page(sec) failed
+An attempt to extract whatis line(s) from the given <filename> failed.
+This is usually due to a poorly written manual page, but if many such
+messages are emitted it is likely that the system contains non-standard
+manual pages which are incompatible with the man_db whatis parser.
+See the
+.B WHATIS PARSING
+section in
+.BR lexgrog (1)
+for more information.
+.TP
+.B <filename>: is a dangling symlink
+<filename> does not exist but is referenced by a symbolic link. 
+Further diagnostics are usually emitted to identify the <filename> of the
+offending link. 
+.TP
+.B <filename>: bad symlink or ROFF `.so' request
+<filename> is either a symbolic link to, or contains a ROFF include
+request to, a non existent file.
+.TP
+.B <filename>: ignoring bogus filename
+The <filename> may or may not be a valid manual page but its name is
+invalid.
+This is usually due to a manual page with sectional extension <x> being put
+in manual page section <y>. 
+.TP
+.B <filename_mask>: competing extensions
+The wildcard <filename_mask> is not unique.
+This is usually caused by the existence of both a compressed and
+uncompressed version of the same manual page.
+All but the most recent are ignored.
+.SH FILES
+.TP
+.I %manpath_config_file%
+man_db configuration file.
+.TP
+.I /usr/man/index.(bt|db|dir|pag)
+A traditional global
+.I index
+database cache.
+.TP
+.I /var/catman/index.(bt|db|dir|pag)
+An alternate or FSSTND
+compliant global
+.I index
+database cache.
+.TP
+.I /var/cache/man/index.(bt|db|dir|pag)
+An FHS compliant global
+.I index
+database cache.
+.SH "SEE ALSO"
+.BR %man% (1),
+.BR lexgrog (1),
+.BR manpath (5),
+.BR %catman% (8).
+.PP
+The
+.B "WHATIS PARSING"
+section formerly in this manual page is now part of
+.BR lexgrog (1).
+.SH AUTHOR
+.nf
+Wilf. (G.Wilford@ee.surrey.ac.uk).
+Fabrizio Polacco (fpolacco@debian.org).
+Colin Watson (cjwatson@debian.org).
+.fi

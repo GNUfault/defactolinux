@@ -1,0 +1,48 @@
+.\" Copyright, the authors of the Linux man-pages project
+.\"
+.\" SPDX-License-Identifier: Linux-man-pages-copyleft
+.\"
+.TH wchar_t 3type 2025-10-29 "Linux man-pages (unreleased)"
+.SH NAME
+wchar_t
+\-
+wide-character type
+.SH LIBRARY
+Standard C library
+.RI ( libc )
+.SH SYNOPSIS
+.nf
+.B #include <stddef.h>
+.P
+.BR typedef " /* ... */  " wchar_t;
+.P
+.B #include <stdint.h>
+.P
+.BR "#define WCHAR_WIDTH  " "/* ... */"
+.BR "#define WCHAR_MAX    " "/* ... */"
+.BR "#define WCHAR_MIN    " "/* ... */"
+.fi
+.SH DESCRIPTION
+.I wchar_t
+is a type used for storing a wide character.
+It is an integer type.
+.SH STANDARDS
+C11, POSIX.1-2024.
+.SH HISTORY
+C99, POSIX.1-2001.
+.P
+The
+.B WCHAR_WIDTH
+macro was added in C23.
+.SH NOTES
+The following headers also provide this type:
+.IR <inttypes.h> ,
+.IR <stdlib.h> ,
+.IR <wchar.h> ,
+.IR <wctype.h> .
+.P
+The following header also provides these macros:
+.IR <wchar.h> .
+.SH SEE ALSO
+.BR wint_t (3type),
+.BR fputwc (3)

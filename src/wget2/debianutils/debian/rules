@@ -1,0 +1,32 @@
+#! /usr/bin/make -f
+
+PACKAGE = debianutils
+INSTALL_LOC = debian/$(PACKAGE)
+
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+export DEB_CFLAGS_MAINT_APPEND = -Wall -g -pedantic
+export DEB_LDFLAGS_MAINT_APPEND = -Wl,-z,relro
+
+INSTALL = install
+INSTALL_FILE    = $(INSTALL) -p    -m  644
+INSTALL_PROGRAM = $(INSTALL) -p    -m  755
+INSTALL_SCRIPT  = $(INSTALL) -p    -m  755
+INSTALL_DIR     = $(INSTALL) -p -d -m  755
+
+# don't create translation tarball (useful for Ubuntu)
+export NO_PKG_MANGLE=1
+
+%:
+	dh $@
+
+execute_after_dh_auto_install:
+	$(INSTALL_DIR) $(INSTALL_LOC)/usr/bin \
+		       $(INSTALL_LOC)/usr/sbin \
+		       $(INSTALL_LOC)/usr/share/$(PACKAGE)/shells.d \
+		       $(INSTALL_LOC)/usr/share/$(PACKAGE)
+	$(INSTALL_FILE) debian/shells $(INSTALL_LOC)/usr/share/$(PACKAGE)
+
+ifneq ($(DEB_HOST_ARCH_OS),linux)
+	rm $(INSTALL_LOC)/usr/sbin/installkernel \
+	   $(INSTALL_LOC)/usr/share/man/man8/installkernel.8
+endif

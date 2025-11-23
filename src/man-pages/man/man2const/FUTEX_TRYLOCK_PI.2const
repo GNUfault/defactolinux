@@ -1,0 +1,112 @@
+.\" Copyright, the authors of the Linux man-pages project
+.\"
+.\" %%%LICENSE_START(FREELY_REDISTRIBUTABLE)
+.\" may be freely modified and distributed
+.\" %%%LICENSE_END
+.\"
+.TH FUTEX_TRYLOCK_PI 2const 2025-09-21 "Linux man-pages (unreleased)"
+.SH NAME
+FUTEX_TRYLOCK_PI \- try to lock a priority-inheritance futex
+.SH LIBRARY
+Standard C library
+.RI ( libc ,\~ \-lc )
+.SH SYNOPSIS
+.nf
+.BR "#include <linux/futex.h>" "  /* Definition of " FUTEX_* " constants */"
+.BR "#include <sys/syscall.h>" "  /* Definition of " SYS_* " constants */"
+.B #include <unistd.h>
+.P
+.BI "long syscall(SYS_futex, uint32_t *" uaddr ", FUTEX_TRYLOCK_PI);"
+.fi
+.SH DESCRIPTION
+This operation tries to acquire the lock at
+.IR uaddr .
+It is invoked when a user-space atomic acquire did not
+succeed because the futex word was not 0.
+.P
+Because the kernel has access to more state information than user space,
+acquisition of the lock might succeed if performed by the
+kernel in cases where the futex word
+(i.e., the state information accessible to use-space) contains stale state
+.RB ( FUTEX_WAITERS
+and/or
+.BR FUTEX_OWNER_DIED ).
+This can happen when the owner of the futex died.
+User space cannot handle this condition in a race-free manner,
+but the kernel can fix this up and acquire the futex.
+.\" Paraphrasing a f2f conversation with Thomas Gleixner about the
+.\" above point (Aug 2015): ###
+.\"	There is a rare possibility of a race condition involving an
+.\"	uncontended futex with no owner, but with waiters.  The
+.\"	kernel-user-space contract is that if a futex is nonzero, you must
+.\"	go into kernel.  The futex was owned by a task, and that task dies
+.\"	but there are no waiters, so the futex value is non zero.
+.\"	Therefore, the next locker has to go into the kernel,
+.\"	so that the kernel has a chance to clean up.  (CMXCH on zero
+.\"	in user space would fail, so kernel has to clean up.)
+.\" Darren Hart (Oct 2015):
+.\"     The trylock in the kernel has more state, so it can independently
+.\"     verify the flags that user space must trust implicitly.
+.\"
+.SH RETURN VALUE
+On error,
+\-1 is returned,
+and
+.I errno
+is set to indicate the error.
+.P
+On success,
+.B FUTEX_TRYLOCK_PI
+Returns 0 if the futex was successfully locked.
+.SH ERRORS
+See
+.BR futex (2).
+.TP
+.B EAGAIN
+The futex owner thread ID of
+.I uaddr
+is about to exit,
+but has not yet handled the internal state cleanup.
+Try again.
+.TP
+.B EDEADLK
+The futex word at
+.I uaddr
+is already locked by the caller.
+.TP
+.B EINVAL
+The kernel detected an inconsistency between the user-space state at
+.I uaddr
+and the kernel state.
+This indicates either state corruption
+or that the kernel found a waiter on
+.I uaddr
+which is waiting via
+.BR FUTEX_WAIT (2const)
+or
+.BR FUTEX_WAIT_BITSET (2const).
+.TP
+.B ENOMEM
+The kernel could not allocate memory to hold state information.
+.TP
+.B ENOSYS
+A run-time check determined that the operation is not available.
+The PI-futex operations are not implemented on all architectures and
+are not supported on some CPU variants.
+.TP
+.B EPERM
+The caller is not allowed to attach itself to the futex at
+.IR uaddr .
+(This may be caused by a state corruption in user space.)
+.TP
+.B ESRCH
+The thread ID in the futex word at
+.I uaddr
+does not exist.
+.SH STANDARDS
+Linux.
+.SH HISTORY
+Linux 2.6.18.
+.\" commit c87e2837be82df479a6bae9f155c43516d2feebc
+.SH SEE ALSO
+.BR futex (2)

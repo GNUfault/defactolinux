@@ -1,0 +1,51 @@
+.\" Copyright, the authors of the Linux man-pages project
+.\"
+.\" SPDX-License-Identifier: GPL-2.0-or-later
+.\"
+.TH ttytype 5 2025-05-17 "Linux man-pages (unreleased)"
+.SH NAME
+ttytype \- terminal device to default terminal type mapping
+.SH DESCRIPTION
+The
+.I /etc/ttytype
+file associates
+.BR termcap (5)
+and
+.BR terminfo (5)
+terminal type names
+with tty lines.
+Each line consists of a terminal type, followed by
+whitespace, followed by a tty name (a device name without the
+.I /dev/
+prefix).
+.P
+This association is used by the program
+.BR tset (1)
+to set the environment variable
+.B TERM
+to the default terminal name for
+the user's current tty.
+.P
+This facility was designed for a traditional time-sharing environment
+featuring character-cell terminals hardwired to a UNIX minicomputer.
+It is little used on modern workstation and personal UNIX systems.
+.SH FILES
+.TP
+.I /etc/ttytype
+the tty definitions file.
+.SH EXAMPLES
+A typical
+.I /etc/ttytype
+is:
+.P
+.in +4n
+.EX
+con80x25 tty1
+vt320 ttys0
+.EE
+.in
+.SH SEE ALSO
+.BR termcap (5),
+.BR terminfo (5),
+.BR agetty (8),
+.BR mingetty (8)

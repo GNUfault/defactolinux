@@ -1,0 +1,926 @@
+'\" t
+.\" ** The above line should force tbl to be a preprocessor **
+.\" Man page for man
+.\"
+.\" Copyright (C), 1994, 1995, Graeme W. Wilford. (Wilf.)
+.\"
+.\" Traduzione di Bortolozzo Giovanni <borto@pluto.linux.it>
+.\" Febbraio 1997
+.\" 1^ Revisione Marzo 1997
+.\" 2^ Revisione Agosto 1999
+.\" 3^ Revisione e aggionamento Settembre 1999
+.\"
+.\" You may distribute under the terms of the GNU General Public
+.\" License as specified in the file COPYING that comes with the
+.\" man_db distribution.
+.\"
+.\" Sat Oct 29 13:09:31 GMT 1994  Wilf. (G.Wilford@ee.surrey.ac.uk) 
+.\" 
+.\"" for hilit19
+.TH %man% 1 "%date_it%" "%version%" "Utility per le Pagine di Manuale"
+.SH NOME
+%man% \- un'interfaccia ai manuali di riferimento in linea
+.SH SINTASSI
+.\"" The general command line
+.B %man% 
+.RB [\| \-c \||\| \-w \||\| \-tZT 
+.IR dispositivo \|]
+.RB [\| \-adhu7V \|]
+.RB [\| \-m
+.IR sistema \|[\|,.\|.\|.\|]\|]
+.RB [\| \-L 
+.IR locale \|]
+.RB [\| \-p 
+.IR stringa \|] 
+.RB [\| \-M 
+.IR percorso \|] 
+.RB [\| \-P 
+.IR paginatore \|] 
+.RB [\| \-r
+.IR prompt \|] 
+.RB [\| \-S
+.IR lista \|] 
+.RB [\| \-e
+.IR estensione \|] 
+.RI [\|[\| sezione \|]
+.IR pagina \ .\|.\|.\|]\ .\|.\|.
+.\"" The --local command line
+.br
+.B %man% 
+.B \-l
+.RB [\| \-7 \|]
+.RB [\| \-tZT
+.IR dispositivo \|]
+.RB [\| \-p
+.IR stringa \|]
+.RB [\| \-P
+.IR paginatore \|]
+.RB [\| \-r
+.IR prompt \|]
+.I file
+\&.\|.\|.
+.\"" The apropos command line
+.br
+.RI [\| apropos 
+.IR opzioni \|]
+.I espr_reg
+\&.\|.\|.
+.\"" The whatis command line
+.br
+.RI [\| whatis 
+.IR opzioni \|]
+.I pagina
+\&.\|.\|.
+.SH DESCRIZIONE
+.B %man%
+è il paginatore dei manuali del sistema. Di solito ognuno degli argomenti
+.I pagina
+dati a
+.B %man%
+è il nome di un programma, di un'utility o di una funzione.
+La
+.I pagina di manuale
+associata con ognuno di questi argomenti è poi trovata e mostrata. Una
+.IR sezione ,
+se fornita, indirizzerà
+.B %man%
+a guardare solo in quella
+.I sezione
+del manuale.
+L'azione predefinita è di ricercare in tutte le 
+.I sezioni
+disponibili seguendo un ordine predefinito e di mostrare solo la
+prima 
+.I pagina
+trovata, anche se
+.I pagina
+esiste in diverse
+.IR sezioni .
+
+La seguente tabella mostra i numeri delle
+.I sezioni
+del manuale seguiti dai tipi di pagine che contengono
+
+.TS
+tab (@);
+l l.
+1@Programmi eseguibili e comandi della shell
+2@Chiamate al sistema (funzioni fornite dal kernel)
+3@Chiamate alle librerie (funzioni all'interno delle 
+@librerie di sistema)
+4@File speciali (di solito trovabili in \fI/dev\fR)
+5@Formati dei file e convenzioni p.es. \fI/etc/passwd\fR
+6@Giochi
+7@Pacchetti di macro e convenzioni p.es. \fBman\fR(7), \fBgroff\fR(7).
+8@Comandi per l'amministrazione del sistema (solitamente 
+@solo per root)
+9@Routine del kernel [\|Non standard\|]
+.TE
+
+Una
+.I pagina
+di manuale consta di diverse parti.
+
+Queste possono essere etichettate
+.BR NOME " (NAME),"
+.BR SINTASSI " (SYNOPSIS),"
+.BR DESCRIZIONE " (DESCRIPTION),"
+.BR OPZIONI " (OPTIONS),"
+.BR FILE " (FILES),"
+.BR "VEDERE ANCHE" " (SEE\ ALSO),"
+.BR PROBLEMI " (BUGS),"
+e
+.BR AUTORE " (AUTHOR)."
+
+Le seguenti convenzioni si applicano alla sezione
+.B SINTASSI
+e possono essere usate come una guida per le altre sezioni.
+
+.TS
+tab (@);
+l l.
+\fBtesto in grossetto\fR@scrivere esattamente come mostrato.
+\fItesto in corsivo\fR@rimpiazzare con un argomento appropriato.
+[\|\fB\-abc\fR\|]@ognuno o tutti gli argomenti all'interno 
+@di [ ] sono opzionali.
+\fB\-a\|\fR|\|\fB\-b\fR@opzioni separate da | non possono essere 
+@usate assieme.
+\fIargomento\fB .\|.\|.@\fIargomento\fR è ripetibile.
+[\|\fIespressione\fR\|]\fB .\|.\|.@\fRl'intera \fIespressione\fR\ all'interno 
+ @di [ ] è ripetibile.
+.TE
+
+L'illustrazione del comando o funzione è un modello che dovrebbe
+corrispondere a tutte le possibili invocazioni. In alcuni casi è
+preferibile illustrare diverse invocazioni esclusive come mostrato
+nella sezione
+.B SINTASSI 
+di questa pagina di manuale.
+.SH ESEMPI
+.TP \w'%man%\ 'u
+.BI %man% \ ls 
+Mostra la pagina di manuale per la 
+.I voce
+(programma)
+.IR ls .
+.TP
+.BI %man%\ \-a \ intro
+Mostra, in successione, tutte le pagine di manuale
+.I intro
+disponibili contenute nel manuale. È possibile uscire tra due
+visualizzazioni successive o saltarne una qualsiasi.
+.TP
+\fB%man% \-t \fIalias \fR|\fI lpr -Pps
+Formatta la pagina di manuale indicata da
+.RI ` alias ',
+solitamente una pagina di manuale della shell, nel formato predefinito di
+.B troff
+o
+.B groff
+e la redireziona, tramite pipe, alla stampante chiamata
+.IR ps .
+L'output predefinito per
+.B groff
+è di solito in PostScript. 
+.B %man% \-\-help
+dovrebbe mostrare quale preprocessore è collegato con l'opzione
+.BR \-t .
+.TP
+.BI %man%\ \-l\ \-T dvi\ ./foo.1x.gz \ >\  ./foo.1x.dvi
+Questo comando decomprime e formatta il sorgente nroff della pagina di
+manuale 
+.I ./foo.1x.gz 
+in un file
+.BR "device independent (dvi) " .
+La redirezione è necessaria in quanto l'opzione
+.B \-T
+fa sì che l'output sia diretto verso lo
+.B stdout
+senza nessun paginatore. L'output può essere visto con un programma tipo
+.B xdvi 
+o ulteriormente convertito in PostScript usando un programma tipo
+.BR dvips.
+.TP
+.BI %man%\ \-k \ printf
+Cerca la parola chiave
+.I printf 
+nelle descrizioni brevi e nei nomi delle pagine considerandola una
+espressione regolare. 
+Mostra qualsiasi corrispondenza.
+Equivalente a 
+.BI %apropos%\ \-r \ printf .
+.TP
+.BI %man%\ \-f \ smail
+Cerca le pagine di manuale indicate da
+.I smail
+e mostra una breve descrizione di tutte quelle trovate.
+Equivalente a 
+.BI %whatis%\ \-r \ smail .
+.SH PANORAMICA
+Molte sono le opzioni disponibili a
+.B %man%
+in modo da fornire all'utente la maggior flessibilità
+possibile. Possono essere fatti cambiamenti al percorso di ricerca,
+all'ordine delle sezioni, al preprocessore per l'output, e ad altri
+comportamenti e operazioni elencati in dettaglio più avanti.
+
+Se impostate, le varie variabili d'ambiente sono interrogate per
+determinare le operazioni di 
+.BR %man% . 
+È possibile impostare la variabile "omni comprensiva"
+.RB $ MANOPT
+ad una stringa qualsiasi nel formato della riga di comando, con
+l'eccezione che ogni spazio che sia parte integrante dell'argomento 
+di un'opzione deve essere preceduto da un backslash (`\\').
+.B %man% 
+analizzerà
+.RB $ MANOPT
+prima di analizzare la propria riga di comando. Quelle opzioni che
+richiedono un argomento, saranno ridefinite se le stesse opzioni si
+trovano anche nella riga di comando. Per inizializzare tutte le
+opzioni impostate in
+.RB $ MANOPT , 
+può essere specificato
+.B \-D
+come opzione iniziale della riga di comando.
+Ciò permette a %man% di "dimenticare" le opzioni specificate in
+.RB $ MANOPT
+sebbene debbano restare ancora valide.
+
+Le utility per le pagine di manuale raggruppate nel pacchetto
+.B man_db 
+fanno un uso intenso delle cache delle basi di dati
+.BR index .
+Tali cache contengono informazioni come la posizione di ogni pagina di
+manuale nel filesystem e cosa contiene il relativo
+.I whatis
+(breve descrizione della pagina di manuale). Uno dei compiti di
+.B %man%
+è assicurare che tali cache rimangano consistenti. Queste cache delle
+basi di dati evitano il bisogno di dover lanciare manualmente del
+software per aggiornare le tradizionali basi di dati 
+.I whatis
+in formato testo, ed inoltre permettono a
+.B %man% 
+di girare più veloce di quello che farebbe se dovesse ogni volta
+cercare la pagina di manuale appropriata.
+
+Se
+.B %man%
+non può trovare una base di dati
+.B index
+inizializzata da
+.B %mandb%
+per una particolare gerarchia di pagine di manuale, cercherà comunque
+la pagina di manuale richiesta sebbene sarà necessario un globbing dei
+file per effettuare la ricerca all'interno di quella gerarchia (N.d.T:
+con globbing [jargon] si intende l'espansione dei caratteri speciali
+all'interno di un nome costruito con wildcard \- caratteri jolly).
+Invece se
+.B %whatis%
+o
+.B %apropos%
+non trovano la base di dati
+.BR index ,
+proveranno comunque a estrarre le informazioni dalla base di dati
+.I whatis 
+tradizionale.
+.\"`User' manual page hierarchies will have 
+.\".B index
+.\"caches created `on the fly'.
+.\""
+
+Queste utility supportano i file sorgente nroff compressi, che abbiano,
+di default, una fra le seguenti estensioni
+.BR .Z ", " .z " e " .gz .
+È possibile trattare con qualsiasi estensione di file compresso, ma
+questa informazione deve essere nota al momento della compilazione.
+Inoltre, di default, qualsiasi pagina cat prodotta è compressa usando
+.BR gzip .
+Ognuna delle gerarchie `globali' delle pagine di manuale, come
+.I /usr/share/man
+o
+.IR /usr/X11R6/man ,
+può avere una directory qualsiasi come gerarchia delle pagine cat.
+Tradizionalmente le pagine cat sono salvate sotto la stessa gerarchia
+delle pagine di manuale, ma per ragioni come quelle specificate nel
+.BR "Linux File System Standard (FSSTND)" ,
+è meglio salvarle da qualche altra parte. Per i dettagli su come ciò
+sia possibile, si legga
+.BR manpath (5).
+Per i dettagli sul perché fare ciò, si legga lo standard.
+
+Con questo pacchetto è disponibile il ``supporto internazionale'': le
+pagine di manuale nella lingua nativa sono accessibili (se disponibili
+nel proprio sistema) usando le funzioni
+.IR locale .
+Per attivare tale supporto, è necessario impostare
+.RB $ LC_MESSAGES " e " 
+.RB $ LANG
+o qualche altra variabile d'ambiente dipendente dal sistema, al proprio
+linguaggio locale, solitamente specificato nel formato basato sul
+.BR "POSIX 1003.1" :
+
+.\"
+.\" Need a \c to make sure we don't get a space where we don't want one
+.\""
+.RI < linguaggio >[\|\c
+.B _\c 
+.RI < zona >\|[\|\c
+.B .\c
+.RI < set-di-caratteri >\|[\|\c
+.B ,\c
+.RI < versione >\|]\|]\|]
+
+Se la pagina desiderata è disponibile nel proprio 
+.IR locale ,
+sarà mostrata al posto della pagina standard (di solito in Inglese
+Americano). 
+
+Il supporto internazionale per i cataloghi di messaggi è un'altra
+caratteristica di questo pacchetto e può essere attivato, sempre se
+disponibile, nello stesso modo. Se si trova che le pagine di manuale e
+i cataloghi dei messaggi forniti con questo pacchetto non sono
+disponibili per la propria lingua e si vuole fornirli, si contatti
+il manutentore il quale coordinerà tali attività.
+
+Per informazioni riguardanti altre caratteristiche ed estensioni
+disponibili con questo paginatore dei manuali, si leggano i documenti
+forniti con il pacchetto.
+.SH COMPORTAMENTO PREDEFINITO
+.B %man%
+cercherà la pagina di manuale desiderata all'interno delle cache delle
+basi di dati
+.IR index .
+Se tale ricerca non ha successo, è eseguita una verifica della
+consistenza della cache per assicurarsi che le basi di dati riflettano
+accuratamente il filesystem. Non è generalmente necessario eseguire 
+.B %mandb%
+dopo che le cache sono state create inizialmente, finché una di questa
+non sia in qualche modo corrotta.
+
+Una volta che una pagina di manuale è stata localizzata, è eseguita
+una verifica per scoprire se il relativo file `cat' preformattato
+esiste già e se è più recente del file nroff. Se è così, questo file
+preformattato è (di solito) decompresso e poi visualizzato tramite un
+paginatore. Il paginatore può essere specificato in diversi modi
+oppure viene usato quello predefinito (si veda l'opzione 
+.B \-P
+per i dettagli). Se non c'è la pagina cat o è più vecchia del file
+nroff, quest'ultimo è filtrato attraverso vari programmi ed è mostrato
+immediatamente.
+
+Se può essere prodotto un file cat (esiste la relativa directory cat e
+ha i permessi appropriati),
+.B %man%
+comprimerà e salverà il file cat in background. 
+
+Quanti e quali filtri usare viene determinato in svariati modi. Per prima cosa è
+interrogata l'opzione della riga di comando
+.B \-p
+o la variabile d'ambiente
+.RB $ MANROFFSEQ .
+Se
+.B \-p 
+non è usata e la variabile d'ambiente non è settata, viene analizzata
+la riga iniziale del file troff per cercare una "stringa
+preprocessore". Per contenere una stringa preprocessore valida, la
+prima riga deve assomigliare a
+
+.B '\e" 
+.\""
+.RB < stringa >  
+
+dove
+.B stringa
+può essere una combinazione qualsiasi delle lettere descritte più
+avanti dall'opzione
+.BR \-p .
+
+Se nessuno dei metodi suddetti fornisce informazioni sui filtri, ne è
+usato un insieme predefinito.
+
+Una pipeline di formattazione è creata dai filtri al formattatore
+primario 
+.RB ( nroff 
+o
+.RB [ tg ] roff 
+con 
+.BR \-t )
+ed eseguita.
+Alternativamente, se esiste un programma eseguibile
+.I mandb_nfmt 
+(o
+.I mandb_tfmt
+con 
+.BR \-t ) 
+nella radice dell'albero dei manuali, questi è eseguito. A questi è
+passato il file sorgente del manuale, la stringa preprocessore, ed
+eventualmente il dispositivo specificato come argomento di
+.BR \-T .
+.\"" ********************************************************************
+.SH OPZIONI
+Nessun argomento delle opzioni che non sia duplicato nelle riga di
+comando, in
+.RB $ MANOPT ,
+o in entrambe è dannoso. Per le opzioni che richiedono un argomento,
+ogni duplicazione annullerà il valore del precendente argomento.
+.TP
+.B \-l, \-\-local-file
+Attiva il modo `locale'. Formatta e visualizza file di manuale locali
+invece di effettuare una ricerca nella collezione di manuali del
+sistema. Ogni argomento pagina sarà interpretato come un file sorgente
+nroff nel formato corretto. 
+.\" File sorgente nroff con estensione di
+.\" compressione supportata, saranno decompressi da %man% prima di essere
+.\" visualizzati tramite i soliti filtri. 
+.\""
+Non è creato il file cat. Se '\-' è elencato fra gli argomenti,
+l'input sarà preso dallo stdin. 
+Quando non è usata questa opzione, e man non trova la pagina
+richiesta, prima di mostrare un messaggio d'errore, prova a
+comportarsi come se fosse fornita questa opzione, usando il nome come
+nome di un file e cercando una corrispondenza esatta.
+.TP
+.BI \-L\  locale ,\ \-\-locale= locale
+.B %man%
+di solito determinerà il proprio locale attuale chiamando la funzione C
+.BR setlocale (3)
+che interroga diverse variabili d'ambiente, tra le quali
+.RB $ LC_MESSAGES
+e
+.RB $ LANG .
+Per ridefinire temporaneamente il valore così determinato, si usi
+questa opzione per fornire direttamente una stringa
+.I locale
+a
+.BR %man% . 
+Si noti che ciò non avrà effetto finché non è iniziata realmente una
+ricerca. L'output, come ad esempio il messaggio d'aiuto, sarà sempre
+visualizzato nel locale determinato inizialmente.
+.TP
+.B \-D, \-\-default
+Questa opzione è solitamente data come prima opzione e reinizializza
+il comportamento di
+.B %man%
+a quello predefinito. È usata per reinizializzare quelle opzioni che possono
+essere state impostate in
+.RB $ MANOPT .
+Qualsiasi opzione successiva
+.B \-D
+avrà il solito effetto.
+.TP
+.BI \-M\  percorso ,\ \-\-manpath= percorso
+Specifica un percorso man alternativo. Di default,
+.B %man% 
+usa
+il codice derivato da
+.B %manpath%
+per determinare il percorso di ricerca. Questa opzione ha priorità
+sulla variabile d'ambiente
+.RB $ MANPATH
+e fa sì che questa e l'opzione 
+.B \-m
+siano ignorate.
+.TP
+.BI \-P\  paginatore ,\ \-\-pager= paginatore
+Specifica quale paginatore dell'output usare. Di default,
+.B %man% 
+usa
+.BR %pager% .
+Questa opzione ha priorità sulla variabile d'ambiente
+.RB $ PAGER
+e non va usata assieme con
+.B \-f
+o
+.BR \-k .
+.TP
+.BI \-r\  prompt ,\ \-\-prompt= prompt
+Se una versione recente di
+.B less
+è usata come paginatore,
+.B %man%
+proverà ad impostare il suo prompt e alcune sue opzioni.
+Il prompt predefinito assomiglierà a
+
+.B \ Pagina di Manuale\c
+.IB \ nome ( sez )\c 
+.BI \ riga \ x
+
+dove
+.I nome 
+denota il nome della pagina di manuale,
+.I sez
+denota la sezione in cui è stata trovata e
+.IR x 
+il numero di riga corrente.
+Ciò è ottenuto usando la variabile d'ambiente
+.RB $ LESS .
+
+Fornendo l'opzione
+.B \-r
+seguita da una stringa si può modificare il prompt predefinito.
+La stringa può contenere il testo
+.B $MAN_PN
+il quale sarà espanso nel nome della pagina di manuale corrente e il
+nome della sua sezione racchiuso tra `(' e `)'. La stringa usata per
+produrre il default potrebbe essere espressa come
+
+.B \e\ Pagina\e\ di\e\ Manuale\e\ \e$MAN_PN\e\ ?ltriga\e\ %lt?L/%L.:
+.br
+.B byte\e\ %bB?s/%s..?\e\ (FINE):?pB\ %pB\e\e%..
+
+È stata spezzata in due righe solo per migliorarne la leggibilità. Per
+il suo significato si veda la pagina di manuale
+.BR less (1).
+La stringa di prompt per prima cosa è valutata dalla shell. Perciò le
+doppie virgolette `"', le virgolette rovesce ``' e i backslash `\\'
+devono essere precedute da `\\'. La stringa di prompt potrebbe
+terminare con un `\\$' il quale può essere seguito da ulteriori
+opzioni per less. Di default
+.B %man%
+setta le opzioni
+.BR \-ix8 .
+.TP
+.\""
+.B \-7, \-\-ascii
+Quando visualizza una pagina di manuale in 
+.IR ascii (7) 
+puro su di un terminale a 7 bit o su un emulatore di terminale, alcuni
+caratteri potrebbero non essere visualizzati correttamente se si usa
+il descrittore di dispositivo
+.IR latin1 (7)
+con il
+.B GNU 
+.BR nroff .
+Questa opzione permette alle pagine di manuale in 
+.I ascii 
+puro di essere visualizzate in
+.I ascii 
+con il dispositivo
+.IR latin1 .
+Non tradurrà alcun testo 
+.IR latin1 .
+La seguente tabella mostra le traduzioni effettuate.
+
+.TS
+tab (@);
+l c c c.
+Descrizione@Ottale@latin1@ascii
+_
+trattino di continuazione@255@\[char173]@-
+bullet (middle dot)@267@\(bu@o
+accento acuto@264@\(aa@'
+segno di moltiplicazione@327@\(mu@x
+.TE
+
+Se la colonna
+.I latin1
+è visualizzata correttamente, il proprio terminale può essere
+configurato per i caratteri 
+.I latin1
+e questa opzione non è necessaria.
+Se le colonne
+.I latin1
+e
+.I ascii 
+sono identiche, si sta leggendo questa pagina usando questa opzione
+oppure 
+.B %man% 
+non l'ha formattata usando il descrittore di dispositivo
+.IR latin1 .
+Se manca la colonna
+.I latin1 
+o è corrotta, può essere necessario visualizzare le pagine di manuale
+usando questa opzione.
+
+Questa opzione è ignorata quando si usano le opzioni
+.BR \-t , 
+.B \-T
+o
+.B \-Z
+e può essere inutile per
+.B nroff
+diversi dalla versione
+.BR GNU .
+.TP
+.BI \-S\  lista ,\ \-\-sections= lista
+Lista è un elenco ordinato di sezioni di manuale separate da `:' su
+cui effettuare la ricerca. Usando questa opzione viene ignorata la
+variabile d'ambiente
+.RB $ MANSECT .
+.TP
+.B \-a, \-\-all
+Di default,
+.B %man% 
+uscirà dopo aver visualizzato la pagina di manuale più adatta che
+trova. Usando questa opzione si forza
+.B %man% 
+a visualizzare tutte le pagine di manuale con i nomi che corrispondono
+al criterio di ricerca.
+.TP 
+.B \-c, \-\-catman
+Questa opzione non è di uso generale e dovrebbe essere usata solo dal
+programma 
+.BR %catman% .
+.TP
+.B \-d, \-\-debug
+Non mostra alcuna pagina di manuale, ma mostra un sacco di
+informazioni per il debug.
+.TP
+.BI \-e\  sotto-estensione ,\ \-\-extension= sotto-estensione
+Alcuni sistemi incorporano nella gerarchia principale delle pagine di
+manuale grossi pacchetti di pagine di manuale, come quelle che
+accompagnano il pacchetto  
+.BR Tcl .
+Per ovviare ai problemi dovuti alla presenza di pagine di manuale con
+lo stesso nome come 
+.BR exit (3),
+le pagine di
+.B Tcl 
+sono di solito assegnate alla sezione
+.BR l .
+Poiché questa non è una scelta fortunata, è ora possibile mettere le
+pagine nella sezione corretta, ed in questo caso assegnare
+l'estensione specifica 
+.BR exit (3tcl).
+Durante il funzionamento normale,
+.B %man%
+visualizzerà
+.BR exit (3)
+piuttosto che
+.BR exit (3tcl).
+Per trattare questa situazione ed evitare la necessità di sapere in
+quale sezione di trova la pagina di manuale richiesta, è ora possibile
+dare a
+.B %man% 
+una stringa di
+.l sotto-estensione
+che indica a quale pacchetto deve appartenere la pagina. Usando il
+precedente esempio, passando l'opzione
+.B \-e\ tcl
+a
+.B %man%
+verrà ristretta la ricerca alle pagine che hanno estensione
+.BR *tcl .
+.TP
+.B \-f, \-\-whatis
+Equivalente a 
+.BR %whatis% .
+Mostra, se disponibile, una breve descrizione tratta della pagine di
+manuale. Si veda
+.BR %whatis% (1)
+per i dettagli.
+.TP
+.B \-h, \-\-help
+Mostra un messaggio d'aiuto ed esce.
+.TP
+.B \-k, \-\-apropos
+Equivalente a
+.BR %apropos% .
+Cerca nelle descrizioni brevi delle pagine di manuale le occorrenze
+delle parole chiave e visualizza qualsiasi corrispondenza. Si veda
+.BR %apropos% (1)
+per i dettagli.
+.\"
+.\" Due to the rather silly limit of 6 args per request in some `native'
+.\" *roff compilers, we have do the following to get the two-line
+.\" hanging tag on one line. .PP to begin a new paragraph, then the 
+.\" tag, then .RS (start relative indent), the text, finally .RE 
+.\" (end relative indent).
+.\""
+.PP
+.B \-m 
+.I sistema\c 
+.RB \|[\|,.\|.\|.\|]\| ,
+.BI \-\-systems= sistema\c 
+\|[\|,.\|.\|.\|]
+.RS
+Se questo sistema ha accesso alle pagine di manuale di altri sistemi
+operativi, si può accedere a quest'ultime usando questa opzione. Per
+cercare una pagina di manuale nella collezione delle pagine di manuale
+di NewOS, si usi l'opzione
+.B \-m
+.BR NewOS .
+
+Il
+.I sistema
+specificato può essere una combinazione di nomi di sistemi operativi
+separati da virgole. Per includere una ricerca fra le pagine di
+manuale del sistema operativo nativo, si includa il nome di sistema
+.B man
+nella stringa argomento. Usando questa opzione verrà ignorata la
+variabile d'ambiente
+.RB $ SYSTEM .
+.RE
+.TP
+.BI \-p\  stringa ,\ \-\-preprocessor= stringa
+Specifica la sequenza di preprocessori da lanciare prima di
+.B nroff 
+o
+.BR troff / groff .
+Non tutte le installazioni avranno l'insieme completo di
+preprocessori. Alcuni dei preprocessori e le lettere che li designano
+sono: 
+.BR eqn " (" e ), 
+.BR grap " (" g ),  
+.BR pic " (" p ),
+.BR tbl " (" t ),
+.BR vgrind " (" v ),
+.BR refer " (" r ).
+Usando questa opzione viene ignorata la variabile d'ambiente
+.RB $ MANROFFSEQ .
+.B %zsoelim%
+è sempre lanciato come primo preprocessore.
+.TP
+.B \-u, \-\-update
+Le cache delle basi di dati
+.B index
+sono aggiornate `al volo', cioè non è necessario che 
+.B %mandb%
+sia lanciato periodicamente per mantenerle consistenti. Se la pagina
+di manuale richiesta non è trovata all'interno della cache o è usata
+l'opzione 
+.BR \-a ,
+.B %man%
+farà una verifica della consistenza a livello directory per
+assicurarsi che le proprie cache siano una rappresentazione accurata
+del filesystem. Per forzare una verifica della consistenza a livello
+inode prima di trovare alcuna pagina di manuale, si usi l'opzione
+.BR \-u .
+.TP
+.B \-t, \-\-troff
+Usa
+.I %troff% 
+per formattare le pagine di manuale nello stdout. Questa opzione non è
+richiesta assieme a 
+.B \-T
+o
+.BR \-Z .
+.PP
+.BI \-T\  dispositivo ,\ \-\-troff-device 
+.RI [\| =dispositivo \|]
+.RS
+Questa opzione è usata per cambiare l'output di
+.B groff 
+(o se possibile quello di
+.BR troff ) 
+per adattarlo ad un dispositivo diverso da quello predefinito. Implica
+.BR \-t .
+Esempi (forniti con Groff-1.09) comprendono
+.BR dvi ", " latin1 , 
+.BR X75 " e " X100 .
+.RE
+.TP
+.B \-Z, \-\-ditroff
+.B groff 
+lancerà
+.B troff
+e poi userà un appropriato post-processore per produrre un output
+adatto per il dispositivo scelto. Se
+.I %troff% 
+è
+.BR groff , 
+questa opzione è passata a 
+.B groff 
+e verrà soppresso l'uso del post-processore. Implica
+.BR \-t .
+.TP
+.B \-w, \-\-where, \-\-location
+Non mostra veramente le pagine di manuale, ma stampa le posizioni dei
+file che sarebbero stati formattati o visualizzati. Se il file è
+un file cat, mostra anche la posizione del suo file sorgente nroff.
+.TP
+.B \-V, \-\-version
+Mostra informazioni sulla versione e l'autore.
+.SH STATI D'USCITA
+.TP
+.B 0
+L'esecuzione del programma ha avuto successo.
+.TP
+.B 1
+Errore d'uso, di sintassi o nel file di configurazione.
+.TP
+.B 2
+Errore operativo.
+.TP
+.B 3
+Un processo figlio ha restituito uno stato d'uscita diverso da zero.
+.TP
+.B 16
+Almeno una delle pagine/file/parole chiave non esisteva e non aveva
+corrispondenza. 
+.SH VARIABLI D'AMBIENTE
+.\".TP \w'MANROFFSEQ\ \ 'u
+.\""
+.TP
+.B MANPATH
+Se
+.RB $ MANPATH
+è impostata, il suo valore è usato come percorso per la ricerca delle
+pagine di manuale.
+.TP
+.B MANROFFSEQ
+Se
+.RB $ MANROFFSEQ
+è impostata, il suo valore è usato per determinare l'insieme dei
+preprocessori attraverso i quali va passata la pagina di manuale. La
+lista dei preprocessori predefiniti dipende dal sistema.
+.TP
+.B MANSECT
+Se
+.RB $ MANSECT
+è impostata, il suo valore è una lista separata da `:' di sezioni ed è
+usata per determinare in quali sezioni di manuale cercare e in quale
+ordine. 
+.TP
+.B PAGER
+Se
+.RB $ PAGER
+è impostata, il suo valore è usato come il nome del programma da usare
+per visualizzare la pagina di manuale. Di default, è usato
+.BR %pager% .
+.TP 
+.B SYSTEM
+Se
+.RB $ SYSTEM
+è impostata, avrà lo stesso effetto dell'opzione
+.B \-m stringa
+dove stringa sarà preso come il contenuto di
+.RB $ SYSTEM .
+.TP 
+.B MANOPT
+Se
+.RB $ MANOPT
+è impostata, sarà analizzata prima della riga di comando di
+.B %man%
+ed è supposta essere in formato simile. Poiché tutte le altre
+variabili d'ambiente specifiche di
+.B %man%
+possono essere specificate come opzioni della riga di comando, e sono
+quindi candidate per essere incluse in
+.RB $ MANOPT
+ci si può aspettare che diventeranno obsolete. 
+N.B.: Tutti gli spazi che dovrebbero essere interpretati come parte
+dell'argomento di un opzione devono essere preceduti da `\\'.
+.TP
+.BR LANG , " LC_MESSAGES"
+A seconda del sistema e dell'implementazione, una o entrambe le variabili
+.RB $ LANG
+e
+.RB $ LC_MESSAGES
+saranno interrogate per determinare il locale corrente.
+.B %man%
+visualizzerà i suoi messaggi usando quel locale (se disponibile). Si veda
+.BR setlocale (3)
+per i dettagli.
+.SH FILE
+.TP
+.I %manpath_config_file%
+File di configurazione di man_db.
+.TP
+.I /usr/share/man
+Una gerarchia di pagine di manuale globale.
+.TP
+.I /usr/share/man/index.(bt|db|dir|pag)
+Una cache della base di dati globale
+.I index
+tradizionale.
+.TP
+.I /var/cache/man/index.(bt|db|dir|pag)
+Una cache della base di dati globale
+.I index
+alternativa e conforme con FHS.
+.SH "VEDERE ANCHE"
+.BR %mandb% (8), 
+.BR %manpath% (1),
+.BR manpath (5),
+.BR %apropos% (1), 
+.BR %whatis% (1),
+.BR %catman% (8), 
+.BR less (1),
+.BR nroff (1),
+.BR troff (1),
+.BR groff (1), 
+.BR %zsoelim% (1), 
+.BR setlocale (3),
+.BR ascii (7),
+.BR latin1 (7),
+.BR FSSTND .
+.SH STORIA
+1990, 1991 \- Originalmente scritta da John W. Eaton (jwe@che.utexas.edu).
+
+23 Dicembre 1992: Rik Faith (faith@cs.unc.edu) applica le soluzioni ai
+problemi fornite da Willem Kasdorp (wkasdo@nikhefk.nikef.nl).
+
+30 Aprile 1994 - 23 Febbraio 2000: Wilf. 
+(G.Wilford@ee.surrey.ac.uk) ha iniziato lo sviluppo e il mantenimento
+di questo pacchetto con l'aiuto di un po' di gente.
+
+30 Ottobre 1996 - 30 Marzo 2001: Fabrizio Polacco <fpolacco@debian.org>
+mantiene e migliora questo pacchetto per il progetto Debian, con
+l'aiuto di tutta la comunità.
+
+31 Marzo 2001 - %date_it%: Colin Watson <cjwatson@debian.org>
+
+Traduzione di Bortolozzo Giovanni (borto@pluto.linux.it) 

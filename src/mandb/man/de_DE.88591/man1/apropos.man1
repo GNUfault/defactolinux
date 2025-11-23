@@ -1,0 +1,135 @@
+.\" Man page for apropos
+.\"
+.\" Copyright (C), 1994, Graeme W. Wilford. (Wilf.)
+.\" Deutsche Übersetzung von Anke Steuernagel und Nils Magnus
+.\"
+.\" You may distribute under the terms of the GNU General Public
+.\" License as specified in the file COPYING that comes with the man
+.\" distribution.
+.\"
+.\" Sat Oct 29 13:09:31 GMT 1994  Wilf. (G.Wilford@ee.surrey.ac.uk) 
+.\" 
+.TH apropos 1 "%date_de%" "%version%" "Manual Hilfsprogramme"
+.LO 1
+.SH NAME
+apropos \- sucht die Manualkurzbeschreibung in der Indexdatenbank
+.SH SYNTAX
+.B apropos 
+.RB [\| \-dhV  \|] 
+.RB [\| \-e \||\| \-r \||\| \-w\c
+\|]
+.RB [\| \-m
+.IR System \|[\|,.\|.\|.\|]\|]
+.RB [ \-M
+.IR Pfad \|]
+.I Schlüsselwort
+\&.\|.\|.
+.SH BESCHREIBUNG
+Innerhalb jeder Manualseite ist eine Kurzbeschreibung vorhanden.
+.B apropos
+sucht das Schlüsselwort in den Kurzbeschreibungen der
+.I Indexdatenbank.
+Falls es eine solche nicht im Manualpfad gibt, durchsucht es die
+.I whatis-
+Datenbank nach 
+.IR Schlüsselwort.
+Das Schlüsselwort kann Wildcards oder reguläre Ausdrücke enthalten. Bei der
+Standardsuche (nicht bei 
+.B \-r
+oder
+.BR \-w )
+wird nach Treffern am Anfang von Worten in den Beschreibungen und in
+Befehlsnamen gesucht. Die Nicht-Standardsuche ist weiter unten beschrieben.
+.SH OPTIONEN
+.TP
+.B \-d, \-\-debug
+Ausgeben von Fehlerinformationen.
+.TP
+.B \-e, \-\-exact
+Sucht nach einem genau passenden Wort, im Gegensatz zu der sonst üblichen
+fuzzy-Übereinstimmung. Beispielsweise wird in diesem Fall das Schlüsselwort
+`string' nicht in dem Text `strings' gefunden. Ein Treffer muß also sowohl am
+Anfang als auch am Ende des Wortes übereinstimmen.
+.TP
+.B \-r, \-\-regex
+Interpretiert jedes Schlüsselwort als regulären Ausdruck. Jedes
+Schlüsselwort wird im Befehlsnamen und in der Beschreibung gesucht. Die
+Übereinstimmung ist nicht durch Wortgrenzen beschränkt.
+.TP
+.B \-w, \-\-wildcard
+Das Schlüsselwort kann Wildcards wie in der Shell (z. B. *, ?, ...)
+beinhalten. Das Schlüsselwort wird in den Befehlsnamen und in den 
+Kurzbeschreibungen gesucht. Nur wenn ein expandiertes Schlüsselwort auf eine
+komplette Beschreibung oder einen Befehlsnamen paßt, wird eine
+Übereinstimmung gefunden. 
+.PP
+.B \-m 
+.I System\c 
+.RB \|[\|,.\|.\|.\|]\| ,
+.BI \-\-systems= System\c 
+\|[\|,.\|.\|.\|]
+.RS
+Wenn auch Manualseiten von einem anderen Betriebssystem installiert
+sind, so kann auf sie mit dieser Option zugegriffen werden. Um
+beispielsweise die Manualseiten von NewOS zu durchsuchen, muß
+.B \-m
+.BR NewOS
+angegeben werden.
+
+Das angegebene
+.I System
+kann eine durch Kommata abgetrennte Aufzählung von Betriebssystemnamen
+sein. Die normalen Seiten werden durch den Betriebssystemnamen
+.B man
+angesprochen. Diese Option überschreibt die Umgebungsvariable
+.RB $ SYSTEM.
+.RE
+.TP
+.BI \-M\  Pfad ,\ \-\-manpath= Pfad
+Gibt die Manualpfade an. Wenn mehrere Pfade angegeben werden, müssen diese
+durch Doppelpunkte getrennt sein. Als Default benutzt
+.B apropos 
+.B manpath,
+um den Suchpfad zu bestimmen. Diese Option überschreibt die
+.RB $ MANPATH
+Umgebungsvariable.
+.TP
+.B \-h, \-\-help
+Zeigt einen Hilfstext an.
+.TP
+.B \-V, \-\-version
+Zeigt Programmversion und Autor an.
+.SH DATEIEN
+.TP
+.I /var/catman/\|.\|.\|.\|/index.(bt|db|dir|pag)
+Die
+.B FSSTND
+complianten globalen
+.I Indexdatenbanken.
+.TP
+.I /usr/man/\|.\|.\|.\|/whatis
+Traditionelle
+.I whatis
+Datenbank.
+.SH "SIEHE AUCH"
+.BR whatis "(1), " man "(1), " mandb (8).
+.SH FEHLER
+Wenn die
+.B \-r 
+oder
+.B \-w 
+Optionen benutzt werden und in einem
+.IR Schlüsselwort 
+Shell-Metazeichen vorkommen, kann es notwendig sein,
+.I Schlüsselwort 
+zu quoten, damit die Shell nicht versucht, diese Zeichen zu interpretieren.
+Die 
+.B \-r 
+und
+.B \-w 
+Optionen können verwirrende Ausgaben erzeugen.
+.SH AUTOR
+Wilf. (G.Wilford@ee.surrey.ac.uk),
+die deutsche Übersetzung ist von
+Anke Steuernagel (a_steuer@informatik.uni-kl.de) und
+Nils Magnus (magnus@informatik.uni-kl.de).

@@ -1,0 +1,97 @@
+.\" Copyright, the authors of the Linux man-pages project
+.\"
+.\" SPDX-License-Identifier: Linux-man-pages-copyleft
+.\"
+.TH F_GETPIPE_SZ 2const 2025-09-21 "Linux man-pages (unreleased)"
+.SH NAME
+F_GETPIPE_SZ,
+F_SETPIPE_SZ
+\-
+get/set the capacity of a pipe
+.SH LIBRARY
+Standard C library
+.RI ( libc ,\~ \-lc )
+.SH SYNOPSIS
+.nf
+.B #define _GNU_SOURCE
+.B #include <fcntl.h>
+.P
+.BI "int fcntl(int " fd ", F_SETPIPE_SZ, int " arg );
+.BI "int fcntl(int " fd ", F_GETPIPE_SZ);"
+.fi
+.SH DESCRIPTION
+.TP
+.B F_SETPIPE_SZ
+Change the capacity of the pipe referred to by
+.I fd
+to be at least
+.I arg
+bytes.
+An unprivileged process can adjust the pipe capacity to any value
+between the system page size and the limit defined in
+.I /proc/sys/fs/pipe\-max\-size
+(see
+.BR proc_sys_fs (5)).
+Attempts to set the pipe capacity below the page size are silently
+rounded up to the page size.
+Attempts by an unprivileged process to set the pipe capacity above the limit in
+.I /proc/sys/fs/pipe\-max\-size
+yield the error
+.BR EPERM ;
+a privileged process
+.RB ( CAP_SYS_RESOURCE )
+can override the limit.
+.IP
+When allocating the buffer for the pipe,
+the kernel may use a capacity larger than
+.IR arg ,
+if that is convenient for the implementation.
+(In the current implementation,
+the allocation is the next higher power-of-two page-size multiple
+of the requested size.)
+The actual capacity (in bytes) that is set is returned as the function result.
+.IP
+Attempting to set the pipe capacity smaller than the amount
+of buffer space currently used to store data produces the error
+.BR EBUSY .
+.IP
+Note that because of the way the pages of the pipe buffer
+are employed when data is written to the pipe,
+the number of bytes that can be written may be less than the nominal size,
+depending on the size of the writes.
+.TP
+.B F_GETPIPE_SZ
+Return (as the function result) the capacity of the pipe referred to by
+.IR fd .
+.SH RETURN VALUE
+The pipe capacity.
+.P
+On error, \-1 is returned, and
+.I errno
+is set to indicate the error.
+.SH ERRORS
+See
+.BR fcntl (2).
+.TP
+.B EBUSY
+.I op
+is
+.B F_SETPIPE_SZ
+and the new pipe capacity specified in
+.I arg
+is smaller than the amount of buffer space currently
+used to store data in the pipe.
+.TP
+.B EPERM
+.I op
+is
+.B F_SETPIPE_SZ
+and the soft or hard user pipe limit has been reached;
+see
+.BR pipe (7).
+.SH STANDARDS
+Linux.
+.SH HISTORY
+Linux 2.6.35.
+.SH SEE ALSO
+.BR fcntl (2)

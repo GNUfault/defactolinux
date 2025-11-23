@@ -1,0 +1,171 @@
+.\" Man page for %apropos%
+.\"
+.\" Copyright (C), 1994, 1995, Graeme W. Wilford. (Wilf.)
+.\"
+.\" You may distribute under the terms of the GNU General Public
+.\" License as specified in the file COPYING that comes with the 
+.\" man_db distribution.
+.\"
+.\" Sat Oct 29 13:09:31 GMT 1994  Wilf. (G.Wilford@ee.surrey.ac.uk) 
+.\" 
+.TH %apropos% 1 "%date_es%" "%version%" "Útiles de Páginas de Manual"
+.SH NOMBRE
+%apropos% \- buscar entre las páginas del manual y las descripciones
+.SH SINOPSIS
+.B %apropos% 
+.RB [\| \-dhV  \|] 
+.RB [\| \-r \||\| \-w\c
+\|]
+.RB [\| \-m
+.IR sistema \|[\|,.\|.\|.\|]\|]
+.RB [ \-M
+.IR ruta \|]
+.I palabra_clave
+\&.\|.\|.
+.SH DESCRIPCIÓN
+Cada página de manual contiene una pequeña descripción.
+.B %apropos%
+busca dentro de esas descripciones la presencia de la 
+.IR palabra_clave .
+
+La
+.I palabra_clave
+puede contener caracteres comodín
+.RB ( \-w )
+o puede ser una expresión regular
+.RB ( \-r ).
+Cuando se usan estas opciones,
+puede ser necesario entrecomillar la 
+.I palabra_clave
+o anteponer (\\) a los caracteres especiales para evitar que la shell los
+interprete.
+
+Las reglas estándar permiten buscar nombres de página y
+palabras completas en la descripción.
+.SH OPCIONES
+.TP
+.B \-d, \-\-debug
+Imprime información de depurado.
+.TP
+.B \-r, \-\-regex
+Interpreta cada palabra clave como una expresión regular. Cada palabra clave
+va a tratar de casar independientemente con los nombres de las páginas
+y con las descripciones.
+.TP
+.B \-w, \-\-wildcard
+Interpreta cada palabra clave como patrones que incluyen caracteres comodín.
+Cada palabra clave será cuadrada con nombres de páginas y las descripciones
+de forma independiente. Sólo se cuandran nombres completos de página que
+correspondan con el resultado de expandir la palabra clave.
+.\"
+.\" Due to the rather silly limit of 6 args per request in some `native'
+.\" *roff compilers, we have do the following to get the two-line
+.\" hanging tag on one line. .PP to begin a new paragraph, then the
+.\" tag, then .RS (start relative indent), the text, finally .RE
+.\" (end relative indent).
+.\"
+.PP
+.B \-m 
+.I sistema\c 
+.RB \|[\|,.\|.\|.\|]\| ,
+.BI \-\-systems= sistema\c 
+\|[\|,.\|.\|.\|]
+.RS
+Si este sistema puede acceder a las páginas de manual de otro sistema
+operativo, se puede activar su búsqueda mediante esta opción.
+Para buscar en las páginas de NuevoSO, use la opción 
+.B \-m
+.BR NuevoSO
+.
+
+El
+.I sistema
+especificado puede ser en realidad una lista separada por comas, de
+nombres de sistemas operativos.
+Para incluir la base de datos de descripciones
+.B whatis
+del sistema operativo nativo en la búsqueda basta incluir
+.B man 
+como nombre de sistema en la lista de argumentos.
+
+El valor de esta opción sobreescribe el contenido de la variable
+del entorno
+.RB $ SYSTEM.
+.RE
+.TP
+.BI \-M\  ruta ,\ \-\-manpath= ruta
+Especifica un conjunto de jerarquías de páginas de manual
+separados por "dos puntos".
+
+Por defecto
+.B %apropos%
+utiliza la variable del entorno
+.RB $ MANPATH
+a menos que esté vacía o desactivada en cuyo caso determinará
+la ruta para el manual apropiado, basándose en su variable de entorno
+.RB $ PATH .
+Esta opción se preferirá al contenido de 
+.RB $ MANPATH .
+.TP
+.B \-h, \-\-help
+Imprime un mensaje de ayuda y termina.
+.TP
+.B \-V, \-\-version
+Presenta la información sobre la version y el autor.
+
+.SH "ESTADO DE SALIDA"
+.TP
+.B 0
+Ejecución terminada con éxito.
+.TP
+.B 1
+Error de uso, sintaxis o de fichero de configuración.
+.TP
+.B 2
+Error operacional.
+.TP
+.B 16
+No se ha encontrado nada que cuadre con los criterios especificados.
+.SH ENTORNO
+.TP
+.B SYSTEM
+Si se activa
+.RB $ SYSTEM ,
+tendrá el mismo efecto que si se especifica su contenido como argumento
+de la opción 
+.B \-m
+.
+.TP
+.B MANPATH
+Si se activa
+.RB $ MANPATH ,
+su valor es interpretado como un conjuto de jerarquías de
+páginas a usar separadas por "dos puntos".
+.TP
+.B POSIXLY_CORRECT
+Si 
+.RB $ POSIXLY_CORRECT
+está activada, incluso si su valor es nulo, 
+.B %apropos% 
+ejecutará por defecto una búsqueda como expresión regular.
+.RB ( \-r ).
+.SH FICHEROS
+.TP
+.I /usr/man/index.(bt|db|dir|pag)
+.I índice
+de la base de datos caché tradicional.
+.TP
+.I /var/catman/index.(bt|db|dir|pag)
+.I índice
+de la base de datos caché global alternativa o de acuerdo al FSSTND.
+.TP
+.I /usr/man/\|.\|.\|.\|/whatis
+Base de datos tipo texto 
+.B whatis
+tradicional.
+.SH "TAMBIÉN VER"
+.BR %whatis% (1),
+.BR %man% (1).
+.SH AUTOR
+Wilf. (G.Wilford@ee.surrey.ac.uk)
+Traducción realizada por Luis F. González (luisgh@cogs.susx.ac.uk)

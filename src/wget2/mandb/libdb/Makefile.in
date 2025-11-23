@@ -1,0 +1,59 @@
+# Database library Makefile for the man package.
+#
+# Copyright (C) 1994, 1995, Graeme Wilford.
+#
+# You may distribute under the terms of the GNU General Public
+# License as specified in the COPYING file that comes with this 
+# distribution.  
+#
+# Wed June  6 15:44:47 BST 1994 Wilf. (G.Wilford@ee.surrey.ac.uk):
+
+library = libmandb.a
+
+srcdir = @srcdir@
+VPATH = @srcdir@
+top_srcdir = @top_srcdir@
+
+include ../include/Defines
+
+.PHONY: $(DEFAULT_TARGETS)
+
+MANDEFS =
+MANCPPFLAGS = -I../include -I$(top_srcdir) -I$(srcdir) -I-
+
+# The default programs to build
+ALL = db_store.o db_delete.o db_lookup.o \
+      db_ver.o db_btree.o db_gdbm.o db_ndbm.o
+
+# The default programs to build
+all: $(library)
+
+$(library): $(library)($(ALL))
+	-$(RANLIB) $@
+
+# The standard targets
+install uninstall:
+
+clean mostlyclean:
+	rm -f *~ core $(ALL) $(library)
+
+distclean: clean
+	rm -f *.d Makefile
+
+realclean: distclean
+	rm -f tags
+	
+TAGS:
+	$(MKTAGS) $(srcdir)/*.[ch]
+
+# These lines sort out proper dependencies, done if --enable-debug
+# passed to configure. To override uncomment the following line.
+#debug=on
+ifneq ($(clean),yes)
+
+  ifeq ($(debug),on)
+    SRCS = $(notdir $(wildcard $(srcdir)/*.c))
+    include $(SRCS:.c=.d)
+  endif
+
+endif

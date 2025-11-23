@@ -1,0 +1,230 @@
+%{
+
+/*
+ * lexgrog.l: extract 'whatis' info from nroff man / formatted cat pages.
+ *  
+ * Copyright (C), 1994, 1995, Graeme W. Wilford. (Wilf.)
+ *
+ * You may distribute under the terms of the GNU General Public
+ * License as specified in the file COPYING that comes with this
+ * distribution.
+ *
+ * Wed Oct 12 18:46:11 BST 1994  Wilf. (G.Wilford@ee.surrey.ac.uk) 
+ */
+
+#ifdef HAVE_CONFIG_H
+#  include "config.h"
+#endif /* HAVE_CONFIG_H */
+
+#include <errno.h>
+
+#ifndef STDC_HEADERS
+extern int errno;
+#endif
+
+#ifdef HAVE_UNISTD_H
+#  include <unistd.h>
+#endif /* HAVE_UNISTD_H */
+
+#ifdef HAVE_STRING_H
+#  include <string.h>
+#elif defined (HAVE_STRINGS_H)
+#  include <strings.h>
+#endif /* HAVE_STRING_H */
+
+#include "manconfig.h"
+#include "lib/error.h"
+
+#define YY_READ_BUF_SIZE	1024
+#define MAX_NAME		2048
+
+static void add_str_to_whatis(const char *string, size_t length);
+static void add_char_to_whatis(const unsigned char c);
+static void newline_found(void);
+
+#ifdef TEST
+#include <stdio.h>
+char *program_name = "lexgrog";
+#endif /* TEST */
+%}
+
+%x man_name
+%x cat_name
+%x cat_file
+%x man_file
+%x force_exit
+
+	char newname[MAX_NAME];
+	char *p_name, *fname;
+	int cat;
+
+NAME	N[AaOo][Mm][EeNn]
+MANNAME \"?(\\f[PRIB0123])?{NAME}(\\f[PRIB0123])?\"?
+W	[ \t]
+
+%%
+	if ( cat )
+		BEGIN(cat_file);
+	else
+		BEGIN(man_file);
+
+ /* begin NAME section processing */
+<man_file>\.[Ss][HhYySs]{W}+{MANNAME}{W}*	BEGIN(man_name);
+<man_file>\.RH.*				BEGIN(man_name);
+<cat_file>(\n{W}*){2,}{NAME}{W}*\n{W}+		BEGIN(cat_name);
+
+ /* general text matching */
+<man_file>\.[^RSs].*\n*		|	/* large chunk rejection */
+<man_file>\..{0,3}\"?.{0,4}\"? 	|	/* large chunk rejection */
+<cat_file>.{1,9}		|	/* catch all */
+<cat_file>[ ]*			|
+<cat_file>\n{2,}		|
+<man_file,cat_file>.|\n
+
+ /* default EOF rule */
+<<EOF>>	return 1;
+
+ /* rules to end NAME section processing */
+<force_exit>.|\n		|	/* forced exit */
+<man_name>\n+\.[Ss][HhYS]{W}*	| 	/* Another section */
+<man_name>\n+\.IX{W}+		|	/* index request */
+<cat_name>\n+S[yYeE]		|
+<cat_name>\n{2,}.+		|
+<man_name>\n{W}*\n+.+		|
+<cat_name>\n*__			{	/* terminate the string */
+					*p_name = '\0';
+					yyterminate();
+				}
+
+ /* ROFF macro removal & per line comments */
+<man_name>\n+\.B[IR]?{W}+	|	  /* type face commands */
+<man_name>\n+\.I[BR]?{W}+	|	  /* type face commands */
+<man_name>\n+[.']\\\".*	 		newline_found();	  
+
+<man_name>\n*\\f[PRIB0123]		  /* font changes */
+<man_name>\n*\\s[-+0-9]*		  /* size changes */
+<man_name>\n*\\\*(\(.)?.		  /* *roff strings */
+<man_name>\n*\\\& 			  /* \& */	
+<man_name>\n*\" 			  /* string literal */
+
+<cat_name>-\n[ \t\n]*			  /* get rid of continuations */
+
+ /* convert to DASH */
+<man_name>\n*{W}*\\\((mi|hy|em){W}*	|
+<man_name>\n*[ \t\n]+[-\\]-{W}*		|
+<cat_name>\n*{W}+-{1,2}[ \t\n]+		|
+<man_name>\n+\.Nd{W}*			add_str_to_whatis(" - ", 3);
+				
+ /* convert to UNDERSCORE */
+<man_name>\n*\\\((ru|ul)		add_char_to_whatis('_');
+				
+ /* collapse spaces, escaped spaces, tabs, newlines to a single space */
+<cat_name,man_name>\n*((\\[ ])|[ ]|\t)*		add_char_to_whatis(' ');
+				
+ /* a ROFF break request (.br) usually means we have multiple 
+    whatis definitions, provide a separator for later processing */
+<man_name>\n+\.br{W}*			add_char_to_whatis((char) 0x11);
+
+  /* very general *roff macros */
+<man_name>\n+\.[A-Za-z]{2}{W}*  	newline_found();
+
+ /* pass words as a chunk. speed optimization */
+<man_name>[A-Za-z0-9]*		add_str_to_whatis(yytext, yyleng);
+
+ /* normalise the period (,) separators */
+<cat_name>{W}*,[ \t\n]*			|
+<man_name>{W}*,{W}*			add_str_to_whatis(", ", 2);
+
+<cat_name,man_name>\n+.		{
+					newline_found();
+					add_char_to_whatis(yytext[yyleng - 1]);
+				}
+
+<cat_name,man_name>.			add_char_to_whatis(*yytext);
+
+%%
+
+/* print warning and force scanner to terminate */
+static void too_big(void)
+{
+	error(0, 0,
+	      _("warning: whatis for %s exceeds %d bytes, truncating."),
+	      fname, MAX_NAME);
+
+	BEGIN(force_exit);
+}
+
+/* append a string to newname if enough room */
+static void add_str_to_whatis(const char *string, size_t length)
+{
+	if (p_name - newname + length >= MAX_NAME) {
+		too_big();
+	} else {
+		(void) strncpy(p_name, string, length);
+		p_name += length;
+	}
+} 
+
+/* append a char to newname if enough room */
+static void add_char_to_whatis(const unsigned char c)
+{
+	if (p_name - newname + 1 >= MAX_NAME)
+		too_big();
+	else
+		*p_name++ = c;
+}
+	
+static void newline_found(void)
+{
+/* If we are mid p_name and the last added char was not a space, best add one */
+	if (p_name != newname && *(p_name - 1) != ' ')
+		add_char_to_whatis(' ');
+}
+
+char *find_name(char *file, char *filename, short catfile)
+{
+	static int first = 1;
+	int ret;
+
+	if ( (yyin = fopen(file, "r")) == NULL) {
+		error (0, errno, _("can't open %s"), file);
+		return NULL;
+	}
+	fname = filename;
+	*(p_name = newname) = '\0';
+	cat = (int) catfile;
+	
+	if (first)
+		first = 0;
+	else
+		yyrestart(yyin);
+		
+	ret = yylex();
+	fclose(yyin);
+
+	if (ret)
+		return NULL;
+	else {
+		/* wipe out any initial spaces */
+		for (p_name = newname; *p_name == ' '; p_name++);
+		return xstrdup(p_name);
+	}
+}
+
+#ifdef TEST
+int main(int argc, char **argv)
+{
+	if (argc > 1)
+		while (*++argv) {
+			printf("man: \"%s\"\n", find_name(*argv, "-", 0));
+			printf("cat: \"%s\"\n", find_name(*argv, "-", 1));
+		}
+	return 0;
+}
+#endif
+
+/* for compatibility with systems not having libfl */
+int yywrap(void)
+{
+	return 1;
+}

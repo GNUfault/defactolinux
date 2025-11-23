@@ -1,0 +1,125 @@
+.\" Man page for manpath
+.\"
+.\" Copyright (c) 1990, 1991, John W. Eaton.
+.\" Deutsche Übersetzung von Anke Steuernagel und Nils Magnus
+.\"
+.\" You may distribute under the terms of the GNU General Public
+.\" License as specified in the README file that comes with the man 1.0
+.\" distribution.  
+.\"
+.\" John W. Eaton
+.\" jwe@che.utexas.edu
+.\" Department of Chemical Engineering
+.\" The University of Texas at Austin
+.\" Austin, Texas  78712
+.\"
+.TH manpath 1 "%date_de%" "%version%" "Manual Hilfsprogramme"
+.LO 1
+.SH NAME
+manpath \- ermittelt den aktuellen Suchpfad für die Manualseiten
+.SH SYNTAX
+.B manpath  
+.RB [\| \-qgdc \|] 
+.RB [\| \-m
+.IR System \|[\|,.\|.\|.\|]\|]
+.SH BESCHREIBUNG
+.B manpath 
+versucht den aktuellen Suchpfad der Manualseiten aus den Standardeinstellungen
+und der Umgebungsvariable
+.RB $ PATH 
+zu ermitteln. Das Ergebnis wird auf der Standardausgabe
+ausgegeben, Warnungen und Fehler auf der Standardfehlerausgabe. Wenn
+ein Verzeichnis nicht in der Konfigurationsdatei aufgelistet ist, sucht 
+.B manpath 
+nach den Unterverzeichnissen `man' und `MAN'. Wenn diese existieren, werden
+sie dem Suchpfad hinzugefügt.
+
+Da
+.B manpath 
+von 
+.B man
+benutzt wird, um den Suchpfad zu bestimmen, ist es für einen Benutzer im
+Normalfall nicht notwendig, die Umgebungsvariable
+.RB $ MANPATH
+direkt zu setzen.
+.SH OPTIONEN
+.TP
+.B \-q, \-\-quiet
+Gibt nur den endgültigen Manualpfad aus.
+.TP
+.B \-d, \-\-debug
+Ausgeben von Fehlerinformationen.
+.TP
+.B \-c, \-\-catpath
+Erzeugt einen cat-Suchpfad. Vorhandene
+Manualpfade werden in relative cat-Suchpfade umgewandelt. Diese Option
+kann mit 
+.BR \-g 
+kombiniert werden.
+.TP
+.B \-g, \-\-global
+Erzeugt einen Manualpfad, der aus allen Pfaden besteht, die in der
+Konfigurationsdatei als global bezeichnet sind. Diese Option kann mit
+.BR \-c 
+kombiniert werden.
+.PP
+.B \-m 
+.I System\c 
+.RB \|[\|,.\|.\|.\|]\| ,
+.BI \-\-systems= System\c 
+\|[\|,.\|.\|.\|]
+.RS
+Wenn auch Manualseiten von einem anderen Betriebssystem installiert
+sind, so kann auf sie mit dieser Option zugegriffen werden. Um
+beispielsweise die Manualseiten von NewOS zu durchsuchen, muß
+.B \-m
+.BR NewOS
+angegeben werden.
+
+Das angegebene
+.I System
+kann eine durch Kommata abgetrennte Aufzählung von Betriebssystemnamen
+sein. Die normalen Seiten werden durch den Betriebssystemnamen
+.B man
+angesprochen. Diese Option überschreibt die Umgebungsvariable
+.RB $ SYSTEM.
+.RE
+.TP
+.B \-h, \-\-help
+Zeigt einen Hilfstext an.
+.TP
+.B \-V, \-\-version
+Zeigt Programmversion und Autor an.
+.SH UMGEBUNG
+.\".TP \w'MANPATH\ \ 'u
+.TP
+.B MANPATH
+Wenn
+.RB $ MANPATH
+gesetzt ist, gibt
+.B manpath
+diesen Wert auf die Standardausgabe aus. Warnungen werden auf die
+Standardfehlerausgabe ausgegeben.
+.TP
+.B SYSTEM
+Wenn
+.RB $ SYSTEM
+gesetzt ist, hat dies die gleiche Wirkung wie die Option
+.B \-m
+.I System
+wobei
+.I System
+als Inhalt von
+.RB $ SYSTEM 
+angenommen wird.
+.SH DATEIEN
+.TP
+.I %manpath_config_file%
+Die Manualkonfigurationsdatei.
+.SH "SIEHE AUCH"
+.BR apropos "(1), " whatis "(1), " man (1).
+.SH AUTOR
+Wilf. (G.Wilford@ee.surrey.ac.uk),
+die deutsche Übersetzung ist von
+Anke Steuernagel (a_steuer@informatik.uni-kl.de) und
+Nils Magnus (magnus@informatik.uni-kl.de).

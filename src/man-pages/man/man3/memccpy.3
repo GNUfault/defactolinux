@@ -1,0 +1,77 @@
+'\" t
+.\" Copyright, the authors of the Linux man-pages project
+.\"
+.\" SPDX-License-Identifier: Linux-man-pages-copyleft
+.\"
+.TH memccpy 3 2025-06-28 "Linux man-pages (unreleased)"
+.SH NAME
+memccpy \- copy memory area
+.SH LIBRARY
+Standard C library
+.RI ( libc ,\~ \-lc )
+.SH SYNOPSIS
+.nf
+.B #include <string.h>
+.P
+.BR "void *memccpy(" "size_t n;"
+.BI "              void " dest "[restrict " n "], const void " src "[restrict " n ],
+.BI "              int " c ", size_t " n );
+.fi
+.SH DESCRIPTION
+The
+.BR memccpy ()
+function copies no more than
+.I n
+bytes from
+memory area
+.I src
+to memory area
+.IR dest ,
+stopping when the
+character
+.I c
+is found
+.RI ( c
+is copied).
+.P
+If the memory areas overlap, the results are undefined.
+.SH RETURN VALUE
+The
+.BR memccpy ()
+function returns a pointer to the next character
+in
+.I dest
+after
+.IR c ,
+or NULL if
+.I c
+was not found in the
+first
+.I n
+characters of
+.IR src .
+.SH ATTRIBUTES
+For an explanation of the terms used in this section, see
+.BR attributes (7).
+.TS
+allbox;
+lbx lb lb
+l l l.
+Interface	Attribute	Value
+T{
+.na
+.nh
+.BR memccpy ()
+T}	Thread safety	MT-Safe
+.TE
+.SH STANDARDS
+POSIX.1-2008.
+.SH HISTORY
+POSIX.1-2001, SVr4, 4.3BSD.
+.SH SEE ALSO
+.BR bcopy (3),
+.BR bstring (3),
+.BR memcpy (3),
+.BR memmove (3),
+.BR strcpy (3),
+.BR strncpy (3)

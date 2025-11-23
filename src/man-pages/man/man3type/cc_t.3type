@@ -1,0 +1,33 @@
+.\" Copyright, the authors of the Linux man-pages project
+.\"
+.\" SPDX-License-Identifier: Linux-man-pages-copyleft
+.\"
+.TH cc_t 3type 2025-10-29 "Linux man-pages (unreleased)"
+.SH NAME
+cc_t, speed_t, tcflag_t \- terminal special characters, baud rates, modes
+.SH LIBRARY
+Standard C library
+.RI ( libc )
+.SH SYNOPSIS
+.nf
+.B #include <termios.h>
+.P
+.BR typedef " /* ... */ " cc_t;
+.BR typedef " /* ... */ " speed_t;
+.BR typedef " /* ... */ " tcflag_t;
+.fi
+.SH DESCRIPTION
+.I cc_t
+is used for terminal special characters,
+.I speed_t
+for baud rates, and
+.I tcflag_t
+for modes.
+.P
+All are unsigned integer types.
+.SH STANDARDS
+POSIX.1-2024.
+.SH HISTORY
+POSIX.1-2001.
+.SH SEE ALSO
+.BR termios (3)

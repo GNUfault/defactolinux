@@ -1,0 +1,96 @@
+=head1 NAME
+
+foo, bar - programs to do something
+
+=head1 SYNOPSIS
+
+A short usage summary.
+
+=head1 DESCRIPTION
+
+Long drawn-out discussion of the program. It's a good idea to break this
+up into subsections using "=head2" directives, like these:
+
+=head2 A Sample Subsection
+
+=head2 Yet Another Sample Subsection
+
+=head1 OPTIONS
+
+Some people make this separate from the description.
+
+=over 4
+
+=item B<-e>, B<--example-option>=I<value>
+
+=back
+
+=head1 RETURN VALUE
+
+What the program or function returns if successful.
+
+=head1 ERRORS
+
+Return codes, either exit status or errno settings.
+
+=head1 EXAMPLES
+
+Give some example uses of the program.
+
+=head1 ENVIRONMENT
+
+Environment variables this program might care about.
+
+=head1 FILES
+
+All files used by the program. Typical usage is like this:
+
+=over 4
+
+=item F</usr/man>
+
+default man tree
+
+=item F</usr/man/man*/*.*>
+
+unformatted (nroff source) man pages
+
+=back
+
+=head1 SEE ALSO
+
+Other man pages to check out, like man(1), man(7), mandb(8), catman(8).
+
+For this example, see pod2man(1) for more details.
+
+=head1 NOTES
+
+Miscellaneous commentary.
+
+=head1 CAVEATS
+
+Things to take special care with, sometimes called WARNINGS.
+
+=head1 DIAGNOSTICS
+
+All the possible error messages the program can print out, what they
+mean, and how to correct them if applicable.
+
+=head1 BUGS
+
+Things that are broken or just don't work quite right.
+
+=head1 RESTRICTIONS
+
+Bugs you don't plan to fix. :-)
+
+=head1 AUTHOR
+
+Who wrote it (or AUTHORS if multiple).
+
+This example was constructed by Colin Watson <S<cjwatson@debian.org>>
+from a template provided by Tom Christiansen <S<tchrist@jhereg.perl.com>>.
+
+=head1 HISTORY
+
+Programs derived from other sources sometimes have this.

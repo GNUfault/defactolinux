@@ -1,0 +1,448 @@
+dnl Process this file with autoconf v2.50a+ to produce a configure script.
+dnl
+dnl Initialise and check we're in the correct directory.
+dnl
+AC_INIT(man_db, 2.3.20)
+AC_PREREQ(2.50a)
+AC_CONFIG_SRCDIR(acconfig.h)
+AC_CONFIG_AUX_DIR(tools)
+AC_CONFIG_HEADER(include/config.h)
+AC_ARG_PROGRAM
+dnl
+dnl Define below date and version information to be put into man pages etc.
+dnl
+datemark=20010907
+date=`LANG=C date -d $datemark +'%d %B %Y'`
+date_it=`LANG=it_IT date -d $datemark +'%d %B %Y'`
+date_es=`LANG=es_ES date -d $datemark +'%d %B %Y'`
+date_de=`LANG=de_DE date -d $datemark +'%d %B %Y'`
+date_fr=`LANG=fr_FR date -d $datemark +'%d %B %Y'`
+dnl
+PACKAGE=AC_PACKAGE_NAME
+VERSION=AC_PACKAGE_VERSION
+AC_DEFINE_UNQUOTED(PACKAGE, "$PACKAGE")
+AC_DEFINE_UNQUOTED(VERSION, "$VERSION")
+AC_SUBST(PACKAGE)dnl
+AC_SUBST(VERSION)dnl
+dnl
+dnl MAN_ECHO("string to be echoed")dnl
+define(MAN_ECHO, [echo $1 1>&AC_FD_MSG])dnl
+dnl MAN_ECHO_VAR(ENV-VARIABLE)
+define(MAN_ECHO_VAR, [MAN_ECHO("default $1 = \"$$1\"")])dnl
+dnl
+AC_SUBST(date)dnl
+dnl AC_SUBST(datemark)dnl
+AC_SUBST(date_it)dnl
+AC_SUBST(date_es)dnl
+AC_SUBST(date_de)dnl
+AC_SUBST(date_fr)dnl
+dnl
+dnl We have to be a bit naughty here and supply options.
+dnl The autoconf literature states that only features that can be 
+dnl separately 'built' should use --enable and friends. Oh well...
+dnl Current options: debug, setuid, device, db.
+dnl 
+AC_ARG_ENABLE(debug,
+[  --enable-debug	  build a Makefile suitable for debugging purposes], 
+	 [: ${LDFLAGS=-g -Wall}
+	  MAN_ECHO("Enabling debugging Makefile")
+	  debug=on],
+	 [: ${CFLAGS=-g -O2 -Wall}
+	  : ${LIBS=-lc}
+	  AC_DEFINE(NDEBUG)
+	  debug=off])
+AC_ARG_ENABLE(setuid,
+[  --enable-setuid[=ARG]	  install man setuid to user ARG (default - ARG=man)
+  --disable-setuid	  don't install man setuid],
+	  [if test "$enableval" = "yes" 
+	   then
+		enableval=man
+	   fi
+	   if test "$enableval" = "no" 
+	   then
+		man_owner=
+		man_install_flags="-m 755"
+		MAN_ECHO("Man will not be installed setuid")
+	   else
+		man_owner=$enableval
+		man_install_flags="-m 4755 -o $man_owner"
+		MAN_ECHO("Man will be installed setuid $enableval")
+	   	AC_DEFINE_UNQUOTED(SECURE_MAN_UID, "$man_owner")
+	   fi],
+	  [man_owner=man
+	   man_install_flags="-m 4755 -o man"
+	   AC_DEFINE_UNQUOTED(SECURE_MAN_UID, "$man_owner")])
+AC_ARG_WITH(device,
+[  --with-device=DEVICE	  use nroff with the output device DEVICE],
+	[if test "$withval" = "yes" || test "$withval" = "no" 
+	 then
+	 	AC_MSG_ERROR(--with-device requires an argument)
+	 else
+	 	nroff_device=" -T$withval"
+	 fi])
+AC_ARG_WITH(db,
+[  --with-db=LIBRARY	  use database library LIBRARY
+                          (db2, db1, db, gdbm, ndbm)],
+	[if test "$withval" = "yes" || test "$withval" = "no" 
+	 then
+	 	AC_MSG_ERROR(--with-db requires an argument)
+	 else
+	 	db=$withval
+	 fi],
+	 : ${db=no})
+dnl
+dnl Finish the argument parsing
+dnl
+AC_SUBST(man_install_flags)dnl
+AC_SUBST(debug)dnl
+dnl
+dnl Check $PATH for the following progs and append suitable options.
+dnl 
+AC_PROG_CC
+AC_PROG_CPP
+AC_PROG_INSTALL
+AC_PROG_RANLIB
+AC_PATH_PROG(cat, cat)
+AC_PATH_PROG(lynx, lynx)
+AC_PATH_PROG(tr, tr)
+AC_PATH_PROG(grep, grep)
+AC_PATH_PROGS(pager, pager less more)
+test "$pager" && pager="exec $pager -s"
+dnl
+dnl define below (in list of preference) *roff macros to check for.
+dnl
+macros="andoc an doc"
+dnl
+dnl We have problems here, as different systems have different *roff
+dnl formatters and they accept different options and do different things :(
+dnl
+AC_PATH_PROGS(nroff, nroff gnroff groff)
+if test "$nroff"
+then
+	dnl define GNU_NROFF if necessary
+	MAN_PROG_GNU_NROFF($nroff)
+	if test "$nroff_device" 
+	then
+		AC_MSG_CHECKING(that nroff works with argument$nroff_device)
+dnl
+dnl  cannot cache this result as it can change between runs of configure.
+dnl
+		if $nroff $nroff_device </dev/null >/dev/null 2>&1 3>&1
+		then 
+			AC_MSG_RESULT(yes)
+		else
+			AC_MSG_RESULT(no)
+			AC_MSG_ERROR(nroff does not work with argument$nroff_device)
+		fi
+	fi
+	AC_MSG_CHECKING(for appropriate nroff macro)
+	AC_CACHE_VAL(man_cv_prog_nroff_macro, [
+	
+	for macro in $macros
+	do
+		if $nroff -m$macro $nroff_device </dev/null >/dev/null 2>&1 3>&1
+		then
+			man_cv_prog_nroff_macro=-m$macro
+			break
+		fi
+	done])
+	
+	if test "$man_cv_prog_nroff_macro"
+	then
+		nroff="$nroff ${man_cv_prog_nroff_macro}"
+dnl		nroff="$nroff ${man_cv_prog_nroff_macro}${nroff_device}"
+		AC_MSG_RESULT($man_cv_prog_nroff_macro)
+	else
+		AC_MSG_RESULT(ambiguous)
+		AC_MSG_WARN(please edit include/manconfig.h and add nroff definition)
+	fi 
+else
+	AC_MSG_WARN(Cannot find an nroff-like program, formatting of manual page source will not be supported.)
+	nroff="(nroff not installed)"
+	AC_DEFINE(NROFF_MISSING)
+fi
+AC_PATH_PROGS(troff, groff)
+if test "$troff"
+then
+	AC_DEFINE(TROFF_IS_GROFF)
+	TROFF=groff
+else
+	AC_PATH_PROGS(troff, troff gtroff)
+	TROFF=troff
+fi
+if test "$troff"
+then
+	AC_DEFINE(HAS_TROFF)
+	AC_MSG_CHECKING(for appropriate $TROFF options)
+	AC_CACHE_VAL(man_cv_prog_troff_options, [
+dnl	
+dnl do a quick test to see if -t works [AIX needs this], groff doesn't as
+dnl it indicates pre-process with tbl.
+dnl
+	test "$TROFF" = "troff" && $troff -t </dev/null >/dev/null 2>&1 3>&1 \
+				&& troff_filter="-t "
+	for macro in $macros
+	do
+		if $troff $troff_filter -m$macro </dev/null >/dev/null 2>&1 3>&1
+		then
+			man_cv_prog_troff_options="${troff_filter}-m${macro}"
+			break
+		fi
+	done])
+	if test "$man_cv_prog_troff_options"
+	then
+		troff="$troff $man_cv_prog_troff_options"
+		AC_MSG_RESULT($man_cv_prog_troff_options)
+	else
+		AC_MSG_RESULT(ambiguous)
+		AC_MSG_WARN(please edit include/manconfig.h and add troff definition)
+	fi
+else
+	troff="(troff not installed)"
+fi
+dnl 
+AC_PATH_PROGS(eqn, eqn geqn)
+AC_PATH_PROGS(neqn, neqn gneqn)
+dnl
+dnl if we fail to find an neqn, use eqn and try to force it to output
+dnl for an ascii device. As this is only relevant for equations (?), not
+dnl using latin1 should be acceptable. -Tlatin1 is ignored by some eqn.
+dnl
+if test -z "$neqn"
+then
+	test "$eqn" && 
+	(test "$nroff_device" && neqn="$eqn -T$nroff_device" || neqn="$eqn -Tascii")
+fi
+AC_PATH_PROGS(tbl, tbl gtbl)
+AC_PATH_PROGS(col, col gcol)
+AC_PATH_PROGS(vgrind, vgrind gvgrind)
+AC_PATH_PROGS(refer, refer grefer)
+AC_PATH_PROGS(grap, grap)
+AC_PATH_PROGS(pic, pic gpic)
+test "$pic" && pic="$pic -S"
+AC_PATH_PROG(gzip, gzip)
+if test "$gzip"
+then
+	gunzip="$gzip -dc"
+	compressor="$gzip -c7"
+	compress_ext="gz"
+	decompressor="$gunzip"
+fi
+AC_PATH_PROG(compress, compress)
+if test "$compress"
+then
+	uncompress="$compress -dc"
+	if test -z "$gzip"
+	then
+		compressor="$compress -c"
+		compress_ext="Z"
+		decompressor="$uncompress"
+	fi
+fi
+if test "$gzip" || test "$compress"
+then
+	AC_DEFINE(COMP_CAT)
+	AC_DEFINE(COMP_SRC)
+fi
+AC_SUBST(compressor)dnl
+AC_SUBST(compress_ext)dnl
+AC_SUBST(gunzip)dnl
+AC_SUBST(uncompress)dnl
+AC_SUBST(decompressor)dnl
+dnl
+dnl to add more decompressors just follow the scheme above.
+dnl
+dnl Work out which manual page hierarchy scheme might be in use.
+dnl
+AC_ARG_ENABLE(mandirs,
+[  --enable-mandirs=OS	  select manual page hierarchy organization
+                          (GNU, HPUX, Solaris, IRIX)],
+	[MAN_ECHO("Using hierarchy organization(s) $enableval")
+	 AC_DEFINE_UNQUOTED(MANDIR_LAYOUT, "$enableval")],
+	[MAN_ECHO("Allowing any hierarchy organization")
+	 AC_DEFINE(MANDIR_LAYOUT, "")])
+dnl
+dnl check for various header files and associated libraries.
+dnl
+AC_AIX
+AC_MINIX
+AC_ISC_POSIX
+dnl AC_PROG_LEX calls AC_TRY_LINK: must come after above 3
+AC_PROG_LEX
+AC_HEADER_STDC
+AC_HEADER_SYS_WAIT
+AC_HEADER_DIRENT
+AC_CHECK_HEADERS(unistd.h memory.h fcntl.h limits.h sys/file.h regex.h)
+AC_CHECK_HEADERS(string.h strings.h, break)
+dnl
+dnl Internationalization support.
+dnl
+ALL_LINGUAS="de it es cs ja fr"
+AM_GNU_GETTEXT
+AC_SUBST(LINGUAS)dnl
+dnl
+dnl Checks for structures and compiler characteristics.
+dnl
+AC_C_CONST
+AC_C_INLINE
+AC_TYPE_PID_T
+AC_TYPE_UID_T
+AC_TYPE_SIZE_T
+dnl
+dnl Checks for functions.
+dnl
+AC_FUNC_ALLOCA
+AC_FUNC_MEMCMP
+AC_TYPE_SIGNAL
+AC_FUNC_STRCOLL
+AC_FUNC_VFORK
+AC_FUNC_VPRINTF
+MAN_FUNC_ANSI_SPRINTF
+MAN_FUNC_PCLOSE
+dnl
+dnl Find a suitable database interface header and library
+dnl
+dnl Check for Berkeley db routines (first version API)
+dnl
+if test "$db" = "no" || test "$db" = "db2" || test "$db" = "db"; then
+MAN_CHECK_BDB([db_185.h db2/db_185.h db2_185.h], [db2 db],
+              [AC_DEFINE_UNQUOTED([BDB_H], [<$head>])
+               AC_DEFINE_UNQUOTED([BTREE], [$lib])
+              ])
+fi
+dnl
+if test "$db" = "no" || test "$db" = "db1" || test "$db" = "db"; then
+MAN_CHECK_BDB([db/db.h db.h db1/db.h], [db db1],
+              [AC_DEFINE_UNQUOTED([BDB_H], [<$head>])
+               AC_DEFINE_UNQUOTED([BTREE], [$lib])
+              ])
+fi
+dnl
+  			       
+dnl if test "$db" = "no" || test "$db" = "db2"; then
+dnl MAN_CHECK_BDB([db2_185.h], [db2 db c],
+dnl               [AC_DEFINE(BTREE, 2)
+dnl                AC_DEFINE(DB_ON_LIBC)
+dnl               ])
+dnl fi
+dnl if test "$db" = "no" || test "$db" = "db2"; then
+dnl MAN_CHECK_BDB([db2/db_185.h], [db2 db c], [AC_DEFINE(BTREE, 2)])
+dnl fi
+dnl dnl
+dnl dnl from package libdb1-dev
+dnl dnl
+dnl if test "$db" = "no" || test "$db" = "db"; then
+dnl MAN_CHECK_BDB([db/db.h], [db c], [AC_DEFINE(BTREE, 1)])
+dnl fi
+dnl dnl
+dnl dnl from package libc6-dev
+dnl dnl
+dnl dnl ########## statically linked #####
+dnl if test "$db" = "no" || test "$db" = "db"; then
+dnl MAN_CHECK_BDB([db1/db.h], [db c],
+dnl               [AC_DEFINE(BTREE, 1)
+dnl                AC_DEFINE(DB_ON_LIBC)
+dnl               ])
+dnl fi
+dnl
+dnl Check for GNU dbm routines
+dnl
+if test "$db" = "no" || test "$db" = "gdbm"
+then
+  AC_CHECK_HEADER(gdbm.h,[
+    for lib in gdbm c dbm
+    do
+      AC_CHECK_LIB($lib, gdbm_fetch, test "$lib" = "c" || LIBS="$LIBS -l$lib" 
+                                     [AC_DEFINE(GDBM)]
+                                     db=yes, db=no)
+      if test "$db" = "yes" 
+      then
+dnl Need to explicitly check for some routines, rather than using 
+dnl version info extracted from gdbm.h
+        AC_CHECK_FUNCS(gdbm_exists gdbm_setopt)
+        break
+      fi
+    done], db=no)
+fi
+dnl
+dnl Check for UNIX ndbm routines
+dnl
+if test "$db" = "no" || test "$db" = "ndbm"
+then
+  AC_CHECK_HEADER(ndbm.h,[
+    for lib in ndbm c dbm
+    do
+      AC_CHECK_LIB($lib, dbm_fetch, test "$lib" = "c" || LIBS="$LIBS -l$lib"
+      				    [AC_DEFINE(NDBM)]
+				    db=yes, db=no)
+      test "$db" = "yes" && break
+      done], db=no)
+fi 
+if test "$db" != "yes"
+then 
+    if test "$db" = "no"
+    then
+      AC_MSG_ERROR(Fatal: no supported database library/header found)
+    else
+      AC_MSG_ERROR(Fatal: $db: unsupported database library)
+    fi
+fi
+if test "$debug" = "on" 
+then
+  AC_CHECK_LIB(efence, EF_Print)
+fi
+dnl
+dnl Check for available functions.
+dnl
+AC_CHECK_FUNCS(getcwd getwd, break)
+AC_CHECK_FUNCS(atexit on_exit, break)
+AC_CHECK_FUNCS(seteuid setreuid setresuid strerror)
+AC_CHECK_FUNCS(canonicalize_file_name)
+AC_CHECK_FUNCS(setlocale)
+dnl
+dnl I think it's reasonable to assume that the system has the following 
+dnl headers if the (POSIXy) functions exist.
+dnl 
+AC_CHECK_FUNC(regcomp, [AC_DEFINE(POSIX_REGEX)],
+  [AC_CHECK_FUNC(re_comp, [AC_DEFINE(BSD_REGEX)],
+    [AC_MSG_WARN(no regex routines found, whatis/apropos will ignore -r)])])
+AC_CHECK_FUNC(fnmatch, [AC_DEFINE(HAVE_FNMATCH_H)], LIBOBJS="$LIBOBJS fnmatch.o")
+AC_CHECK_FUNC(globfree, [AC_DEFINE(HAVE_GLOB_H)], LIBOBJS="$LIBOBJS glob.o")
+AC_CHECK_FUNC(getopt_long, [AC_DEFINE(HAVE_GETOPT_H)], LIBOBJS="$LIBOBJS getopt.o getopt1.o")
+AC_REPLACE_FUNCS(flock putenv realpath rename basename waitpid strstr strsep strcspn strspn mkdtemp mkstemp)
+dnl
+MAN_ECHO_VAR(CC)
+MAN_ECHO_VAR(CPP)
+MAN_ECHO_VAR(CPPFLAGS)
+MAN_ECHO_VAR(CFLAGS)
+MAN_ECHO_VAR(LDFLAGS)
+MAN_ECHO_VAR(LIBS)
+
+AC_CONFIG_FILES(GNUmakefile
+	lib/Makefile
+	src/Makefile
+	src/man_db.conf
+	man/Makefile
+	libdb/Makefile
+	zsoelim/Makefile
+	include/Defines
+	include/comp_src.h
+	include/manconfig.h
+	intl/Makefile
+	po/Makefile.in)
+AC_OUTPUT
+
+date > stamp-h
+dnl Create a bogus makefile that non-GNU make's will try to use. This is 
+dnl better than messages like `make:105: missing separator **' 
+cat > makefile <<\MEOF
+all: GNUmakefile
+	@echo "Compilation of this package requires GNU make ver 3.68 or above."
+	@echo "If you are using GNU make and it ignores the GNUmakefile in this"
+	@echo "directory, issue the command 'make -f GNUmakefile'"
+
+GNUmakefile: GNUmakefile.in
+	CONFIG_HEADERS= CONFIG_FILES=$@ ./config.status
+
+update install clean realclean distclean TAGS dist: all
+MEOF

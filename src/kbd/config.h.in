@@ -1,0 +1,310 @@
+/* config.h.in.  Generated from configure.ac by autoheader.  */
+
+/* Define to 1 if translation of program messages to the user's native
+   language is requested. */
+#undef ENABLE_NLS
+
+/* Subdirectory of DATADIR */
+#undef FONTDIR
+
+/* Define to 1 if you have the 'alarm' function. */
+#undef HAVE_ALARM
+
+/* support bzip2 compression */
+#undef HAVE_BZIP2
+
+/* Define to 1 if you have the Mac OS X function CFLocaleCopyCurrent in the
+   CoreFoundation framework. */
+#undef HAVE_CFLOCALECOPYCURRENT
+
+/* Define to 1 if you have the Mac OS X function CFPreferencesCopyAppValue in
+   the CoreFoundation framework. */
+#undef HAVE_CFPREFERENCESCOPYAPPVALUE
+
+/* Define to 1 if your system has a working 'chown' function. */
+#undef HAVE_CHOWN
+
+/* Define to 1 if C11-style _Generic works. */
+#undef HAVE_C__GENERIC
+
+/* Define if the GNU dcgettext() function is already present or preinstalled.
+   */
+#undef HAVE_DCGETTEXT
+
+/* Define to 1 if you have the declaration of 'strerror_r', and to 0 if you
+   don't. */
+#undef HAVE_DECL_STRERROR_R
+
+/* Define to 1 if you have the <dlfcn.h> header file. */
+#undef HAVE_DLFCN_H
+
+/* Define to 1 if you have the 'dup2' function. */
+#undef HAVE_DUP2
+
+/* Define to 1 if you have the 'endpwent' function. */
+#undef HAVE_ENDPWENT
+
+/* Define to 1 if you have the <fcntl.h> header file. */
+#undef HAVE_FCNTL_H
+
+/* Define to 1 if you have the 'fork' function. */
+#undef HAVE_FORK
+
+/* Define if the GNU gettext() function is already present or preinstalled. */
+#undef HAVE_GETTEXT
+
+/* Define if you have the iconv() function and it works. */
+#undef HAVE_ICONV
+
+/* Define to 1 if you have the <inttypes.h> header file. */
+#undef HAVE_INTTYPES_H
+
+/* Define to 1 if you have the <libintl.h> header file. */
+#undef HAVE_LIBINTL_H
+
+/* Define to 1 if you have the <locale.h> header file. */
+#undef HAVE_LOCALE_H
+
+/* support lzma compression */
+#undef HAVE_LZMA
+
+/* Define to 1 if your system has a GNU libc compatible 'malloc' function, and
+   to 0 otherwise. */
+#undef HAVE_MALLOC
+
+/* Define to 1 if you have the <malloc.h> header file. */
+#undef HAVE_MALLOC_H
+
+/* Define to 1 if you have the 'memset' function. */
+#undef HAVE_MEMSET
+
+/* Define to 1 if your system has a GNU libc compatible 'realloc' function,
+   and to 0 otherwise. */
+#undef HAVE_REALLOC
+
+/* Define to 1 if you have the 'setlocale' function. */
+#undef HAVE_SETLOCALE
+
+/* Define to 1 if 'stat' has the bug that it succeeds when given the
+   zero-length file name argument. */
+#undef HAVE_STAT_EMPTY_STRING_BUG
+
+/* Define to 1 if you have the <stdint.h> header file. */
+#undef HAVE_STDINT_H
+
+/* Define to 1 if you have the <stdio.h> header file. */
+#undef HAVE_STDIO_H
+
+/* Define to 1 if you have the <stdlib.h> header file. */
+#undef HAVE_STDLIB_H
+
+/* Define to 1 if you have the 'strcasecmp' function. */
+#undef HAVE_STRCASECMP
+
+/* Define to 1 if you have the 'strchr' function. */
+#undef HAVE_STRCHR
+
+/* Define to 1 if you have the 'strdup' function. */
+#undef HAVE_STRDUP
+
+/* Define to 1 if you have the 'strerror' function. */
+#undef HAVE_STRERROR
+
+/* Define if you have 'strerror_r'. */
+#undef HAVE_STRERROR_R
+
+/* Define to 1 if you have the <strings.h> header file. */
+#undef HAVE_STRINGS_H
+
+/* Define to 1 if you have the <string.h> header file. */
+#undef HAVE_STRING_H
+
+/* Define to 1 if you have the 'strndup' function. */
+#undef HAVE_STRNDUP
+
+/* Define to 1 if you have the 'strrchr' function. */
+#undef HAVE_STRRCHR
+
+/* Define to 1 if you have the 'strspn' function. */
+#undef HAVE_STRSPN
+
+/* Define to 1 if you have the 'strstr' function. */
+#undef HAVE_STRSTR
+
+/* Define to 1 if you have the 'strtol' function. */
+#undef HAVE_STRTOL
+
+/* Define to 1 if 'st_rdev' is a member of 'struct stat'. */
+#undef HAVE_STRUCT_STAT_ST_RDEV
+
+/* Define to 1 if you have the <syslog.h> header file. */
+#undef HAVE_SYSLOG_H
+
+/* Define to 1 if you have the <sys/file.h> header file. */
+#undef HAVE_SYS_FILE_H
+
+/* Define to 1 if you have the <sys/ioctl.h> header file. */
+#undef HAVE_SYS_IOCTL_H
+
+/* Define to 1 if you have the <sys/param.h> header file. */
+#undef HAVE_SYS_PARAM_H
+
+/* Define to 1 if you have the <sys/stat.h> header file. */
+#undef HAVE_SYS_STAT_H
+
+/* Define to 1 if you have the <sys/types.h> header file. */
+#undef HAVE_SYS_TYPES_H
+
+/* Define to 1 if you have the <termios.h> header file. */
+#undef HAVE_TERMIOS_H
+
+/* Define to 1 if typeof works with your compiler. */
+#undef HAVE_TYPEOF
+
+/* Define to 1 if you have the <unistd.h> header file. */
+#undef HAVE_UNISTD_H
+
+/* Define to 1 if you have the 'vfork' function. */
+#undef HAVE_VFORK
+
+/* Define to 1 if you have the <vfork.h> header file. */
+#undef HAVE_VFORK_H
+
+/* Define to 1 if 'fork' works. */
+#undef HAVE_WORKING_FORK
+
+/* Define to 1 if 'vfork' works. */
+#undef HAVE_WORKING_VFORK
+
+/* support zlib compression */
+#undef HAVE_ZLIB
+
+/* support zstd compression */
+#undef HAVE_ZSTD
+
+/* Subdirectory of DATADIR */
+#undef KEYMAPDIR
+
+/* Define to 1 if 'lstat' dereferences a symlink specified with a trailing
+   slash. */
+#undef LSTAT_FOLLOWS_SLASHED_SYMLINK
+
+/* Define to the sub-directory where libtool stores uninstalled libraries. */
+#undef LT_OBJDIR
+
+/* Subdirectory of DATADIR */
+#undef OLDKEYMAPDIR
+
+/* Name of package */
+#undef PACKAGE
+
+/* Define to the address where bug reports for this package should be sent. */
+#undef PACKAGE_BUGREPORT
+
+/* Define to the full name of this package. */
+#undef PACKAGE_NAME
+
+/* Define to the full name and version of this package. */
+#undef PACKAGE_STRING
+
+/* Define to the one symbol short name of this package. */
+#undef PACKAGE_TARNAME
+
+/* Define to the home page for this package. */
+#undef PACKAGE_URL
+
+/* Define to the version of this package. */
+#undef PACKAGE_VERSION
+
+/* Subdirectory of DATADIR */
+#undef PARTIALDIR
+
+/* Define to 1 if all of the C89 standard headers exist (not just the ones
+   required in a freestanding environment). This macro is provided for
+   backward compatibility; new code need not use it. */
+#undef STDC_HEADERS
+
+/* Define to 1 if strerror_r returns char *. */
+#undef STRERROR_R_CHAR_P
+
+/* Subdirectory of DATADIR */
+#undef TRANSDIR
+
+/* Subdirectory of DATADIR */
+#undef UNIMAPDIR
+
+/* Version number of package */
+#undef VERSION
+
+/* Subdirectory of DATADIR */
+#undef VIDEOMODEDIR
+
+/* Define to 1 if 'lex' declares 'yytext' as a 'char *' by default, not a
+   'char[]'. */
+#undef YYTEXT_POINTER
+
+/* Define for Solaris 2.5.1 so the uint32_t typedef from <sys/synch.h>,
+   <pthread.h>, or <semaphore.h> is not used. If the typedef were allowed, the
+   #define below would cause a syntax error. */
+#undef _UINT32_T
+
+/* Define for Solaris 2.5.1 so the uint8_t typedef from <sys/synch.h>,
+   <pthread.h>, or <semaphore.h> is not used. If the typedef were allowed, the
+   #define below would cause a syntax error. */
+#undef _UINT8_T
+
+/* Define to empty if 'const' does not conform to ANSI C. */
+#undef const
+
+/* Define as 'int' if <sys/types.h> doesn't define. */
+#undef gid_t
+
+/* Define to '__inline__' or '__inline' if that's what the C compiler
+   calls it, or to nothing if 'inline' is not supported under any name.  */
+#ifndef __cplusplus
+#undef inline
+#endif
+
+/* Define to the type of a signed integer type of width exactly 32 bits if
+   such a type exists and the standard includes do not define it. */
+#undef int32_t
+
+/* Define to the type of a signed integer type of width exactly 8 bits if such
+   a type exists and the standard includes do not define it. */
+#undef int8_t
+
+/* Define to rpl_malloc if the replacement function should be used. */
+#undef malloc
+
+/* Define as a signed integer type capable of holding a process identifier. */
+#undef pid_t
+
+/* Define to rpl_realloc if the replacement function should be used. */
+#undef realloc
+
+/* Define as 'unsigned int' if <stddef.h> doesn't define. */
+#undef size_t
+
+/* Define as 'int' if <sys/types.h> doesn't define. */
+#undef ssize_t
+
+/* Define to __typeof__ if your compiler spells it that way. */
+#undef typeof
+
+/* Define as 'int' if <sys/types.h> doesn't define. */
+#undef uid_t
+
+/* Define to the type of an unsigned integer type of width exactly 16 bits if
+   such a type exists and the standard includes do not define it. */
+#undef uint16_t
+
+/* Define to the type of an unsigned integer type of width exactly 32 bits if
+   such a type exists and the standard includes do not define it. */
+#undef uint32_t
+
+/* Define to the type of an unsigned integer type of width exactly 8 bits if
+   such a type exists and the standard includes do not define it. */
+#undef uint8_t
+
+/* Define as 'fork' if 'vfork' does not work. */
+#undef vfork

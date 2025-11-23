@@ -1,0 +1,83 @@
+#!/bin/bash
+
+set -eu
+
+if [ -z ${AUTOPKGTEST_TMP+x} ]; then
+  if [ ! -e ./run-parts ]; then
+    echo "cannot find ./run-parts -- try running ./configure && make" >&2
+    exit 1
+  fi
+  # if AUTOPKGTEST_TMP is unset, assume that we want to use this script to test
+  # the compiled version of run-parts and not the installed one
+  AUTOPKGTEST_TMP="$(mktemp --directory --tmpdir debianutils.XXXXXXXXXX)"
+  trap 'echo deleting $AUTOPKGTEST_TMP>&2; rm -r -- "$AUTOPKGTEST_TMP"' INT TERM EXIT
+  RUN_PARTS="$(pwd)/run-parts"
+else
+  RUN_PARTS=/usr/bin/run-parts
+fi
+
+# Testing run-parts
+"$RUN_PARTS" --version
+"$RUN_PARTS" --help
+
+mkdir "${AUTOPKGTEST_TMP}/Run-parts"
+touch "${AUTOPKGTEST_TMP}/Run-parts/file"
+cat << END > "${AUTOPKGTEST_TMP}/Run-parts/executable1"
+#! /bin/sh
+ls -la "${AUTOPKGTEST_TMP}/Run-parts/file"
+END
+chmod 755 "${AUTOPKGTEST_TMP}/Run-parts/executable1"
+cp --archive "${AUTOPKGTEST_TMP}/Run-parts/executable1" "${AUTOPKGTEST_TMP}/Run-parts/executable2"
+
+list_missing_path=$("$RUN_PARTS" --list "${AUTOPKGTEST_TMP}/nonexisting" 2>/dev/null)
+if [ -n "${list_missing_path}" ]; then
+    echo "Failure! 'run-parts --list .../nonexisting' should return no matches, got: ${list_missing_path}" >&2
+    exit 1
+fi
+
+list=$("$RUN_PARTS" --list "${AUTOPKGTEST_TMP}/Run-parts")
+echo "$list"
+test=$("$RUN_PARTS" --test "${AUTOPKGTEST_TMP}/Run-parts")
+echo "$test"
+if [ "$list" != "$test" ]; then
+	echo "Success! 'run-parts --test' only runs on executables"
+fi
+
+"$RUN_PARTS" -v "${AUTOPKGTEST_TMP}/Run-parts" 2>&1
+"$RUN_PARTS" --report --reverse "${AUTOPKGTEST_TMP}/Run-parts"
+
+# Testing run-parts with scripts that fail
+echo "ls -la file-does-not-exist" >> "${AUTOPKGTEST_TMP}/Run-parts/executable1"
+
+exitstatus=0
+"$RUN_PARTS" -v --exit-on-error "${AUTOPKGTEST_TMP}/Run-parts" 2>&1 || exitstatus="$?"
+if [ $exitstatus -eq "2" ]; then
+	echo "Success! 'run-parts --exit-on-error' preserves the exit code"
+else
+	echo "Fail! 'run-parts --exit-on-error' exits with unexpected exit code $exitstatus"
+	exit 1
+fi
+
+"$RUN_PARTS" -v --exit-on-error "${AUTOPKGTEST_TMP}/Run-parts" 2>&1 | tee -a "${AUTOPKGTEST_TMP}/exit_on_error_output.txt"
+exit_on_error_output=$(cat "${AUTOPKGTEST_TMP}/exit_on_error_output.txt")
+if [[ "$exit_on_error_output" = *executable2* ]]; then
+	echo "Fail! 'run-parts --exit-on-error' should not execute executable2"
+	exit 1
+else
+	echo "Success! 'run-parts --exit-on-error' did not execute executable2"
+fi
+
+# create another directory where executable1 should override the failing
+# executable one with one that succeeds
+mkdir "${AUTOPKGTEST_TMP}/Run-parts2"
+cat << END > "${AUTOPKGTEST_TMP}/Run-parts2/executable1"
+#! /bin/sh
+ls -la "${AUTOPKGTEST_TMP}/Run-parts/file"
+END
+chmod 755 "${AUTOPKGTEST_TMP}/Run-parts2/executable1"
+
+# Run-parts2 (like /etc) takes precedence over Run-parts (like /usr)
+"$RUN_PARTS" -v --exit-on-error "${AUTOPKGTEST_TMP}/Run-parts2" "${AUTOPKGTEST_TMP}/Run-parts" 2>&1
+
+# Run-parts3 does not exist, so it is skipped and processing continues
+"$RUN_PARTS" -v --exit-on-error "${AUTOPKGTEST_TMP}/Run-parts3" "${AUTOPKGTEST_TMP}/Run-parts2" 2>&1

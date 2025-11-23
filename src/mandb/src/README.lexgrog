@@ -1,0 +1,16 @@
+lexgrog.l is used to extract the whatis line(s) from manual pages.
+
+The default lexgrog.c code is compiled from 2.4a lexgrog.l flex source
+code as this is better at parsing HP-UX manual pages.  For systems with
+standardised manual pages: Linux, SunOS, there is little difference
+between lexgrog.l-2.3.8 and lexgrog.l-2.4a, except the relative size of
+the C code they produce, the later being larger.
+
+In the event of poor whatis parsing or similar problems, simply 
+
+	rm lexgrog.[lc]
+	ln -s lexgrog.l-2.3.8 lexgrog.l
+
+and then re-make.  You will need a version of flex >= 2.4.7 to compile
+the flex file into C source.
+

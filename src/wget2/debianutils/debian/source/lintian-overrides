@@ -1,0 +1,2 @@
+# Warning ignored because of relevant information about project salsa in metadata
+debianutils source: upstream-metadata-in-native-source [debian/upstream/metadata]

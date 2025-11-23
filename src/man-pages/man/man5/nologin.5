@@ -1,0 +1,21 @@
+.\" Copyright, the authors of the Linux man-pages project
+.\"
+.\" SPDX-License-Identifier: GPL-2.0-or-later
+.\"
+.TH nologin 5 2025-05-17 "Linux man-pages (unreleased)"
+.SH NAME
+nologin \- prevent unprivileged users from logging into the system
+.SH DESCRIPTION
+If the file
+.I /etc/nologin
+exists and is readable,
+.BR login (1)
+will allow access only to root.
+Other users will
+be shown the contents of this file and their logins will be refused.
+This provides a simple way of temporarily disabling all unprivileged logins.
+.SH FILES
+.I /etc/nologin
+.SH SEE ALSO
+.BR login (1),
+.BR shutdown (8)

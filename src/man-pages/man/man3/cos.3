@@ -1,0 +1,109 @@
+'\" t
+.\" Copyright, the authors of the Linux man-pages project
+.\"
+.\" SPDX-License-Identifier: Linux-man-pages-copyleft
+.\"
+.TH cos 3 2025-05-17 "Linux man-pages (unreleased)"
+.SH NAME
+cos, cosf, cosl \- cosine function
+.SH LIBRARY
+Math library
+.RI ( libm ,\~ \-lm )
+.SH SYNOPSIS
+.nf
+.B #include <math.h>
+.P
+.BI "double cos(double " x );
+.BI "float cosf(float " x );
+.BI "long double cosl(long double " x );
+.fi
+.P
+.RS -4
+Feature Test Macro Requirements for glibc (see
+.BR feature_test_macros (7)):
+.RE
+.P
+.BR cosf (),
+.BR cosl ():
+.nf
+    _ISOC99_SOURCE || _POSIX_C_SOURCE >= 200112L
+        || /* Since glibc 2.19: */ _DEFAULT_SOURCE
+        || /* glibc <= 2.19: */ _BSD_SOURCE || _SVID_SOURCE
+.fi
+.SH DESCRIPTION
+These functions return the cosine of
+.IR x ,
+where
+.I x
+is
+given in radians.
+.SH RETURN VALUE
+On success, these functions return the cosine of
+.IR x .
+.P
+If
+.I x
+is a NaN, a NaN is returned.
+.P
+If
+.I x
+is positive infinity or negative infinity,
+a domain error occurs,
+and a NaN is returned.
+.SH ERRORS
+See
+.BR math_error (7)
+for information on how to determine whether an error has occurred
+when calling these functions.
+.P
+The following errors can occur:
+.TP
+Domain error: \f[I]x\f[] is an infinity
+.I errno
+is set to
+.B EDOM
+(but see BUGS).
+An invalid floating-point exception
+.RB ( FE_INVALID )
+is raised.
+.SH ATTRIBUTES
+For an explanation of the terms used in this section, see
+.BR attributes (7).
+.TS
+allbox;
+lbx lb lb
+l l l.
+Interface	Attribute	Value
+T{
+.na
+.nh
+.BR cos (),
+.BR cosf (),
+.BR cosl ()
+T}	Thread safety	MT-Safe
+.TE
+.SH STANDARDS
+C11, POSIX.1-2008.
+.SH HISTORY
+C89, POSIX.1-2001.
+.P
+The variant returning
+.I double
+also conforms to
+SVr4, 4.3BSD.
+.SH BUGS
+Before glibc 2.10, the glibc implementation did not set
+.\" https://www.sourceware.org/bugzilla/show_bug.cgi?id=6780
+.I errno
+to
+.B EDOM
+when a domain error occurred.
+.SH SEE ALSO
+.BR acos (3),
+.BR asin (3),
+.BR atan (3),
+.BR atan2 (3),
+.BR ccos (3),
+.BR sin (3),
+.BR sincos (3),
+.BR tan (3)

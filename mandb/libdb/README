@@ -1,7 +1,0 @@
-This directory contains the database management routines required by the
-man_db package. 
-
-* You may distribute under the terms of the GNU Library General Public
-* License as specified in the file COPYING.LIB that comes with the man
-* distribution.
-

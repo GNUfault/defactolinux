@@ -1,0 +1,62 @@
+.\" @(#)loadunimap.8 1.0 970317 aeb
+.TH LOADUNIMAP 8 "24 October 2024" "kbd"
+.SH NAME
+loadunimap \- load the kernel unicode-to-font mapping table
+.SH SYNOPSIS
+.B loadunimap
+[\fI\,options\/\fR]
+[\fI\,map\/\fR]
+.SH DESCRIPTION
+The
+.B loadunimap
+command is obsolete - its function is now built-in into
+.BR setfont (8).
+However, for backwards compatibility it is still available
+as a separate command.
+.LP
+The program
+.B loadunimap
+loads the specified map in the kernel unicode-to-font mapping table.
+If no map is given
+.I def
+mapping table is assumed.
+The default extension (that can be omitted) is
+.IR .uni .
+.LP
+On Linux 2.6.1 and later one can specify the console device using the
+.B \-C
+option.
+.LP
+Usually one does not call
+.B loadunimap
+directly - its function is also built into
+.BR setfont (8).
+.SH OPTIONS
+.TP
+\fB\-o\fR, \fB\-\-output\fR=\fI\,FILE\/\fR
+save the old map to the \fBFILE\fR.
+.TP
+\fB\-C\fR, \fB\-\-console\fR=\fI\,DEV\/\fR
+the console device to be used.
+.TP
+\fB\-V\fR, \fB\-\-version\fR
+print version number.
+.TP
+\fB\-h\fR, \fB\-\-help\fR
+print this usage message.
+.SH FILES
+.TP
+.I @DATADIR@/@UNIMAPDIR@
+The default directory for unicode mappings.
+.LP
+.TP
+.I @DATADIR@/@UNIMAPDIR@/def.uni
+The default mapping file.
+.LP
+.SH "AUTHORS"
+Andries Brouwer <aeb@cwi.nl>
+.LP
+.SH "SEE ALSO"
+.BR mapscrn (8),
+.BR setfont (8)
+
