@@ -1,0 +1,61 @@
+.\" Copyright, the authors of the Linux man-pages project
+.\"
+.\" SPDX-License-Identifier: Linux-man-pages-copyleft
+.\"
+.TH mount_attr 2type 2025-09-21 "Linux man-pages (unreleased)"
+.SH NAME
+mount_attr \- what mount properties to set and clear
+.SH LIBRARY
+Linux kernel headers
+.SH SYNOPSIS
+.EX
+.B #include <sys/mount.h>
+.P
+.B struct mount_attr {
+.BR "    u64 attr_set;" "     /* Mount properties to set */"
+.BR "    u64 attr_clr;" "     /* Mount properties to clear */"
+.BR "    u64 propagation;" "  /* Mount propagation type */"
+.BR "    u64 userns_fd;" "    /* User namespace file descriptor */"
+    /* ...\& */
+.B };
+.EE
+.SH DESCRIPTION
+Specifies which mount properties should be changed with
+.BR mount_setattr (2).
+.P
+The fields are as follows:
+.TP
+.I .attr_set
+This field specifies which
+.BI MOUNT_ATTR_ *
+attribute flags to set.
+.TP
+.I .attr_clr
+This field specifies which
+.BI MOUNT_ATTR_ *
+attribute flags to clear.
+.TP
+.I .propagation
+This field specifies what mount propagation will be applied.
+The valid values of this field are the same propagation types described in
+.BR mount_namespaces (7).
+.TP
+.I .userns_fd
+This field specifies a file descriptor that indicates which user namespace to
+use as a reference for ID-mapped mounts with
+.BR MOUNT_ATTR_IDMAP .
+.SH STANDARDS
+Linux.
+.SH HISTORY
+Linux 5.12.
+.\" commit 2a1867219c7b27f928e2545782b86daaf9ad50bd
+glibc 2.36.
+.P
+Extra fields may be appended to the structure,
+with a zero value in a new field resulting in
+the kernel behaving as though that extension field was not present.
+Therefore, a user
+.I must
+zero-fill this structure on initialization.
+.SH SEE ALSO
+.BR mount_setattr (2)

@@ -1,0 +1,38 @@
+From d6392e0d35f2a76a4893334f55991e4dd009f42c Mon Sep 17 00:00:00 2001
+Message-ID: <d6392e0d35f2a76a4893334f55991e4dd009f42c.1760479366.git.alx@kernel.org>
+In-Reply-To: <d6d3123c7271c11fc403906ee3971b22c2fe8e4c.1760476615.git.alx@kernel.org>
+References: <d6d3123c7271c11fc403906ee3971b22c2fe8e4c.1760476615.git.alx@kernel.org>
+From: Alejandro Colomar <alx@kernel.org>
+Date: Tue, 14 Oct 2025 23:15:28 +0200
+Subject: [PATCH v2] CONTRIBUTING.d/ai: Add guidelines banning AI for
+ contributing
+To: <linux-man@vger.kernel.org>
+Cc: Carlos O'Donell <carlos@redhat.com>,
+    Collin Funk <collin.funk1@gmail.com>
+
+Signed-off-by: Alejandro Colomar <alx@kernel.org>
+---
+ CONTRIBUTING.d/ai | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+ create mode 100644 CONTRIBUTING.d/ai
+
+diff --git a/CONTRIBUTING.d/ai b/CONTRIBUTING.d/ai
+new file mode 100644
+index 000000000..6054efc9a
+--- /dev/null
++++ b/CONTRIBUTING.d/ai
+@@ -0,0 +1,9 @@
++Name
++	AI - using artificial intelligence for contributing
++
++Description
++	Any use of AI for contributing to this project is unacceptable.
++
++Caveats
++	If you believe your use of AI is necessary for a major reason
++	(e.g., health), please disclose it, and ask for an exception.
+
+base-commit: ac6f5c32b3fae7549c5a42d96a3273adc24e5023
+-- 
+2.51.0
+

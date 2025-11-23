@@ -1,0 +1,93 @@
+'\" t
+.\" Copyright, the authors of the Linux man-pages project
+.\"
+.\" SPDX-License-Identifier: Linux-man-pages-copyleft
+.\"
+.TH mkdtemp 3 2025-05-17 "Linux man-pages (unreleased)"
+.SH NAME
+mkdtemp \- create a unique temporary directory
+.SH LIBRARY
+Standard C library
+.RI ( libc ,\~ \-lc )
+.SH SYNOPSIS
+.nf
+.B #include <stdlib.h>
+.P
+.BI "char *mkdtemp(char *" template );
+.fi
+.P
+.RS -4
+Feature Test Macro Requirements for glibc (see
+.BR feature_test_macros (7)):
+.RE
+.P
+.BR mkdtemp ():
+.nf
+    /* Since glibc 2.19: */ _DEFAULT_SOURCE
+        || /* glibc 2.19 and earlier: */ _BSD_SOURCE
+        || /* Since glibc 2.10: */ _POSIX_C_SOURCE >= 200809L
+.fi
+.SH DESCRIPTION
+The
+.BR mkdtemp ()
+function generates a uniquely named temporary
+directory from
+.IR template .
+The last six characters of
+.I template
+must be XXXXXX and these are replaced with a string that makes the
+directory name unique.
+The directory is then created with
+permissions 0700.
+Since it will be modified,
+.I template
+must not be a string constant, but should be declared as a character array.
+.SH RETURN VALUE
+The
+.BR mkdtemp ()
+function returns a pointer to the modified template
+string on success, and NULL on failure, in which case
+.I errno
+is set to indicate the error.
+.SH ERRORS
+.TP
+.B EINVAL
+The last six characters of
+.I template
+were not XXXXXX.
+Now
+.I template
+is unchanged.
+.P
+Also see
+.BR mkdir (2)
+for other possible values for
+.IR errno .
+.SH ATTRIBUTES
+For an explanation of the terms used in this section, see
+.BR attributes (7).
+.TS
+allbox;
+lbx lb lb
+l l l.
+Interface	Attribute	Value
+T{
+.na
+.nh
+.BR mkdtemp ()
+T}	Thread safety	MT-Safe
+.TE
+.SH STANDARDS
+POSIX.1-2008.
+.SH HISTORY
+glibc 2.1.91.
+NetBSD 1.4.
+POSIX.1-2008.
+.SH SEE ALSO
+.BR mktemp (1),
+.BR mkdir (2),
+.BR mkstemp (3),
+.BR mktemp (3),
+.BR tempnam (3),
+.BR tmpfile (3),
+.BR tmpnam (3)

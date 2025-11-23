@@ -1,0 +1,113 @@
+'\" t
+.\" Copyright, the authors of the Linux man-pages project
+.\"
+.\" SPDX-License-Identifier: GPL-2.0-or-later
+.\"
+.TH ftime 3 2025-10-29 "Linux man-pages (unreleased)"
+.SH NAME
+ftime \- return date and time
+.SH LIBRARY
+Standard C library
+.RI ( libc ,\~ \-lc )
+.SH SYNOPSIS
+.nf
+.B "#include <sys/timeb.h>"
+.P
+.BI "[[deprecated]] int ftime(struct timeb *" tp );
+.fi
+.SH DESCRIPTION
+.BR NOTE :
+This function is no longer provided by the GNU C library.
+Use
+.BR clock_gettime (2)
+instead.
+.P
+This function returns the current time as seconds and milliseconds
+since the Epoch, 1970-01-01 00:00:00 +0000 (UTC).
+The time is returned in
+.IR tp ,
+which is declared as follows:
+.P
+.in +4n
+.EX
+struct timeb {
+    time_t         time;
+    unsigned short millitm;
+    short          timezone;
+    short          dstflag;
+};
+.EE
+.in
+.P
+Here
+.I time
+is the number of seconds since the Epoch,
+and
+.I millitm
+is the number of milliseconds since
+.I time
+seconds since the Epoch.
+The
+.I timezone
+field is the local timezone measured in minutes
+of time west of Greenwich (with a negative value indicating minutes
+east of Greenwich).
+The
+.I dstflag
+field
+is a flag that, if nonzero, indicates that Daylight Saving time
+applies locally during the appropriate part of the year.
+.P
+POSIX.1-2001 says that the contents of the
+.I timezone
+and
+.I dstflag
+fields are unspecified;
+avoid relying on them.
+.SH RETURN VALUE
+This function always returns 0.
+(POSIX.1-2001 specifies, and some systems document, a \-1 error return.)
+.SH ATTRIBUTES
+For an explanation of the terms used in this section, see
+.BR attributes (7).
+.TS
+allbox;
+lbx lb lb
+l l l.
+Interface	Attribute	Value
+T{
+.na
+.nh
+.BR ftime ()
+T}	Thread safety	MT-Safe
+.TE
+.SH STANDARDS
+None.
+.SH HISTORY
+4.2BSD.
+Marked as LEGACY in POSIX.1-2001;
+removed in POSIX.1-2008.
+Removed in glibc 2.33.
+.P
+This function is obsolete.
+Don't use it.
+If the time in seconds
+suffices,
+.BR time (2)
+can be used;
+.BR gettimeofday (2)
+gives microseconds;
+.BR clock_gettime (2)
+gives nanoseconds but is not as widely available.
+.SH BUGS
+Early glibc2 is buggy and returns 0 in the
+.I millitm
+field;
+glibc 2.1.1 is correct again.
+.\" .SH HISTORY
+.\" The
+.\" .BR ftime ()
+.\" function appeared in 4.2BSD.
+.SH SEE ALSO
+.BR gettimeofday (2),
+.BR time (2)

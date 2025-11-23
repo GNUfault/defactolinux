@@ -1,0 +1,49 @@
+.\" Copyright, the authors of the Linux man-pages project
+.\"
+.\" SPDX-License-Identifier: Linux-man-pages-copyleft
+.\"
+.TH intro 3attr 2025-06-28 "Linux man-pages (unreleased)"
+.SH NAME
+intro \- C/C++ attributes
+.SH SYNOPSIS
+.nf
+.BI [[ attr ]]
+.BI [[ vendor :: attr ]]
+.fi
+.SH DESCRIPTION
+Attributes modify the properties of a source construct,
+such as a type, a variable, or a function.
+.P
+The standard syntax allows specifying a
+.I vendor
+for non-standard attributes.
+.SH VERSIONS
+C and C++ dialects have provided various forms of attributes
+before standardization.
+.TP
+.BI __attribute__(( attr ))
+This is the GNU syntax for attributes.
+It is supported by both GCC and Clang.
+.TP
+.BI __declspec( attr )
+This is the MSVC syntax for attributes.
+It is supported by Clang.
+.SH STANDARDS
+C23, C++23.
+.SH HISTORY
+.TP
+.BI [[ attr ]]
+.TQ
+.BI [[ vendor :: attr ]]
+C23, C++11.
+.TP
+.BI [[ attr ]]
+.TQ
+.BI [[gnu:: attr ]]
+gcc 10, g++ 9, clang 9, clang++ 9.
+.TP
+.BI __attribute__(( attr ))
+gcc, g++, clang, clang++.
+.TP
+.BI __declspec( attr )
+clang, clang++.

@@ -1,0 +1,101 @@
+From 299541d41bc305e65971801d06131941127eb99d Mon Sep 17 00:00:00 2001
+Message-ID: <299541d41bc305e65971801d06131941127eb99d.1761657613.git.alx@kernel.org>
+In-Reply-To: <07d0b354caffa459dd8a40d31fefcf5315513a40.1761586102.git.alx@kernel.org>
+References: <07d0b354caffa459dd8a40d31fefcf5315513a40.1761586102.git.alx@kernel.org>
+From: Alejandro Colomar <alx@kernel.org>
+Date: Tue, 14 Oct 2025 23:15:28 +0200
+Subject: [PATCH v7] CONTRIBUTING.d/ai: Add guidelines banning AI for
+ contributing
+To: <linux-man@vger.kernel.org>
+
+This policy is based on the Gentoo policy (see link below).
+However, I've modified our text to be more restrictive.
+
+Cc: Carlos O'Donell <carlos@redhat.com>
+Cc: Collin Funk <collin.funk1@gmail.com>
+Cc: Sam James <sam@gentoo.org>
+Cc: "G. Branden Robinson" <branden@debian.org>
+Link: <https://wiki.gentoo.org/wiki/Project:Council/AI_policy>
+Signed-off-by: Alejandro Colomar <alx@kernel.org>
+---
+ CONTRIBUTING.d/ai | 66 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 66 insertions(+)
+ create mode 100644 CONTRIBUTING.d/ai
+
+diff --git a/CONTRIBUTING.d/ai b/CONTRIBUTING.d/ai
+new file mode 100644
+index 000000000..95784872a
+--- /dev/null
++++ b/CONTRIBUTING.d/ai
+@@ -0,0 +1,66 @@
++Name
++	AI - artificial intelligence policy
++
++Description
++	It is expressly forbidden to contribute to this project any
++	content that has been created with the assistance of AI tools.
++
++	This also includes AI assistive tools used in the contributing
++	process, even if such tools do not generate the contributed
++	code.  For example, AI linters and AI static analyzers are
++	forbidden.
++
++	If for some reason, a contributor receives information from an
++	AI tool unintentionally, it should actively try to not use that
++	information, and should also disclose the incident when
++	contributing.
++
++    Exceptions
++	As an exception to the above, AI assistive tools which don't
++	have any influence on the contribution other than enabling the
++	contributor to work with their computer (e.g., screen reader,
++	text to speech) --where the contributor verifies the output to
++	the best of their ability-- are allowed, and the contributor
++	need not disclose their use.
++
++    Concerns
++	Copyright concerns.
++		At this point, the regulations concerning copyright of
++		generated contents are still emerging worldwide.  Using
++		such material could pose a danger of copyright
++		violations, but it could also weaken claims to copyright
++		and void the guarantees given by copyleft licensing.
++
++	Quality concerns.
++		Popular LLMs are really great at generating plausibly
++		looking, but meaningless content.  They pose both the
++		risk of lowering the quality of a project, and of
++		requiring an unfair human effort from contributors and
++		maintainers to review contributions and detect the
++		mistakes resulting from the use of AI.
++
++	Ethical concerns.
++		The business side of AI boom is creating serious ethical
++		concerns.  Among them:
++
++		-  Commercial AI projects are frequently indulging in
++		   blatant copyright violations to train their models.
++		-  Their operations are causing concerns about the huge
++		   use of energy, water, and other natural resources.
++		-  The advertising and use of AI models has caused
++		   a significant harm to employees and reduction of
++		   service quality.
++		-  LLMs have been empowering all kinds of spam and scam
++		   efforts.
++
++Caveats
++	This policy can be revisited, should a case been made over such
++	a tool that does not pose copyright, quality, or ethical
++	concerns.
++
++Copyright
++	Text derived from --but different than-- the Gentoo project
++	AI policy
++	<https://wiki.gentoo.org/wiki/Project:Council/AI_policy>.
++
++	SPDX-License-Identifier: CC-BY-SA-4.0
+
+base-commit: cef39ff51bfd016d7079baefbf2a39f0fed7549b
+-- 
+2.51.0
+

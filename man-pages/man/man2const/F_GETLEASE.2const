@@ -1,0 +1,204 @@
+.\" Copyright, the authors of the Linux man-pages project
+.\"
+.\" SPDX-License-Identifier: Linux-man-pages-copyleft
+.\"
+.TH F_GETLEASE 2const 2025-07-20 "Linux man-pages (unreleased)"
+.SH NAME
+F_GETLEASE,
+F_SETLEASE
+\-
+leases
+.SH LIBRARY
+Standard C library
+.RI ( libc ,\~ \-lc )
+.SH SYNOPSIS
+.nf
+.B #define _GNU_SOURCE
+.B #include <fcntl.h>
+.P
+.BI "int fcntl(int " fd ", F_SETLEASE, int " arg );
+.BI "int fcntl(int " fd ", F_GETLEASE);"
+.fi
+.SH DESCRIPTION
+.SS Leases
+.B F_SETLEASE
+and
+.B F_GETLEASE
+are used to establish a new lease,
+and retrieve the current lease, on the open file description
+referred to by the file descriptor
+.IR fd .
+A file lease provides a mechanism whereby the process holding
+the lease (the "lease holder") is notified (via delivery of a signal)
+when a process (the "lease breaker") tries to
+.BR open (2)
+or
+.BR truncate (2)
+the file referred to by that file descriptor.
+.TP
+.B F_SETLEASE
+Set or remove a file lease according to which of the following
+values is specified in the integer
+.IR arg :
+.RS
+.TP
+.B F_RDLCK
+Take out a read lease.
+This will cause the calling process to be notified when
+the file is opened for writing or is truncated.
+.\" The following became true in Linux 2.6.10:
+.\" See the man-pages-2.09 Changelog for further info.
+A read lease can be placed only on a file descriptor that
+is opened read-only.
+.TP
+.B F_WRLCK
+Take out a write lease.
+This will cause the caller to be notified when
+the file is opened for reading or writing or is truncated.
+A write lease may be placed on a file only if there are no
+other open file descriptors for the file.
+.TP
+.B F_UNLCK
+Remove our lease from the file.
+.RE
+.P
+Leases are associated with an open file description (see
+.BR open (2)).
+This means that duplicate file descriptors (created by, for example,
+.BR fork (2)
+or
+.BR dup (2))
+refer to the same lease, and this lease may be modified
+or released using any of these descriptors.
+Furthermore, the lease is released by either an explicit
+.B F_UNLCK
+operation on any of these duplicate file descriptors, or when all
+such file descriptors have been closed.
+.P
+Leases may be taken out only on regular files.
+An unprivileged process may take out a lease only on a file whose
+UID (owner) matches the filesystem UID of the process.
+A process with the
+.B CAP_LEASE
+capability may take out leases on arbitrary files.
+.TP
+.B F_GETLEASE
+Indicates what type of lease is associated with the file descriptor
+.I fd
+by returning either
+.BR F_RDLCK ", " F_WRLCK ", or " F_UNLCK ,
+indicating, respectively, a read lease , a write lease, or no lease.
+.I arg
+is ignored.
+.P
+When a process (the "lease breaker") performs an
+.BR open (2)
+or
+.BR truncate (2)
+that conflicts with a lease established via
+.BR F_SETLEASE ,
+the system call is blocked by the kernel and
+the kernel notifies the lease holder by sending it a signal
+.RB ( SIGIO
+by default).
+The lease holder should respond to receipt of this signal by doing
+whatever cleanup is required in preparation for the file to be
+accessed by another process (e.g., flushing cached buffers) and
+then either remove or downgrade its lease.
+A lease is removed by performing an
+.B F_SETLEASE
+operation specifying
+.I arg
+as
+.BR F_UNLCK .
+If the lease holder currently holds a write lease on the file,
+and the lease breaker is opening the file for reading,
+then it is sufficient for the lease holder to downgrade
+the lease to a read lease.
+This is done by performing an
+.B F_SETLEASE
+operation specifying
+.I arg
+as
+.BR F_RDLCK .
+.P
+If the lease holder fails to downgrade or remove the lease within
+the number of seconds specified in
+.IR /proc/sys/fs/lease\-break\-time ,
+then the kernel forcibly removes or downgrades the lease holder's lease.
+.P
+Once a lease break has been initiated,
+.B F_GETLEASE
+returns the target lease type (either
+.B F_RDLCK
+or
+.BR F_UNLCK ,
+depending on what would be compatible with the lease breaker)
+until the lease holder voluntarily downgrades or removes the lease or
+the kernel forcibly does so after the lease break timer expires.
+.P
+Once the lease has been voluntarily or forcibly removed or downgraded,
+and assuming the lease breaker has not unblocked its system call,
+the kernel permits the lease breaker's system call to proceed.
+.P
+If the lease breaker's blocked
+.BR open (2)
+or
+.BR truncate (2)
+is interrupted by a signal handler,
+then the system call fails with the error
+.BR EINTR ,
+but the other steps still occur as described above.
+If the lease breaker is killed by a signal while blocked in
+.BR open (2)
+or
+.BR truncate (2),
+then the other steps still occur as described above.
+If the lease breaker specifies the
+.B O_NONBLOCK
+flag when calling
+.BR open (2),
+then the call immediately fails with the error
+.BR EWOULDBLOCK ,
+but the other steps still occur as described above.
+.P
+The default signal used to notify the lease holder is
+.BR SIGIO ,
+but this can be changed using the
+.B F_SETSIG
+operation to
+.BR fcntl ().
+If a
+.B F_SETSIG
+operation is performed (even one specifying
+.BR SIGIO ),
+and the signal
+handler is established using
+.BR SA_SIGINFO ,
+then the handler will receive a
+.I siginfo_t
+structure as its second argument, and the
+.I si_fd
+field of this argument will hold the file descriptor of the leased file
+that has been accessed by another process.
+(This is useful if the caller holds leases against multiple files.)
+.SH RETURN VALUE
+.TP
+.B F_GETLEASE
+Type of lease held on file descriptor.
+.TP
+.B F_SETLEASE
+Zero.
+.P
+On error, \-1 is returned, and
+.I errno
+is set to indicate the error.
+.SH ERRORS
+See
+.BR fcntl (2).
+.SH STANDARDS
+Linux.
+.SH HISTORY
+Linux 2.4.
+.SH SEE ALSO
+.BR fcntl (2)

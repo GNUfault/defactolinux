@@ -1,0 +1,82 @@
+.\" Man page for zsoelim
+.\"
+.\" Copyright (C), 1994, Graeme W. Wilford. (Wilf.)
+.\" Deutsche Übersetzung von Anke Steuernagel und Nils Magnus
+.\"
+.\" You may distribute under the terms of the GNU General Public
+.\" License as specified in the file COPYING that comes with the man
+.\" distribution.
+.\"
+.\" Sat Dec 10 19:33:32 GMT 1994  Wilf. (G.Wilford@ee.surrey.ac.uk) 
+.\" 
+.TH zsoelim 1 "%date_de%" "%version%" "Manual Hilfsprogramme"
+.LO 1
+.SH NAME
+zsoelim \- interpretiert .so Steuerzeilen von nroff-Quellen
+.SH SYNTAX
+.B zsoelim 
+.RB [\| \-CVh \|]
+.RI [\| Datei
+\&.\|.\|.\|]
+.SH BESCHREIBUNG
+.B zsoelim 
+bearbeitet in denen durch
+.I Datei
+angegebenen Argumente oder, wenn keine angegeben sind, die Standardeingabe 
+die Zeilen der Form
+
+.B .so  
+.RI <\| Dateiname \|>
+
+Diese Einträge werden durch die Inhalte der so spezifizierten Datei
+ersetzt. Falls
+.I Datei
+nicht gefunden wird, sucht
+.B zsoelim
+nach
+.I Datei.Ext
+wobei die Erweiterung
+.I .Ext
+entweder 
+.B .gz,
+.B .Z
+oder
+.B .z 
+sein kann. Andere Erweiterungen können unterstützt werden, müssen
+aber zur Übersetzungszeit bekannt sein. Wenn eine Datei mit
+Erweiterung gefunden wurde, wird das dazu passende Programm
+aufgerufen und dessen Ausgabe wird verwendet, um die eigentliche Zeile
+zu ersetzen.
+
+Die Hauptaufgabe für
+.B zsoelim 
+besteht darin, Präprozessoren die Bearbeitung der referenzierten
+Dateien zu ermöglichen. Diese spezielle Version wurde geschrieben, um
+einige Probleme im Zusammenhang mit komprimierten Quelldateien zu
+beheben, die ansonsten bei der Bearbeitung von cat-Manualseiten
+entstehen würden.
+
+.SH OPTIONEN
+.TP
+.B \-C
+Diese Option ist zur Kompatibilität mit anderen 
+.B zsoelim
+Programmen und dient dazu, nach einer .so-Zeile auch andere Zeichen
+außer Whitespace zu erlauben. Da dies sowieso das Normalverhalten
+ist, wird diese Option ignoriert.
+.TP
+.B \-h
+Zeigt einen Hilfstext an.
+.TP
+.B \-V
+Zeigt Programmversion und Autor an.
+.SH "SIEHE AUCH"
+.BR nroff (1),
+.BR troff (1),
+.BR groff (1),
+.BR man (1).
+.SH AUTOR
+Wilf. (G.Wilford@ee.surrey.ac.uk),
+die deutsche Übersetzung ist von
+Anke Steuernagel (a_steuer@informatik.uni-kl.de) und
+Nils Magnus (magnus@informatik.uni-kl.de).

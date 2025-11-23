@@ -1,0 +1,124 @@
+.\" Copyright, the authors of the Linux man-pages project
+.\"
+.\" %%%LICENSE_START(FREELY_REDISTRIBUTABLE)
+.\" may be freely modified and distributed
+.\" %%%LICENSE_END
+.\"
+.TH FUTEX_WAIT_REQUEUE_PI 2const 2025-05-30 "Linux man-pages (unreleased)"
+.SH NAME
+FUTEX_WAIT_REQUEUE_PI
+\-
+wait on a non-PI futex, and potentially be requeued onto a PI futex
+.SH LIBRARY
+Standard C library
+.RI ( libc ,\~ \-lc )
+.SH SYNOPSIS
+.nf
+.BR "#include <linux/futex.h>" "  /* Definition of " FUTEX_* " constants */"
+.BR "#include <sys/syscall.h>" "  /* Definition of " SYS_* " constants */"
+.B #include <unistd.h>
+.P
+.BI "long syscall(SYS_futex, uint32_t *" uaddr ", FUTEX_WAIT_REQUEUE_PI,"
+.BI "             uint32_t " val ,
+.BI "             const struct timespec *" timeout ,
+.BI "             uint32_t *" uaddr2 );
+.fi
+.SH DESCRIPTION
+Wait on a non-PI futex at
+.I uaddr
+and potentially be requeued (via a
+.BR FUTEX_CMP_REQUEUE_PI (2const)
+operation in another task) onto a PI futex at
+.IR uaddr2 .
+The wait operation on
+.I uaddr
+is the same as for
+.BR FUTEX_WAIT (2const).
+.P
+The waiter can be removed from the wait on
+.I uaddr
+without requeueing on
+.I uaddr2
+via a
+.BR FUTEX_WAKE (2const)
+operation in another task.
+In this case, the
+.B FUTEX_WAIT_REQUEUE_PI
+operation fails with the error
+.BR EAGAIN .
+.P
+If
+.I timeout
+is not NULL, the structure it points to specifies
+an absolute timeout for the wait operation.
+If
+.I timeout
+is NULL, the operation can block indefinitely.
+.\"
+.SH RETURN VALUE
+On error,
+\-1 is returned,
+and
+.I errno
+is set to indicate the error.
+.P
+On success,
+.B FUTEX_WAIT_REQUEUE_PI
+returns 0 if the caller was successfully requeued to the futex for
+the futex word at
+.IR uaddr2 .
+.\"
+.SH ERRORS
+See
+.BR futex (2).
+.TP
+.B EAGAIN
+The value pointed to by
+.I uaddr
+was not equal to the expected value
+.I val
+at the time of the call.
+.IP
+.BR Note :
+on Linux, the symbolic names
+.B EAGAIN
+and
+.B EWOULDBLOCK
+(both of which appear in different parts of the kernel futex code)
+have the same value.
+.TP
+.B EFAULT
+.I uaddr2
+or
+.I timeout
+did not point to a valid user-space address.
+.TP
+.B EINVAL
+The supplied
+.I timeout
+argument was invalid
+.RI ( tv_sec
+was less than zero, or
+.I tv_nsec
+was not less than 1,000,000,000).
+.TP
+.B EINVAL
+.I uaddr2
+does not point to a valid object\[em]that is,
+the address is not four-byte-aligned.
+.TP
+.B ENOSYS
+A run-time check determined that the operation is not available.
+The PI-futex operations are not implemented on all architectures and
+are not supported on some CPU variants.
+.TP
+.B ETIMEDOUT
+The timeout expired before the operation completed.
+.\"
+.SH STANDARDS
+Linux.
+.SH HISTORY
+Linux 2.6.31.
+.\" commit 52400ba946759af28442dee6265c5c0180ac7122
+.SH SEE ALSO
+.BR futex (2)

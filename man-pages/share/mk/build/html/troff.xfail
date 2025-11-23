@@ -1,0 +1,14 @@
+man2/fanotify_init.2
+man2/s390_sthyi.2
+man2/mbind.2
+man2/membarrier.2
+man2/set_mempolicy.2
+man4/lirc.4
+man5/proc.5
+man7/address_families.7
+man7/bpf-helpers.7
+man7/charsets.7
+man7/iso_8859-16.7
+man7/iso_8859-6.7
+man7/vdso.7
+man8/zic.8

@@ -1,0 +1,50 @@
+'\" t
+.\" Copyright, the authors of the Linux man-pages project
+.\"
+.\" SPDX-License-Identifier: Linux-man-pages-copyleft
+.\"
+.TH strfry 3 2025-05-17 "Linux man-pages (unreleased)"
+.SH NAME
+strfry \- randomize a string
+.SH LIBRARY
+Standard C library
+.RI ( libc ,\~ \-lc )
+.SH SYNOPSIS
+.nf
+.BR "#define _GNU_SOURCE" "         /* See feature_test_macros(7) */"
+.B #include <string.h>
+.P
+.BI "char *strfry(char *" string );
+.fi
+.SH DESCRIPTION
+The
+.BR strfry ()
+function randomizes the contents of
+.I string
+by randomly swapping characters in the string.
+The result is an anagram of
+.IR string .
+.SH RETURN VALUE
+The
+.BR strfry ()
+functions returns a pointer to the randomized
+string.
+.SH ATTRIBUTES
+For an explanation of the terms used in this section, see
+.BR attributes (7).
+.TS
+allbox;
+lbx lb lb
+l l l.
+Interface	Attribute	Value
+T{
+.na
+.nh
+.BR strfry ()
+T}	Thread safety	MT-Safe
+.TE
+.SH STANDARDS
+GNU.
+.SH SEE ALSO
+.BR memfrob (3),
+.BR string (3)

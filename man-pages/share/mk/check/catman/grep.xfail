@@ -1,0 +1,15 @@
+man1/memusage.1
+man3/mallopt.3
+man4/smartpqi.4
+man4/veth.4
+man5/proc_buddyinfo.5
+man5/proc_pid_fdinfo.5
+man5/proc_pid_maps.5
+man5/proc_pid_mountinfo.5
+man5/proc_pid_net.5
+man5/proc_timer_stats.5
+man5/proc_version.5
+man5/slabinfo.5
+man7/keyrings.7
+man7/string_copying.7
+man7/uri.7

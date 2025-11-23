@@ -1,0 +1,81 @@
+'\" t
+.\" Copyright, the authors of the Linux man-pages project
+.\"
+.\" SPDX-License-Identifier: Linux-man-pages-copyleft
+.\"
+.TH strxfrm 3 2025-09-07 "Linux man-pages (unreleased)"
+.SH NAME
+strxfrm \- string transformation
+.SH LIBRARY
+Standard C library
+.RI ( libc ,\~ \-lc )
+.SH SYNOPSIS
+.nf
+.B #include <string.h>
+.P
+.BR "size_t strxfrm(" "size_t size;"
+.BI "               char " dest "[restrict " size "], const char " src "[restrict " size ],
+.BI "               size_t " size );
+.fi
+.SH DESCRIPTION
+The
+.BR strxfrm ()
+function transforms the
+.I src
+string into a
+form such that the result of
+.BR strcmp (3)
+on two strings that have
+been transformed with
+.BR strxfrm ()
+is the same as the result of
+.BR strcoll (3)
+on the two strings before their transformation.
+The first
+.I size
+bytes of the transformed string are placed in
+.IR dest .
+The transformation is based on the program's current
+locale for category
+.BR LC_COLLATE .
+(See
+.BR setlocale (3)).
+.SH RETURN VALUE
+The
+.BR strxfrm ()
+function returns the number of bytes required to
+store the transformed string in
+.I dest
+excluding the
+terminating null byte (\[aq]\[rs]0\[aq]).
+If the value returned is
+.I size
+or more, the
+contents of
+.I dest
+are indeterminate.
+.SH ATTRIBUTES
+For an explanation of the terms used in this section, see
+.BR attributes (7).
+.TS
+allbox;
+lbx lb lb
+l l l.
+Interface	Attribute	Value
+T{
+.na
+.nh
+.BR strxfrm ()
+T}	Thread safety	MT-Safe locale
+.TE
+.SH STANDARDS
+C11, POSIX.1-2008.
+.SH HISTORY
+POSIX.1-2001, C89, SVr4, 4.3BSD.
+.SH SEE ALSO
+.BR memcmp (3),
+.BR setlocale (3),
+.BR strcasecmp (3),
+.BR strcmp (3),
+.BR strcoll (3),
+.BR string (3)

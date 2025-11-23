@@ -1,0 +1,163 @@
+# Programs Makefile for the man package.
+#
+# Copyright (C) 1994, 1995, Graeme Wilford.
+#
+# You may distribute under the terms of the GNU General Public
+# License as specified in the COPYING file that comes with this
+# distribution.  
+#
+# Sat Aug  6 13:28:44 BST 1994 Wilf. (G.Wilford@ee.surrey.ac.uk):
+
+srcdir = @srcdir@
+libdir = @libdir@
+VPATH = @srcdir@
+top_srcdir = @top_srcdir@
+subdir = src
+gnulocaledir = $(prefix)/share/locale
+
+INSTALL = @INSTALL@
+PACKAGE = @PACKAGE@
+VERSION = @VERSION@
+
+LIBS = @INTLLIBS@ @LIBS@
+
+include ../include/Defines
+
+.PHONY: $(DEFAULT_TARGETS)
+
+MANDEFS = -DCONFIG_FILE=\"$(config_file)\" \
+	-DLOCALEDIR=\"$(gnulocaledir)\" $(DEFS_$@)
+MANCPPFLAGS = -I../include -I$(top_srcdir) -I$(srcdir) -I- -I../intl
+
+#----------------------------------------------------------------#
+# user changeable definitions can be found in ../include/Defines #
+#----------------------------------------------------------------#
+
+# You may need to modify these options if you have lex instead of flex
+# or flex < 2.4.7 and you want to play with lexgrog.l (developement only)
+LFLAGS = -8B -Cem
+
+PROGS = man manpath mandb apropos whatis catman lexgrog
+PUBTOOLS = accessdb
+PRIVTOOLS = globbing
+TOOLS = $(PUBTOOLS) $(PRIVTOOLS)
+
+# Special definitions for some compilations
+DEFS_man.o = -DWHATIS=\"$(bindir)/$(whatis)\" \
+	     -DAPROPOS=\"$(bindir)/$(apropos)\" \
+	     -DSOELIM=\"$(bindir)/$(zsoelim)\"
+DEFS_catman.o = -DMAN=\"$(bindir)/$(man)\"
+DEFS_whatis.o = -DWHATIS
+DEFS_apropos.o = -DAPROPOS
+
+DEFS_man = $(DEFS_man.o)
+DEFS_catman = $(DEFS_catman.o)
+DEFS_whatis = $(DEFS_whatis.o)
+DEFS_apropos = $(DEFS_apropos.o)
+
+# The default programs to build 
+all: $(PROGS) $(PUBTOOLS) wrapper man_db.conf
+
+#--------------------#
+# some general rules #
+#--------------------#
+
+../lib/libman.a:
+	$(MAKE) -C ../lib
+
+../libdb/libmandb.a:
+	$(MAKE) -C ../libdb
+
+#-------------------------------------------------------------------#
+# The individual program dependencies...                            #
+# note that anything requiring compression.o must also have either  #
+# security.o (man), or fake_security.o (others) in the object list. #
+#-------------------------------------------------------------------#
+
+man: security.o convert_name.o manp.o ult_src.o compression.o \
+     check_mandirs.o hashtable.o util.o lexgrog.o globbing.o man.o
+
+mandb: security.o manp.o util.o ult_src.o check_mandirs.o hashtable.o \
+       straycats.o compression.o lexgrog.o globbing.o mandb.o
+
+wrapper:	LDLIBS=-lc
+
+catman manpath whatis apropos: fake_security.o manp.o
+catman manpath whatis apropos accessdb: util.o 
+man mandb catman whatis apropos accessdb: ../libdb/libmandb.a
+
+$(PROGS): version.o ../lib/libman.a
+$(TOOLS): ../lib/libman.a
+
+apropos: whatis.c
+	$(LINK.c) $^ $(LDLIBS) -o $@
+
+# Rules to test code as program unit
+lexgrog: lexgrog.c compression.o fake_security.o util.o
+	$(LINK.c) -DTEST $^ $(LDLIBS) -o $@
+
+globbing: globbing.c
+	$(LINK.c) -DTEST $^ $(LDLIBS) -o $@
+
+# The standard targets
+install:
+	$(MKINSTALLDIRS) $(bindir) $(sbindir) $(libdir)/man-db
+	$(INSTALL_PROGRAM) $(man_install_flags) man $(bindir)/$(man)
+	$(INSTALL_PROGRAM) $(man_install_flags) mandb $(bindir)/$(mandb)
+	$(INSTALL_PROGRAM) manpath $(bindir)/$(manpath)
+	$(INSTALL_PROGRAM) catman $(bindir)/$(catman)
+	$(INSTALL_PROGRAM) whatis $(bindir)/$(whatis)
+	$(INSTALL_PROGRAM) apropos $(bindir)/$(apropos)
+	$(INSTALL_PROGRAM) lexgrog $(bindir)/$(lexgrog)
+	for j in $(PUBTOOLS); do \
+		if test -x $$j; then \
+			$(INSTALL_PROGRAM) $$j $(sbindir)/$$j; \
+		fi; \
+	done
+	for j in $(PRIVTOOLS); do \
+		if test -x $$j; then \
+			$(INSTALL_PROGRAM) $$j $(libdir)/man-db/$$j; \
+		fi; \
+	done
+	@if test -f $(config_file); then \
+		echo " "; \
+		echo "$(config_file) already exists. Overwrite manually if necessary"; \
+		echo " "; \
+	else \
+		$(MKINSTALLDIRS) $(dir $(config_file)); \
+		echo "$(INSTALL_DATA) man_db.conf $(config_file)"; \
+		$(INSTALL_DATA) man_db.conf $(config_file); \
+	fi
+
+uninstall:
+	rm -f $(addprefix $(bindir)/, $(PROGS))
+	rm -f $(addprefix $(sbindir)/, $(PUBTOOLS))
+	rm -f $(addprefix $(libdir)/man-db/, $(PRIVTOOLS))
+	@echo "Please remove $(config_file) manually if necessary"
+#	rm -f $(config_file)
+
+mostlyclean clean: 
+	rm -f *.o *.i *~ core
+	rm -f $(PROGS) $(TOOLS) wrapper
+
+distclean: lexgrog.c clean
+	rm -f *.d *.out Makefile man_db.conf
+
+realclean: distclean
+	rm -f lexgrog.c tags
+
+TAGS:
+	$(MKTAGS) $(srcdir)/*.[chl]
+	
+#------------------------------------------------------------------#
+# These lines sort out proper dependencies, done if --enable-debug #
+# passed to ../configure. To override uncomment the following line #
+#------------------------------------------------------------------#
+#debug=on
+
+ifneq ($(clean),yes)
+  ifeq ($(debug),on)
+    SRCS = $(notdir $(wildcard $(srcdir)/*.c))
+    include $(SRCS:.c=.d)
+  endif
+endif

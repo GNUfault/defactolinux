@@ -1,0 +1,2600 @@
+Fri Sep  7 19:28:12 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* Version: 2.3.20.
+	* docs/NEWS: Update.
+	* po/cs.po, po/de.po, po/es.po, po/fr.po, po/it.po, po/ja.po:
+	  Update.
+
+Fri Sep  7 00:55:53 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* GNUmakefile.in (dist): Include other manpage.example formats.
+
+	* lib/tempfile.c (create_tempfile): Create with mode 0600.
+	* src/check_mandirs.c (test_manfile): Drop privileges for temporary
+	  file operations.
+	* src/lexgrog.l (find_name): Likewise.
+	* src/man.c (make_roff_command): Likewise.
+	* src/straycats.c (check_for_stray): Likewise.
+	  (straycats): Likewise.
+	* src/ult_src.c (ult_src): Likewise.
+
+Thu Sep  6 21:54:05 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* include/Defines.in: Add lexgrog to list of transformed program
+	  names. Adjust sysconfdir detection.
+	* src/Makefile.in (install): Really install lexgrog by default.
+	  Create the directory config_file is in rather than sysconfdir.
+
+Wed Sep  5 19:55:01 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* GNUmakefile.in (dist): Generate a .tar.gz, not a .tgz.
+	* src/man.c: Korean: roff_device is ascii8, LESSCHARSET is iso8859.
+	* po/cs.po, po/de.po, po/es.po, po/fr.po, po/it.po, po/ja.po:
+	  Update.
+
+Wed Sep  5 03:42:18 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/compression.c (decompress): Constify arguments.
+	* include/manconfig.h.in: Likewise.
+
+	* src/lexgrog.l (find_name): Deal with '-' and compressed files.
+	* man/man1/lexgrog.man1 (DESCRIPTION): Document this.
+	  (BUGS): Remove (optimism ...).
+	  (NOTES): New section. lexgrog can't parse .so requests.
+	* src/Makefile.in: Really build lexgrog by default, and add some
+	  objects.
+
+Wed Sep  5 02:02:20 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* docs/NEWS: Describe recent changes.
+
+	* man/man1/man.man1 (OPTIONS): Document --html.
+	  (ENVIRONMENT): Document $BROWSER.
+	* man/man8/mandb.man8 (OPTIONS): Explain that --create implies
+	  --no-purge.
+
+Tue Sep  4 18:38:23 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/man.c (format_display): If $BROWSER contains several elements
+	  separated by colons, try each in turn until one succeeds.
+
+Tue Sep  4 02:09:07 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/man.c (format_display): Actually change to the temporary
+	  directory for HTML output.
+	* src/mandb.c (main): --create implies --no-purge.
+
+Sat Sep  1 17:40:06 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* lib/mkdtemp.c, lib/mkstemp.c, lib/tempname.c: New files, taken
+	  from glibc 2.2.4.
+	* lib/Makefile.in, lib/README: Add them.
+	* configure.in: Check for mkdtemp() and mkstemp().
+	* lib/tempfile.c (path_search): New function, split from
+	  create_tempfile(). Now checks $TMP as well as $TMPDIR, and ensures
+	  that neither is checked when privileges are raised.
+	  (create_tempfile): Use it. Fix the umask around the call to
+	  mkstemp() rather than calling fchmod() after the fact.
+	  (create_tempdir): New function.
+	* include/manconfig.h.in: Prototype create_tempdir().
+
+	* src/man.c: --html code needs to be guarded by TROFF_IS_GROFF.
+	  (man_getopt): If -H is given, set troff to 1. Add -H to the
+	  "incompatible options" error message.
+	  (make_roff_command): Revert determine_lang_table() special case.
+	  (format_display): Use a temporary directory for HTML output (groff
+	  tends to output several files, including images). Take an extra
+	  argument, used to set the name of the main output file.
+	  (display): Pass man_file to format_display().
+	* src/util.c (remove_directory): New function.
+	* include/manconfig.h.in: Prototype it.
+
+Fri Aug 31 22:20:08 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	Initial support for ESR's $BROWSER variable. Not complete yet.
+
+	* src/man.c: Remove ENABLE_HTML guards around all the --html code.
+	  Too many #ifdefs clutter the code, and it should at least be
+	  usable to some extent now.
+	  (main): Check $BROWSER before other ways of finding html_pager.
+	  (man_getopt): If -H is given, set roff_device to "html". Reset
+	  htmlout and html_pager with -D.
+	  (make_roff_command): Don't call determine_lang_table() if htmlout
+	  is set.
+	  (make_browser): New function.
+	  (make_display_command): Add case for htmlout being set.
+	  (format_display_and_save): Rename roff_cmd to format_cmd.
+	  (display_catman): Likewise.
+	  (display): Likewise. Add some cases for htmlout being set (always
+	  format, never save a cat page). Split some code out into
+	  format_display().
+	  (format_display): New function.
+
+	* src/man.c (main): Save the value of $LESS for later.
+	  (make_display_command): Use setenv() to change $LESS in the
+	  environment rather than nasty shell code.
+
+	* src/man.c (main): Don't loop if $LANGUAGE is set but empty.
+	  (display_catman): Fix segfaults due to strappend() misuse.
+	* src/manp.c (read_config_file): Print dotmanpath, not home (which
+	  might point to freed memory).
+
+	* src/man.c (main): Tidy up error message.
+	  (store_line_length): Remove duplicate 'int width' declaration.
+
+Wed Aug 29 20:44:27 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* man/man8/mandb.man8 (WHATIS PARSING): Move to ...
+	* man/man1/lexgrog.man1: ... here.
+
+	* po/cs.po, po/de.po, po/es.po, po/fr.po, po/it.po, po/ja.po: Run
+	  msgmerge.
+
+Wed Aug 29 01:48:53 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* man/man1/apropos.man1 (ENVIRONMENT): Fix grammar error.
+
+Wed Aug 29 01:34:33 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/lexgrog.l (usage): New function.
+	  (main): Rewrite. Add command-line options, and make the output
+	  more easily parseable by other programs. By default, the lexgrog
+	  program now only attempts to parse its input as a man page and
+	  only displays the whatis line, although this can be changed on the
+	  command line.
+	* src/Makefile.in: Include lexgrog in $(PROGS), so that it gets
+	  built by default and linked against version.o.
+	* man/man1/lexgrog.man1: New man page. Still needs some work.
+	* man/Makefile.in: Install it. Tolerate it being missing in some
+	  languages (ugly hack).
+
+Tue Aug 21 01:57:44 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/Makefile.in: Link non-setuid programs against fake_security.o
+	  rather than security.o.
+	* src/fake_security.c: Add a few stub variables to match recent
+	  security.c changes.
+
+Tue Aug 21 01:34:49 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/Makefile.in (install): Don't depend on all, so that the
+	  package isn't recompiled when running 'make install' on a machine
+	  with a skewed clock.
+	  Don't install the wrapper. Install man and mandb in $(bindir)
+	  rather than $(libdir)/man-db.
+	  If lexgrog and globbing have been built, install them in
+	  $(libdir)/man-db rather than $(sbindir).
+	  Ensure $(sbindir) and $(libdir)/man-db exist.
+
+Tue Aug 21 00:40:47 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/man.c (escape_special): Rename to escape_less(). Constify
+	  argument.
+	  (determine_lang_table): Constify argument. Unify some common code.
+	  (make_display_common): Use escape_less() rather than
+	  escape_special().
+	* docs/NEWS: Document shell escaping.
+
+Sun Aug 19 23:56:36 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* configure.in: Compile with -Wall by default.
+	* src/compression.c: Include "security.h".
+	* src/manp.c: Likewise.
+	* src/check_mandirs.c (purge_whatis): Correct return value when
+	  purging a WHATIS_MAN entry with a missing target.
+	* src/whatis.c (get_whatis): Remove unused variables 'pointer' and
+	  'ext'.
+	* src/man.c: Include <time.h> for time().
+	  (local_man_loop): Remove unused variable 'dir'.
+	  (make_roff_command): Remove unused variable 'tmpfile'.
+	  (exist_check): Print 'loc' in pointer format rather than string
+	  format (it's a struct mandata *).
+	* src/wrapper.c: Include <grp.h> for initgroups().
+
+Sun Aug 19 13:16:01 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/manp.c (iterate_over_list): New function (get_from_list() can
+	  only get the first matching element).
+	  (get_manpath): Use iterate_over_list() to get multiple matching
+	  MANPATH_MAP entries.
+
+Sun Aug 19 13:02:01 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/man.c (popen, pclose): Rely on the BROKEN_PCLOSE check in
+	  configure rather than checking architectures here.
+	  (man_getopt): Wrap the remaining code related to --html in '#ifdef
+	  ENABLE_HTML'.
+	  (make_roff_command): Remove HAS_TROFF and NROFF_MISSING asserts; I
+	  think they're unnecessarily unwieldy here.
+	  (tmp_cat_filename): Constify argument.
+	  (commit_tmp_cat): Constify arguments.
+	  (display_catman): New function, split from display().
+	  (display): Use display_catman(). Don't shadow status from an outer
+	  scope.
+	  (try_section): Simplify cat page case.
+
+	* src/util.c (escape_shell): New function.
+	* include/manconfig.h.in: strappend() is no longer in util.c.
+	  Prototype escape_shell().
+	* src/man.c (make_roff_command): Use escape_shell() liberally to
+	  protect against strange characters.
+	  (make_display_command): Likewise. Add special handling for $MAN_PN
+	  in the less prompt string, since the environment variable is no
+	  longer parsed by the shell.
+	  (display_catman): Likewise.
+	  (display): Likewise.
+	* src/whatis.c (use_grep): Likewise.
+
+	* src/catman.c (main): Print a warning if setlocale() fails.
+	* src/man.c (main): Likewise.
+	* src/mandb.c (main): Likewise.
+	* src/manpath.c (main): Likewise.
+	* src/whatis.c (main): Likewise.
+	* src/wrapper.c (main): Explain why this doesn't need to warn if
+	  setlocale() fails.
+
+Thu Aug  9 15:10:26 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* configure.in: Require autoconf 2.50a (for AS_VAR_*).
+	* src/wrapper.c: If DEBUG is defined, allow _man and _mandb as
+	  argv[0] names as well as man and mandb, rather than instead of
+	  them.
+	* docs/NEWS: Document lexgrog improvement. The mkstemp() work was
+	  more an improvement than a fix, as I don't think it was
+	  exploitable.
+
+Mon Aug  6 02:22:38 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/lexgrog.l: groff requests aren't case-sensitive, so stop the
+	  preprocessor detection thinking they are.
+
+Mon Aug  6 01:26:26 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* lib/tempfile.c (create_tempfile): Use mode 0644 rather than mode
+	  0600 so that it can be read with different privilege levels.
+
+Thu Aug  2 00:12:41 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* lib/tempfile.c: New file. create_tempfile() does sane
+	  mkstemp()-like temporary file creation, while searching through
+	  $TMPDIR, P_tmpdir, and /tmp in the style of tempnam().
+	* include/manconfig.h.in: Prototype create_tempfile().
+	* lib/tempnam.c: Remove, as we no longer use it.
+	* lib/Makefile.in, lib/README: Remove mentions of tempnam.c, and use
+	  tempfile.c instead.
+	* configure.in: Don't replace tempnam().
+
+	* src/compression.c (create_ztemp): Use create_tempfile() rather
+	  than tempnam().
+	* src/man.c (create_stdintmp): Likewise.
+	* zsoelim/zsoelim.l (open_file): Likewise.
+	* src/straycats.c (straycats): Use create_tempfile() rather than
+	  mkstemp().
+
+	* src/compression.c (decompress): Call remove_ztemp() rather than
+	  duplicating code.
+	  (remove_ztemp): Only close the fd if it looks valid.
+	* src/man.c (remove_stdintmp): Remember to free stdin_tmpfile.
+
+	* acinclude.m4: Correct AC_VAR_* to AS_VAR_*.
+	* src/util.c (is_changed): Fix comment.
+
+	* docs/NEWS: Preliminary entries for 2.3.20.
+
+Tue Jul 24 02:17:53 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* docs/manpage.example: Some cleanups. Use more conventional
+	  formatting for references to other man pages.
+	* docs/manpage.example.pod, docs/manpage.example.sgml: New files.
+
+Mon Jul 16 16:42:46 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/lexgrog.l: Restore fr_name to the NAME regex.
+
+Fri Jul 13 11:51:40 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* man/de_DE.ascii: Remove (Latin-1 variant still exists).
+
+Fri Jul 13 02:35:39 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* */.cvsignore: New files.
+
+	* src/man.c (make_roff_command): Look up the correct character set
+	  each time a page is displayed, not just the first time.
+
+Thu Jul 12 01:11:41 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/lexgrog.l: Split out NAME-matching regex into one regex per
+	  language. Add support for cs, fi, hu, nl, and pl, not forgetting
+	  Latin (for Lingua::Romana::Perligata(3pm), of course).
+	  (add_separator_to_whatis): New function, to allow trimming the
+	  first space from the " - " separator.
+	  (main): Rewrite; find_name()'s prototype changed long ago.
+
+Tue Jul 10 14:37:51 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/util.c (is_newer): Rename to ...
+	  (is_changed): ... this. We now check whether the cat page has a
+	  different timestamp from the man page, rather than simply whether
+	  it is newer.
+	  Remove hack for archivers that preserve timestamps: it's no longer
+	  needed.
+	* include/manconfig.h.in: Rename is_newer() prototype to
+	  is_changed().
+
+	* src/man.c (commit_tmp_cat): Set the modification time of a created
+	  cat page to be the same as the corresponding man page.
+	  (display): stat() the man page so that commit_tmp_cat() can get
+	  its modification time.
+	  Use is_changed() rather than is_newer().
+
+Sun Jul  8 16:06:43 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/whatis.c (get_whatis): Allow an entry to point to itself if it
+	  contains a non-empty whatis field. This occasionally happens when
+	  multiple names and descriptions are present, and it's easier to
+	  tolerate this.
+	  (display): If an entry points to itself, don't display the pointer
+	  in square brackets.
+
+	* include/sections.list: Remove; it's no longer needed.
+	* GNUmakefile.in (dist): Don't install it.
+	* include/Defines.in: Don't reference it. Also remove definition of
+	  message_catalogue (obsoleted by gettext).
+
+	* include/manconfig.h.in (LESS_OPTS): Don't include $LESS.
+	* src/man.c (make_display_command): Include $LESS here instead. Put
+	  it after prompt_string rather than before, so that long options in
+	  $LESS work.
+
+Sat Jul  7 16:32:24 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/man.c (determine_lang_table): Fix silly bracketing typo that
+	  caused none of the lang_table entries to match.
+
+Thu Jul  5 15:48:42 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* Version: 2.3.19.
+
+	* docs/NEWS: Update.
+	* man-db.gnu: Update. Change formatting to something closer to that
+	  currently in the Free Software Directory CVS repository.
+	* man-db.lsm: Update.
+
+Thu Jul  5 14:27:17 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* man/man5/manpath.man5 (FORMAT): MANDB_MAP now only affects
+	  setuidness when in the system configuration file.
+	* src/man_db.conf.in: Likewise.
+
+	* po/cs.po, po/de.po, po/es.po, po/fr.po, po/it.po, po/ja.po:
+	  Update.
+
+Wed Jul  4 13:39:40 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	The product of some hacking at the Debian Conference. Enjoy.
+
+	* docs/NEWS: Describe recent changes.
+
+	* include/manconfig.h.in: Add SYSTEM_CAT and USER_CAT defines.
+	  Move includes from security.c to ...
+	* src/security.h: ... here (new file).
+	* src/man.c: Include security.h.
+	* src/mandb.c: Likewise.
+	* src/security.c: Likewise.
+
+	* src/manp.c (add_mandb_map): Take an additional parameter, user.
+	  Use the new MANDB_MAP_USER flag instead of MANDB_MAP if it is set.
+	  (cat_manpath): Look at user catpaths before system catpaths.
+	  (add_to_dirlist): Take user parameter, passed through to
+	  add_mandb_map().
+	  (read_config_file): Call add_to_dirlist() with user set for
+	  ~/.manpath, and reset for /etc/manpath.config (security fix).
+	  (get_mandb_manpath): Allow user manpaths.
+	  (global_catpath): Rename to get_catpath(), and only allow it to
+	  handle user catpaths (from ~/.manpath) as well if explicitly
+	  requested.
+	  (is_global_mandir): Note that this is trusted.
+	* src/manp.h: Reflect renaming of global_catpath() to get_catpath().
+
+	* src/man.c (need_to_rerun): Use get_catpath() instead of
+	  global_catpath().
+	  (make_roff_command): Likewise.
+	  (display): Likewise.
+	  (find_cat_file): Likewise.
+	  (try_db_section): Likewise.
+	  (try_db): Likewise.
+	* src/catman.c (main): Likewise (check only user mandirs).
+	* src/mandb.c (main): Likewise (check only user mandirs).
+	* src/straycats.c (straycats): Likewise (check only with user
+	  mandirs).
+	* src/whatis.c (search): Likewise (check only with user mandirs).
+
+	* src/man.c (need_to_rerun): Use is_global_mandir() rather than
+	  global_catpath() to decide whether to drop privileges.
+	* src/mandb.c (main): Likewise. Unify common code for system and
+	  user catpaths.
+
+	* src/man.c (make_roff_command): Check catpath even if
+	  global_manpath is false.
+	  (locate_page): Simplify slightly.
+
+	* src/security.c (get_man_owner): New function: gets and caches the
+	  password entry structure for MAN_OWNER.
+	* src/man.c (commit_tmp_cat): If running as root, chown created cat
+	  pages to MAN_OWNER.
+
+Sun Jul  1 01:58:33 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/check_mandirs.c (splitline): Don't initialize the pointer
+	  field here; instead, control it from ...
+	  (test_manfile): ... here.
+	  Change the logic for multiple name/description blocks again.
+	  Remove misguided special-casing of the first name in a block. Set
+	  the id field more carefully, depending on string equality instead
+	  of ordering. Avoid scribbling over lg.whatis when a later
+	  splitline() needs it. Don't call splitline() if whatis parsing
+	  failed.
+
+	* src/check_mandirs.c (purge_normal): New function, factored out
+	  from purge_missing().
+	  (purge_whatis): New function to decide whether to purge a
+	  WHATIS_MAN entry.
+	  (purge_missing): Use both of these.
+	  (testmandirs): purge_whatis() sometimes needs to ensure a
+	  hierarchy is rescanned. Honour this.
+	  Improve indentation levels.
+	* src/mandb.c (main): Reset force_rescan before each purge.
+
+	* src/lexgrog.l: Treat '..' as a no-op request.
+
+Sun Jul  1 01:38:13 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* manual/misc.me (Modes of operation): Mention new requirement to
+	  use --update to update databases.
+	  mandb knows how to delete old entries now, so remove a sentence
+	  saying it can't.
+
+	* src/man.c: More in the quest for sane indentation levels.
+
+	* man/man1/apropos.man1: Textual cleanups.
+	* man/man1/man.man1: Likewise.
+	* man/man1/manpath.man1: Likewise.
+	* man/man1/whatis.man1: Likewise.
+	* man/man1/zsoelim.man1: Likewise.
+	* man/man5/manpath.man5: Likewise.
+	* man/man8/accessdb.man8: Likewise.
+	* man/man8/catman.man8: Likewise.
+
+	* man-db.lsm: Reformatted as per the LSM.README.
+
+Thu Jun 28 22:52:04 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/man.c (try_db_section): Downgrade whatis refs warning to a
+	  debugging message, as it's rather noisy for a stable release.
+
+Thu Jun 28 22:38:41 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/check_mandirs.c (gripe_rwopen_failed): New function.
+	  (testmandirs): Use it.
+	  (purge_missing): New function to purge database entries whose
+	  associated manual pages have been deleted.
+	* src/check_mandirs.h: Prototype purge_missing().
+
+	* src/mandb.c (main): New --no-purge option. Unless it is used,
+	  purge_missing() is called on each database before calling mandb().
+	  Don't call straycats() until after the temporary database has been
+	  moved to its permanent location. Make sure all cleanup code is
+	  called with dropped privileges.
+	  Add statistics message for purged entries, and separate messages
+	  for the benefit of translations.
+	  When --test is given, only assume --quiet if --debug wasn't given.
+	  (usage): Describe --no-purge.
+
+	* src/man.c: Move extension's storage to ...
+	* src/globbing.c: ... here.
+	  (look_for_file): Constify string arguments.
+	* src/man.h: Move prototype of look_for_file() to ...
+	* src/globbing.h: ... here (new file).
+
+	* src/manp.c (pathappend): Only append the new element(s) if any
+	  were left after removing duplicates.
+	  (read_config_file): Make sure what we free was actually allocated.
+
+	* src/Makefile.in (mandb): Link with globbing.o.
+
+	* man/man8/mandb.man8 (OPTIONS): Document --no-purge.
+	  General textual cleanup.
+
+	* src/accessdb.c (main): Move content into a tighter scope.
+
+	* src/security.c (drop_effective_privs): Style nit.
+
+Thu Jun 28 13:28:13 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* man/man1/man.man1 (ENVIRONMENT): Document $MANWIDTH.
+
+Thu Jun 28 13:15:04 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/man.c (store_line_length, get_roff_line_length): New
+	  functions, adapted from Andries Brouwer's man.
+	  (main): Outside catman mode, find out and store the line length.
+	  (make_roff_command): Outside catman mode, retrieve the stored line
+	  length and feed a .ll request into the pipeline if it's
+	  non-standard. We let recent groff handle the page length.
+	  (display): Don't even consider saving the cat page if save_cat is
+	  already false.
+	  (get_preprocessors): If the database says no preprocessors are to
+	  be used, it's OK to save the cat page.
+
+Thu Jun 28 01:44:02 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/man_db.conf.in (SECTION): Remove guarantee that ties will be
+	  broken in lexical order within sections. It's rather complicated
+	  to be sure of that right now, and it should rarely matter.
+
+	* docs/ToDo: lexgrog learnt how to detect preprocessors ages ago.
+
+Thu Jun 28 01:02:32 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/manp.c (gripe_stat_file): Downgrade the warning if a manpath
+	  element doesn't exist to a debugging message (affects people
+	  without a /usr/local/share/man, for example).
+	  (read_config_file): Additional debugging message. Free home if it
+	  gets allocated.
+
+Thu Jun 28 00:35:09 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	The caching cleanup I've been promising for weeks. Here be dragons.
+
+	* src/man.c (man): Only update database caches if --update is given.
+	  (main): --all no longer implies a database update (you can always
+	  use --all --update if you need that).
+
+	* man/man1/man.man1 (OVERVIEW): It's no longer necessarily man's job
+	  to keep the caches up to date; use --update to get that.
+	  (DEFAULTS): Likewise. Some rationale. Mention globbing fallback.
+	  (OPTIONS/--local-file): Fix typo.
+	  (OPTIONS/--update): New description. Only useful with setuid man.
+	* manual/misc.me (Modes of operation): man will only update database
+	  entries if the --update flag is used.
+
+Tue Jun 26 22:10:07 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/lexgrog.l: More cleanup. No substantive changes.
+	* include/manconfig.h.in: Likewise. Also bring xrealloc() prototype
+	  into sync.
+
+	* src/mandb.c (main): Allow root as well as MAN_OWNER to work on
+	  system manpaths.
+
+Tue Jun 26 03:45:01 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/man_db.conf.in (SECTION): Add a little more advice about where
+	  to list sections with extensions.
+
+	* src/manp.c (add_to_dirlist): Add SECTIONS as an alias for SECTION,
+	  since I keep getting it wrong and I came up with it in the first
+	  place. Both make sense in different situations.
+
+	* src/check_mandirs.c (splitline): Trim trailing spaces off names
+	  and descriptions. If the given base_name contains a comma, only
+	  use the part of the name before it as the target for pointers.
+
+	* src/whatis.c (get_whatis): Unroll recursion into a finite loop to
+	  avoid infinite recursion if the database contains a pointer loop.
+	  Add the page name as an argument so that a warning can be printed.
+	  (display): Pass the new argument to get_whatis().
+	  (apropos): Recommend 'mandb --create' rather than plain 'mandb' if
+	  the database gets corrupted.
+
+	* src/lexgrog.l: Ignore no-op groff requests (e.g. '.').
+	  New variable, fill_mode. Reset it when .nf is encountered, set it
+	  when .fi is encountered.
+	  (newline_found): If fill_mode is set, add 0x11 instead of a space.
+
+Mon Jun 25 02:55:36 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* docs/NEWS: Describe recent changes. Add dates of old releases.
+
+	* include/manconfig.h.in: Move check_mandirs.c prototypes to ...
+	* src/check_mandirs.h: ... here (new file).
+	* src/man.c: Include check_mandirs.h.
+	* src/mandb.c: Likewise.
+	* src/man.h (make_filename): Move prototype to check_mandirs.h.
+
+	* src/check_mandirs.c (test_manfile): Split parsing of file names
+	  into mandata structures into a new function ...
+	  (filename_info): ... this.
+	  (test_manfile): Calculate length of file name minus compression
+	  extension separately from the parsing, and do so whether COMP_SRC
+	  is defined or not.
+
+	* src/man.c (try_section): Use filename_info() to find out if the
+	  section of a glob-located file is different from the current
+	  section and is mentioned elsewhere in the configuration file. If
+	  so, ignore that file in the current section.
+
+Mon Jun 25 01:30:24 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/man.c (man_getopt): Conditionalize gxditview initialization on
+	  TROFF_IS_GROFF. As a bonus, this squashes a compiler warning.
+	  (man): Remove some unreferenced cruft, while I'm in the process of
+	  fixing up multi-character sections.
+
+	* src/Makefile.in: Build intermediate man.o and mandb.o objects, so
+	  that changing other objects just requires a relink.
+
+	* src/globbing.c (look_for_file): Print the layout in debugging mode
+	  only when it's first parsed.
+
+Sun Jun 24 18:47:20 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* configure.in (--with-db): Improve help output formatting.
+
+	* manual/intro.me (Arguments to configure): Document
+	  --enable-mandirs.
+	* README: Update.
+
+	* manual/Makefile ($(manual).html): Improve grohtml invocation.
+	  (realclean): Remove generated .png files.
+
+Sun Jun 24 17:22:53 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/man.c (try_section): Break if a page has been found and --all
+	  wasn't given.
+	  (try_db): Print extension in debug mode. Compare against requested
+	  section if the extension is a section in its own right, to avoid
+	  duplication.
+	* src/man_db.conf.in: It's SECTION, not SECTIONS.
+
+	* configure.in: --enable-mandirs=OS defines how the manual page
+	  hierarchy is laid out (GNU, HPUX, Solaris, IRIX). If unset,
+	  globbing behaves as before.
+	* acconfig.h: Add MANDIR_LAYOUT.
+	* src/globbing.c (parse_layout): New function.
+	  (look_for_file): Associate each glob with a layout.
+
+	* configure.in: Don't check for off_t (only used by gettext).
+
+Sat Jun 23 15:23:14 BST 2001  Colin Phipps  <cph@cph.demon.co.uk>
+
+	* zsoelim/zsoelim.l (open_file): Supply a format string to error().
+
+Sat Jun 23 15:15:41 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* ult_src.c (ult_src): Restore the original mantree to the start of
+	  basename before calling test_for_include(), in case ult_softlink()
+	  went outside the mantree.
+	  (ult_softlink): Make debugging message print the absolute path.
+
+Tue Jun 19 02:33:40 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/man.c (man): Allow sections to be more than one character, and
+	  trim them for use in directory names.
+	* src/manp.c (read_config_file): Read ~/.manpath first, as entries
+	  are added the other way around now.
+
+Mon Jun 18 18:55:39 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/manp.c (add_sections, get_sections): New functions.
+	  (add_to_dirlist): Recognize new SECTIONS directive.
+	* src/manp.h (iterate_catlist, start_iterator): Remove (not used).
+	  (get_sections): New prototype.
+	* src/man.c (get_section_list): Use get_sections() instead of
+	  std_sections if it returns a non-empty list.
+	* src/man_db.conf.in: Add documentation of SECTIONS, and a default
+	  line. The documentation is still inaccurate (extensions don't work
+	  well yet).
+	* include/manconfig.h.in (STD_SECTIONS): Reduce to only
+	  single-character sections; the rest will be set in the
+	  configuration file.
+
+	* src/manp.c (add_to_list): Add to the tail rather than the head
+	  (needed for SECTIONS, probably makes other things more intuitive).
+	  (read_config_file): Restore print_list() in debug mode.
+
+	* src/check_mandirs.c: Add copyright notice and change information.
+	* src/lexgrog.l: Likewise.
+	* src/man.c: Likewise.
+	* src/mandb.c: Likewise.
+
+	* src/compression.c (get_ztemp): Remove redundant test.
+
+	* src/man.c (get_preprocessors_from_file): Change an = to ==.
+
+	* src/wrapper.c (main): Cosmetic improvements.
+
+Sat Jun 16 19:22:51 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/straycats.c (check_for_stray): Check that
+	  canonicalize_file_name() succeeded, not that it failed. (I'm
+	  pretty sure that this is the last instance of this now.)
+
+Sat Jun 16 18:30:09 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* libdb/db_store.c: Move id-favouring logic to a macro. If
+	  FAVOUR_STRAYCATS is set, make sure a WHATIS_MAN entry won't
+	  inadvertently replace a STRAY_CAT.
+
+	* configure.in: Don't strip binaries in LDFLAGS (GNU standards).
+
+	* src/check_mandirs.c (testmandirs): Check that opendir() succeeded,
+	  not that it failed!
+	  (testmandirs): Instead of initializing info.pointer here,
+	  initialize it ...
+	  (splitline): ... here.
+	  (testmandirs): Shuffle whatis logic some more, to make sure pages
+	  that really are in the filesystem don't end up as WHATIS_MAN. This
+	  reverts part of the change of 26 May 2001.
+
+	* man/man8/mandb.man8: Document the expected format of NAME sections
+	  for whatis parsing, and some common reasons why parsing fails.
+
+Tue Jun 12 22:20:17 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* docs/NEWS: More 2.3.19 stuff.
+
+Sun Jun 10 14:05:10 BST 2001  Gordon Sadler  <gbsadler1@lcisp.com>
+
+	* man/man1/manpath.man1 (ENVIRONMENT): Replace 'semicolon' with
+	  'colon' throughout.
+
+Sun Jun 10 13:59:04 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/manp.c (pathappend): Fix infinite loop when adding a manpath
+	  entry which is a substring of an existing entry.
+
+Sun Jun 10 13:49:02 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/check_mandirs.c (testmandirs): Treat EROFS like EACCES while
+	  opening a database read-write (i.e. only print debug messages).
+	  (create_db): Likewise.
+	  src/man.c (open_cat_stream): Likewise.
+	  (try_db_section): Likewise.
+
+	* src/straycats.c (check_for_stray): Carry on gracefully rather than
+	  exiting if a straycat filter fails.
+
+	* src/manp.c (pathappend): Remove duplicate entries.
+
+	* src/lexgrog.l: Allow .LP, .PP, and .P as well as .br between
+	  whatis definitions.
+
+Sat Jun  2 14:34:59 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* configure.in: Give our English man pages the same date format as
+	  the other locales.
+
+	* src/straycats.c: Use 'col -bx' rather than 'col-bx'.
+
+Mon May 28 14:56:35 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* include/manconfig.h.in: Since it isn't sensible to define debug
+	  (-d options at run-time do just as well), remove the commented
+	  definition.
+	* include/manconfig.h.in, src/catman.c, src/check_mandirs.c,
+	  src/compression.c, src/man.c, src/mandb.c, src/manpath.c,
+	  src/whatis.c: Remove instances of '#ifndef debug'.
+	* src/util.c: debug is already declared extern in manconfig.h.
+
+Mon May 28 14:30:38 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* tools/README: Describe chconfig and install-manpage.
+	* man/man5/manpath.man5, docs/ToDo: Document the DEFINE directive.
+
+	* libdb/db_delete.c, libdb/db_lookup.c, libdb/db_store.c,
+	  src/whatis.c: Remove redundant strtok() declaration.
+	* src/check_mandirs.c: Declare strpbrk().
+
+	* src/*: Global style cleanup. Sorry about the large diff, but it
+	  had to happen sometime: I can't stick with the prevailing coding
+	  style when there are several to choose from! No meaningful code
+	  change, although I disentangled a few assignments from if
+	  conditions and rearranged a few other sections.
+	* po/*: Update accordingly.
+
+Sun May 27 18:32:41 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* acinclude.m4 (MAN_CHECK_BDB): New macro to check for Berkeley DB.
+	* configure.in: Use it.
+
+	* src/check_mandirs.c (test_manfile): Be more accurate about finding
+	  the " - " at the end of a series of whatis names, and make sure to
+	  skip commas between them. Add more commentary.
+
+	* src/man.c (open_cat_stream): Return NULL if the cat page is
+	  unwriteable, rather than wasting time compressing to /dev/null.
+	  (format_display_and_save): Give up if both outing and saving
+	  become false.
+
+Sun May 27 18:00:00 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* docs/NEWS: Preliminary entries for 2.3.19. Add current version
+	  number throughout as well as just "Major changes since ...".
+	* manual/misc.me (Modes of operation): mandb doesn't necessarily
+	  have to be rerun any more, as the filesystem will be checked if
+	  the database doesn't return anything. man and mandb can be built
+	  for setuid operation but installed non-setuid now.
+
+Sat May 26 15:33:37 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* manual/README: Note that HTML output is disabled by default. I
+	  don't currently provide a pre-built PostScript manual anywhere.
+	* manual/misc.me (Credits): Add Fabrizio.
+	* manual/*: FHS updates. Various boring typo/syntax/whitespace
+	  fixes.
+
+Sat May 26 15:14:29 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* GNUmakefile.in, autogen.sh: Put 'timestamp' in stamp-h and
+	  stamp-h.in rather than the date.
+
+	* src/man.c (open_cat_stream): Open the cat file before forking in
+	  order to deal with errors better. Open to /dev/null without
+	  complaining if the cat file is unwriteable.
+	  (close_cat_stream): Only commit the temporary cat if it was
+	  created.
+	  (locate_page): Fall back to the filesystem if nothing was found in
+	  the database (since it might be out of date).
+
+	* src/man.c (try_db_section): If the database can't be opened
+	  read-write due to EACCES, only print a message in debug mode.
+	* src/check_mandirs.c (testmandirs): Likewise.
+	  (create_db): Likewise.
+
+	* src/check_mandirs.c (test_manfile): Make sure separate whatis keys
+	  each get their own whatis entry.
+
+Wed May 23 17:06:31 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* configure.in: Fix PACKAGE and VERSION substitutions.
+
+Wed May 23 15:51:06 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* configure.in: Updates for autoconf 2.50.
+	  (AC_PREREQ): Require version 2.1.2.
+	  (AC_INIT): Avoid deprecated use with one argument.
+	  (man_ac_version): Don't work out the autoconf version any more;
+	  inline syntax is all that needed it, and any autoconf since 2.1.2
+	  will do.
+	  (AC_STDC_HEADERS): Now AC_HEADER_STDC.
+	  (AC_LINK_FILES): No longer needed with newer gettext.
+	  (AC_OUTPUT): Avoid deprecated use with arguments.
+	  Fix instances of underquoting throughout, as the new autoconf is
+	  less tolerant of this.
+	* include/manconfig.h.in: Remove compatibility code for pre-1995
+	  autoconf versions.
+
+Thu May 17 19:11:37 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/man_db.conf.in: Improve documentation of MANDB_MAP.
+
+Wed May 16 00:09:13 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* tools/config.sub: Update to today's CVS.
+
+Wed May 16 00:07:04 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* A number of minor fixes from SuSE's diff:
+
+	* GNUmakefile.in: Don't prepend ../ to prefix before passing it to
+	  subdirs.
+	* lib/cleanup.c: HUP and TERM signal handling was mistakenly acting
+	  on INT instead.
+	* src/lexgrog.l: Replace a few instances of " \t\n" with
+	  "blank_eol".
+	* src/man.c: Drop privileges before changing back to the original
+	  directory just before exiting (only matters for profiling).
+	* src/util.c: Undefine MAX before redefining it.
+	* po/POTFILES.in: Read src/lexgrog.c rather than src/lexgrog.l
+	  (gettext understands C better than lex).
+	* po/de.po, po/es.po, po/fr.po: Remove a few stray '\r's.
+
+	* I'll look at the zlib bits of the patch soon. From a preliminary
+	  look I'll probably end up rewriting it - I'd prefer more of the
+	  compression stuff actually to go in src/compression.c.
+
+Tue May 15 22:01:59 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/man.c (get_section_list): Return std_sections if argument to
+	  -S was an empty string or if that or $MANSECT contained only
+	  colons. Previously, man would behave wrongly in the former case
+	  and segfault in the latter. Also remove a redundant xstrdup().
+
+Mon May 14 23:46:25 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* Version: 2.3.18.
+
+	* README: Add contact details.
+
+	* libdb/stamp-h: Removed.
+	* GNUmakefile.in, libdb/Makefile.in: Updated accordingly.
+
+	* src/man_db.conf.in: FHS 2.1 has /usr/local/share/man as the
+	  location of locally installed man pages rather than
+	  /usr/local/man. Accordingly, the MANDB_MAP for /usr/local/man is
+	  now /var/cache/man/oldlocal, and /usr/local/share/man takes over
+	  /var/cache/man/local.
+
+	* po/cs.po, po/de.po, po/es.po, po/fr.po, po/it.po, po/ja.po: Update
+	  with msgmerge.
+
+Mon May 14 22:18:32 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/security.c: Count how many times drop_effective_privs() has
+	  been called, and don't actually regain privileges until
+	  regain_effective_privs() has been called an equal number of times.
+	  This should flush out several subtle bugs.
+
+	* src/mandb.c: Call manpath() rather than read_config_file() (this
+	  was changed while merging 2.3b12). Otherwise 'mandb --user-db'
+	  segfaults as manp never gets set.
+
+Sun May 13 18:34:33 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* GNUmakefile.in (dist): Don't install po/Makefile.in.
+
+	* src/stamp-h: Removed.
+	* GNUmakefile.in, src/Makefile.in: Updated accordingly.
+
+	* GNUmakefile.in (distclean): Don't clean configure, src/lexgrog.c,
+	  zsoelim/zsoelim.c.
+	  (realclean): Clean configure here instead. realclean targets in
+	  subdirs already remove the other two.
+	* zsoelim/Makefile.in (clean): Let realclean remove zsoelim.c.
+
+Sun May 13 17:17:32 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* man/Makefile.in: Another try to get NLS installation working
+	  properly. The last change was wrong when LINGUAS was unset.
+
+	* GNUmakefile.in (dist): Install docs/manpage.example.
+
+Sun May 13 16:54:01 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* man/Makefile.in: Exclude NLS directories without man pages, as CVS
+	  can't delete directories quite as fully as I'd like.
+
+	* configure.in: No subdirectory Makefiles need ALL_LINGUAS any more.
+
+	* manual/Makefile: Make the location of soelim variable so that
+	  distributions can e.g. use the version in the build directory.
+
+	* manual/Makefile, manual/README: Add an HTML target. Disabled by
+	  default as groff's HTML driver doesn't produce very good output
+	  yet (as of 1.16).
+
+	* include/Defines.in: Only remove /usr from the default sysconfdir
+	  if the prefix is exactly /usr, not something that happens to
+	  contain /usr (like the default /usr/local).
+
+Sun May 13 13:39:17 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* man-db.gnu, man-db.lsm: Mention move to SourceForge and the new
+	  URLs for the Debian package pool.
+
+	* man-db.gnu: New architectures (successful Debian ports as of
+	  today). New mailing list for announcements.
+
+Sun May 13 13:18:56 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* README: Document FHS changes; correct pointer to
+	  docs/INSTALL.autoconf.
+
+	* docs/INSTALL.autoconf: Update to instructions from automake 1.4.
+
+	* docs/COPYING: Minor fixes from GNU (FSF address, Y2K).
+
+Sun May 13 13:00:17 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* GNUmakefile.in (dist): Add include/sections.list.
+
+	* GNUmakefile.in, man/Makefile.in: Cause USE_NLS to be substituted
+	  properly from configure.
+
+	* include/Defines.in: Remove some old gencat definitions.
+
+	* docs/NEWS: Update in preparation for 2.3.18 release. Correct a few
+	  it's -> its typos in earlier entries.
+
+Sun May 13 02:18:00 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* autogen.sh: Create stamp-h.in.
+
+	* po/cs.po, po/de.po, po/es.po, po/fr.po, po/it.po, po/ja.po: Update
+	  with msgmerge.
+
+Sun May 13 02:03:05 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* docs/ToDo: Most of Wilf's beta code is in now; mention SuSE.
+
+Sun May 13 01:22:29 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* docs/manpage.example: New file.
+
+Sun May 13 01:19:47 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* include/manconfig.h.in: Bump database version from 2.3.1 to 2.3.2.
+	* libdb/db_ver.c (dbver_wr): Reformat.
+	  (dbver_rd): Downgrade warnings about wrong version numbers to
+	  debugging messages.
+	* libdb/db_lookup.c (split_data): Fix fencepost error that would
+	  overlook a missing whatis field.
+
+	* src/man.c (try_db_section): Display warning if whatis refs are
+	  relied upon to find a page.
+	* libdb/db_storage.h: Note that WHATIS_MAN and WHATIS_CAT are
+	  deprecated.
+
+	* src/accessdb.c (main): Give FHS_CAT_ROOT priority over CAT_ROOT.
+	* man/man8/accessdb.man8 (DESCRIPTION): Document this.
+	* man/de_DE.85591/man8/accessdb.man8 (DESCRIPTION): Likewise.
+	* man/de_DE.ascii/man8/accessdb.man8 (DESCRIPTION): Likewise.
+	* man/es_ES.88591/man8/accessdb.man8 (DESCRIPTION): Likewise.
+	* man/it_IT.88591/man8/accessdb.man8 (DESCRIZIONE): Likewise.
+
+	* src/check_mandirs.c (testmandirs): Tidy up database opening code.
+
+	* src/mandb.c (mandb): Don't create a new database if opt_test is
+	  set.
+	  (main): If opt_test is set, just delete the temporary database
+	  rather than moving it into place.
+	* man/man8/mandb.man8 (OPTIONS): Document --test.
+	  (FILES): Document FHS compliant database locations.
+	  (AUTHOR): Add myself.
+
+	* src/ult_src.c (ult_softlink): Remove overly-cautious check for
+	  non-local symlinks in mantrees.
+
+	* src/whatis.c (apropos): Remove a now redundant test that cont.dptr
+	  is non-NULL.
+
+Sun May 13 01:00:47 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/whatis.c (apropos): Complain and exit if a data pointer is
+	  NULL. For this, locally undefine BTREE to avoid using optimized
+	  functions, as they don't appear to provide enough error checking
+	  yet.
+
+Fri May  4 03:59:08 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* configure.in: Change PACKAGE from man-db to man_db.
+
+	* po/*.po: Update with msgmerge.
+
+	* release.sh: New file (quick release script).
+
+Fri May  4 03:44:49 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* acconfig.h: Remove Debian-specific entries.
+
+	* aclocal.m4: Remove, as it's another autogenerated file.
+
+	* autogen.sh: New file (very simple for now).
+
+Fri May  4 03:34:54 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* GNUmakefile.in (dist): Update set of installed files somewhat. No
+	  need to build man_db-nls.h any more.
+
+	* man/Makefile.in: Declare ALL_LINGUAS and LINGUAS.
+
+	* src/man.sh: Remove (obsoleted by src/wrapper.c).
+
+Fri May  4 02:56:30 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* README: Update for new NLS configuration methods. Reflect renaming
+	  of configuration file from man_db.config to man_db.conf.
+
+Fri May  4 00:18:23 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* stamp-h.in: Remove (generated by GNUmakefile).
+
+Fri May  4 00:17:50 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* GNUmakefile.in, configure.in, include/Defines.in,
+	  libdb/Makefile.in, libdb/db_delete.c, libdb/db_lookup.c,
+	  libdb/db_store.c, libdb/db_ver.c, man/Makefile.in,
+	  src/Makefile.in, src/lexgrog.l-2.3.8, src/lexgrog.l-2.4a,
+	  src/wrapper.c: Dispose of all the old catgets stuff. Replace with
+	  gettext idioms where appropriate.
+
+	* libdb/man_db-nls.h, src/man_db-nls.h: Remove (obsolete with
+	  gettext).
+
+	* include/config.h.in: Remove (generated by autoheader).
+
+Thu May  3 01:17:08 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* GNUmakefile.in: Strip .po from language names; fix it's -> its
+	  typo.
+
+	* configure.in: Stop trying to guess the package name and version
+	  number from the current directory name.
+
+Wed May  2 18:38:49 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/manp.c: Remove #include of security.h (now merged elsewhere).
+	  (pathappend): Constify second argument.
+	  (mkcatdirs): Eliminate DIRLIST; now takes mandir and catdir as
+	  arguments.
+	  (add_2_dirlist): Rename to add_to_dirlist(); return void, and
+	  otherwise eliminate use of DIRLIST. As mentioned below, we now use
+	  a linked list instead.
+	  (read_config_file): Update accordingly.
+
+	* src/security.c: *uid no longer static for now, as other objects
+	  use them.
+	* src/man.c: Declare ruid and euid extern here now that security.h
+	  is gone.
+
+	* src/check_mandirs.c (update_db): Close dbf rather than database.
+
+Wed May  2 17:27:22 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* acinclude.m4: New file. Restore definitions inadvertently removed
+	  from aclocal.m4 a few changes ago.
+	* aclocal.m4: Update accordingly with 'aclocal'.
+
+	* config.guess, config.sub: Move to tools directory.
+
+	* configure.in: Move gettext macros below AC_PROG_CC etc.
+
+	* configure.in: Remove Debian-specific code; build dependencies
+	  handle this now.
+
+Wed May  2 16:41:28 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* acconfig.h: Removed some definitions gettext used to need.
+
+	* Makefile.in (_root): Added ABOUT-NLS to the distribution.
+
+Wed May  2 16:31:21 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* config.guess, config.sub: New files, synced from today's CVS.
+
+Wed May  2 16:28:02 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* configure.in, include/Defines.in, man/Makefile.in: Remove use of
+	  curdate.
+
+	* man/it_IT.88591/man1/man.man1, man/ja_JP.eucJP/man1/man.man1,
+	  man/man1/man.man1: s/curdate/date/g.
+
+Wed May  2 16:15:00 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* po/POTFILES.in: Added src/accessdb.c and src/wrapper.c.
+
+Wed May  2 15:53:45 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* ABOUT-NLS, aclocal.m4, intl/*, po/ChangeLog, po/Makefile.in.in:
+	  Update to gettext 0.10.37 (from 0.10.32). Various additions and
+	  removals.
+
+	* GNUmakefile.in, libdb/Makefile.in, src/Makefile.in: Remove old
+	  gencat/xcat targets.
+
+Wed May  2 01:33:04 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/mandb.c (main): Initialize security properly, since we may be
+	  setuid, and drop privileges when creating temporary databases in
+	  user-supplied hierarchies. Thanks to Ethan Benson for reporting
+	  this vulnerability.
+
+	* man-db.gnu, man-db.lsm: Add myself as a developer; change
+	  maintainer.
+
+	* libdb/db_lookup.c, src/man.c: Cosmetic fixes.
+	* src/accessdb.c (usage): Remove spurious space in output.
+
+Wed May  2 01:02:19 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* Merging in changes from Wilf's 2.3b12 beta release.
+	* docs/ChangeLog: Folded in changelog comments.
+
+	* GNUmakefile.in, configure.in: Build configuration file.
+	* */Makefile.in: Rearrange code for CPPFLAGS and similar.
+
+	* configure.in: Look for grep, seteuid(), setresuid().
+	* include/config.h.in: Add HAVE_SETEUID and HAVE_SETRESUID.
+	* include/manconfig.h.in: Add GREP and various grep flags.
+	* src/whatis.c: Use GREP rather than "grep".
+
+	* src/man_db.config: Renamed to src/man_db.conf.in.
+	* src/man_db.conf.in: Add commented out DEFINE directives.
+	* docs/ToDo: Need to document DEFINE directive. (Also, I (cjwatson)
+	  checked in two other todo items by mistake earlier: inline
+	  pipelines and merging work done by Wilf and Andries.)
+	* include/Defines.in: CPPFLAGS tweaks; rename config file; %.i rule.
+	* include/comp_src.h.in: paths.h -> ./manconfig.h.
+
+	* src/security.c, src/man.c: Rewrite seteuid() handling; remove
+	  special "running as root" case.
+	* src/security.h: Remove; combine previous contents with security.c.
+	* src/man_db-nls.h: No longer need man_CHOWN.
+	* include/manconfig.h.in: Add init_security() prototype.
+
+	* src/manp.c: Major rewrite. Replace static storage with linked
+	  list. Improve configuration file handling, replacing get_dirlist()
+	  with read_config_file(). Move some of the more deeply nested bits
+	  of read_config_file() into separate functions like
+	  add_mandb_map(). (cjwatson: This won't compile yet. Fabrizio also
+	  hacked on this heavily, including splitting part of get_dirlist()
+	  out into add_2_dirlist() and adding mkcatdirs(). I've merged these
+	  as best I can for now, but it's still unfinished.)
+	* src/manp.h: Remove get_dirlist() prototype, add prototypes for
+	  read_config_file() and get_def().
+	* src/man.c, src/mandb.c, src/straycats.c, src/whatis.c: Use new
+	  get_defs() functions to pull paths from config file rather than
+	  hard-coding them.
+
+Fri Apr 27 22:39:34 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* Merging in changes from Wilf's 2.3.11 release.
+	* docs/ChangeLog, docs/NEWS: Folded in changelog comments.
+
+	* GNUmakefile.in: Added deroff and manual targets.
+	* README: Added comment about manual; added notes on configure
+	  flags.
+	* configure.in: Minor improvement for non-GNU makes.
+
+	* src/lexgrog.l, src/lexgrog.l-2.4a: Allow comments other than at
+	  the beginning of a line.
+
+	* src/manp.c: Replace has_subdirs() with has_mandir(): for $PATH
+	  components not in config, check for ../man as well as man subdirs.
+
+	* zsoelim/zsoelim.l: Use #defines for exit codes.
+
+	* GNUmakefile.in, README, docs/INSTALL.quick, src/man.c: Cosmetic
+	  rearrangements (whitespace, typos, etc.).
+
+Fri Apr 27 21:36:11 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* manual/*: Add the source code for the man_db manual from Wilf's
+	  FTP site.
+
+Fri Apr 27 18:33:17 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/accessdb.c (main): Close the database and set dbf to NULL if
+	  dbver_rd() fails.
+	* src/check_mandirs.c (update_db): Likewise.
+	* src/man.c (try_db): Likewise.
+	* src/straycats.c (straycats): Likewise.
+	* src/whatis.c (search): Likewise.
+
+Fri Apr 27 18:10:47 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* src/lexgrog.l: Detect grap (.G1) and vgrind (.vS).
+	* include/manconfig.h.in: Add GRAP_FILTER and VGRIND_FILTER to
+	  filter enum.
+
+Fri Apr 27 18:00:04 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* New maintainer.
+
+	* man/man1/man.man1 (HISTORY): Update some dates, add myself.
+	* man/it_IT.88591/man1/man.man1 (HISTORY): Likewise.
+	* man/ja_JP.eucJP/man1/man.man1 (HISTORY): Likewise.
+
+	* man/de_DE.88591/man1/man.man1 (HISTORY): Update some dates.
+	* man/de_DE.ascii/man1/man.man1 (HISTORY): Likewise.
+	* man/es_ES.88591/man1/man.man1 (HISTORY): Likewise.
+
+	* ja_JP.ujis/man1/apropos.man1: Remove (superseded by ja_JP.eucJP).
+	* ja_JP.ujis/man1/man.man1: Likewise.
+	* ja_JP.ujis/man1/manpath.man1: Likewise.
+	* ja_JP.ujis/man1/whatis.man1: Likewise.
+	* ja_JP.ujis/man1/zsoelim.man1: Likewise.
+	* ja_JP.ujis/man5/manpath.man5: Likewise.
+	* ja_JP.ujis/man8/accessdb.man8: Likewise.
+	* ja_JP.ujis/man8/catman.man8: Likewise.
+	* ja_JP.ujis/man8/mandb.man8: Likewise.
+
+Tue Apr 17 15:23:30 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* End of the Great CVS Sync.
+	* Debian release 2.3.17.1-3.
+
+	* src/ult_src.c (ult_src): Return an error when ult_softlink()
+	  fails.
+
+	* src/man.c: Use latin1 character set for C and POSIX locales.
+
+	* po/ja.po: Update Japanese translation.
+	* man/ja_JP.eucJP/man1/apropos.man1: New file, updating Japanese
+	  translation in new character set.
+	* man/ja_JP.eucJP/man1/man.man1: Likewise.
+	* man/ja_JP.eucJP/man1/manpath.man1: Likewise.
+	* man/ja_JP.eucJP/man1/whatis.man1: Likewise.
+	* man/ja_JP.eucJP/man1/zsoelim.man1: Likewise.
+	* man/ja_JP.eucJP/man5/manpath.man5: Likewise.
+	* man/ja_JP.eucJP/man8/accessdb.man8: Likewise.
+	* man/ja_JP.eucJP/man8/catman.man8: Likewise.
+	* man/ja_JP.eucJP/man8/mandb.man8: Likewise.
+
+	* man/THANKS: Updated (new Japanese eucJP translation).
+
+	* src/man.c (main): Support LC_MESSAGES being set differently from
+	  other locale categories (internal_locale).
+
+	* src/man.c (main): Multiple locale preferences can be set with
+	  $LANGUAGE.
+
+	* src/version.c (ver): Remove previous maintainer address.
+
+	* configure.in: Find version number correctly.
+
+Sun Apr  1 14:37:28 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* Debian release 2.3.17.1-2.
+
+	* src/whatis.c (main): Disable regex searches if -w (wildcard)
+	  option is given.
+
+	* docs/ToDo: Using zlib rather than gzip would be good.
+
+Sat Mar 31 18:07:46 BST 2001  Colin Watson  <cjwatson@debian.org>
+
+	* Debian release 2.3.17.1-1.
+
+	* src/check_mandirs.c (test_manfile): Check if the result of symlink
+	  and hard link resolution is in the cache before looking for .so
+	  links. This provides a substantial speedup when many symlinks
+	  exist in the mantree.
+
+	* src/catman.c (main): Initialize full locale by calling setlocale()
+	  with LC_ALL rather than LC_MESSAGES (GOTO Masanori). Remove manual
+	  getenv() calls accordingly.
+	* src/man.c (main): Likewise.
+	* src/mandb.c (main): Likewise.
+	* src/manpath.c (main): Likewise.
+	* src/whatis.c (main): Likewise.
+
+	* include/manconfig.h.in: Add 3perl to section names, following 3pm;
+	  Debian is using this to allow other packages to shadow pages from
+	  core Perl packages.
+
+Wed Feb 28 21:02:41 GMT 2001  Colin Watson  <cjwatson@debian.org>
+
+	* Debian release 2.3.17-3.2.
+
+	* configure.in: More fixes for Debian troff and /dev/null input
+	  files. This restores detection of -mandoc macros.
+
+	* man/man1/man.man1 (OPTIONS): Typo: "It's" -> "Its".
+	* man/man1/zsoelim.man1 (OPTIONS): Likewise.
+
+	* man/man1/man.man1 (OPTIONS): Mention that argument to -M must be
+	  the root of a mantree.
+	  (SEE ALSO): Add reference to man-db manual to explain the above.
+
+Wed Feb 21 00:54:47 GMT 2001  Colin Watson  <cjwatson@debian.org>
+
+	* Debian release 2.3.17-3.1.
+
+	* src/man.c (local_man_loop): Fix format string vulnerability in
+	  printing of error message.
+
+	* src/whatis.c (get_whatis): Fix segfault if whatis reference is
+	  NULL.
+
+	* src/man.c (local_man_loop): chdir() to original working directory
+	  so that 'man -l' works again on relative paths to compressed
+	  pages.
+
+	* src/compression.c (decompress): free() file if the decompressor
+	  failed so that atexit() doesn't try to remove it again.
+
+	* src/mandb.c (main): Reverse sense of -s option to agree with the
+	  documented intent.
+
+	* configure.in: Work around change in the behaviour of Debian nroff,
+	  which no longer accepts /dev/null as an input file.
+
+	* GNUmakefile.in: Restore full clean rules.
+
+Fri Apr  7 10:50:45 EET 2000  fab   (fpolacco@debian.org)
+
+	* Checked in by Colin Watson during SourceForge CVS sync.
+
+	* Upstream changes from Debian changelog (2.3.17-2):
+	  - Commented away call to distclean_root in GNUmakefile: need to
+	    leave the Makefile and configure in the tarball.
+	  - Found and fixed subtle bug which made wrapper uselessly linked
+	    with -ldb2. When invoked by root on a system which enables
+	    group.db, then the call to initgroups() segfaults due to the
+	    libc link to libdb!
+
+	* Other changes not mentioned in Debian changelog:
+	  - man-db.gnu: Update date and prerequisites (libdb2 becomes weak
+	    prerequisite).
+	  - man-db.lsm: New file.
+	  - src/lexgrog.l: Cosmetic changes.
+	  - src/wrapper.c: Add debugging code.
+
+Fri Apr  7 10:50:45 EET 2000  fab   (fpolacco@debian.org)
+
+	* Checked in by Colin Watson during SourceForge CVS sync.
+	* Version: 2.3.17.
+	* Upstream changes from Debian changelog:
+	  - Corrected apparent disappearing of option -e in apropos.
+	  - Corrected wrong usage of undocumented option -X which produced
+	    error when passed to filters. This is now parametrized as
+	    optional argument, defaulting to use devX75.  Documented in
+	    usage : -X = -TX75, -X100 = -TX100, -X100-12 = -TX100-12.
+	  - Applyed patch submitted by Tomohiro KUBOTA:
+	    - roff_device and LESSCHARSET are determined by user environment
+	      rather than language of manpage for English manpage.
+	    - roff_device "ascii8" is used for non-English/non-ISO-8859-1
+	      languages.
+	  - Added new check for libdb in configure.in
+	  - Added /usr/local/{share/}man to config file, due to bug in FHS,
+	    thanx to Gregor Hoffleit.
+	  - Added new message catalog po file for cs (czech) (4 new
+	    messages), thanx to Vladimir Michl.
+	  - tired of people continously complaining that man behaves
+	    differently than in RedHat (which is "The Reference Linux", you
+	    all know that), I'll add tbl as default filter for man. This
+	    will fix those three or four manpages that do not take the
+	    burden to declare their dependency on the tbl formatter (usually
+	    because upstream uses RedHat and so ...). Now what would I do if
+	    someone fill a bug against this because of wasting of CPU cicles
+	    for un-necessary filtering on the hundreds of pages that do not
+	    need tbl? I would certainly agree with them. Therefore I will
+	    fix this introducing scanning of manpages a la grog in mandb,
+	    and storing the result in the database.  ...[noise of hacking
+	    and debugging]...  Well, I did it (use accessdb to see it!). It
+	    took 4 weekend (stolen to the implementation of man 2.4) to
+	    complete and debug. Now you can announce the world that man-db
+	    2.3.17 knows in advance which filters to run when processing a
+	    manpage which is in the database.
+
+Wed Mar 22 16:00:16 EET 2000  fab   (fpolacco@debian.org)
+
+	* Checked in by Colin Watson during SourceForge CVS sync.
+	* Version: 2.3.16.
+	* Upstream changes from Debian changelog:
+	  - Applyed patch submitted by Javier Fernandez-Sanguino Pena to
+	    permit search of trnlated manpages before giving the first
+	    english one found.
+
+Mon Feb 28 22:09:09 EET 2000  fab   (fpolacco@debian.org)
+
+	* Checked in by Colin Watson during SourceForge CVS sync.
+	* Version: 2.3.13.
+	* Upstream changes from Debian changelog:
+	  - Applied patch to avoid disappearing of index file during
+	    regeneration. Thanx to Colin Phipps.
+	  - Applied patch to generate secure temporary file in straycat.
+	    Thanx to Colin Phipps.
+
+Wed Feb 23 22:34:54 EET 2000  fab   (fpolacco@debian.org)
+
+	* Version: 2.3.12
+
+	* New maintainer.
+
+	* find the huge list of changes (in three years) in file
+	  debian/changelog.
+
+Wed Sep 27 23:59:05 BST 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* Version: 2.3b12
+
+	* src/manp.c: replace static storage with linked list
+
+	* src/security.h: removed/combined with security.c
+
+	* src/security.c, src/man.c: re-write seteuid() handling: 
+	remove special "running as root" case
+
+	* src/whatis.c: use GREP rather than "grep"
+
+	* include/manconfig.h: many #DEFINE additions
+
+	* configure.in: look for grep, seteuid(), setresuid()
+
+	* GNUmakefile.in, */Makefile.in: minor modifications
+
+	* include/Defines.in: modifications
+
+	* src/man_db.config: renamed as src/man_db.conf.in
+
+	* src/man_db.conf.in: add commented out DEFINE directives.
+
+Thu Sep 21 19:33:58 BST 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* Version: 2.3.11
+
+	* manual/*: bundle the source code of the man_db manual
+
+Wed Sep 20 16:17:19 BST 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* src/manp.c: replace has_subdirs() with has_mandir(): for $PATH
+	components not in config, check for ../man as well as man subdirs.
+
+	* various: small bug-fixes from Markus, 
+	Joey (joey@infodrom.north.de), Lionel (cons@dxcern.cern.ch) 
+
+	* src/util.c: when checking man/cat timestamps, compare mod time of
+	cat with latest of mod or create time of man: If untar new man
+	page with old timestamp, still reformat.
+
+Thu Jul 13 11:29:32 BST 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* Version: 2.3.10
+
+	* src/apropos.c: fix for #undef REGEX regarding int regex
+
+	* src/lexgrog.l: default to new version.
+
+	* src/README.lexgrog: new.
+
+	* configure.in: all echo's through MAN_ECHO() for --quiet.
+
+	* various: apply patch from Carl Edman (cedman@princeton.edu),
+	port to NeXTstep and misc small fixes.
+
+Fri Jun 16 11:12:08 BST 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* Version: 2.3.9
+
+Wed Jun 14 17:08:41 BST 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* src/man.c (make_display_command): fix command when ascii==1
+
+	* src/man.c (display): don't return 1 on skip if local_man_file==1
+
+	* man/Makefile.in: force make to resolve the program name strings
+	(which are sed commands) once only.
+
+	* configure.in: don't exec pager (too many side effects)
+
+Sun Jun  4 13:51:22 BST 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* Version: 2.3.8
+
+	* various: apply patch from CERN to allow globbed support for
+	HPUX, OSF and SOLARIS system manual page hierarchies.
+
+	* GNUmakefile.in: add hook for `make check'
+
+Mon May 29 18:57:24 BST 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* src/whatis.c (main): if $POSIXLY_CORRECT is in effect, 
+	default to case-less extended regex searches for apropos 
+	as specified by POSIX 1
+
+	* man/man1/apropos.man1: document above change.
+
+	* src/whatis.c (apropos, parse_name): ensure case-less
+	matching on manual page name aswell as it's whatis for apropos.
+
+	* all manual pages: replace instances of program with %program%
+	and arrange to do a sed replacement with the actual name of the
+	program, chosen by the installer.
+
+	* zsoelim/zsoelim.l: fix recursion detector.
+
+	* src/lexgrog.l (newline_found): new.
+
+Mon May 22 20:07:17 BST 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* nls/de_DE.88591/*.m: from Lars Fenneberg (li@gimli.comlink.de)
+
+	* src/Makefile, libdb/Makefile: fix -DNLS
+
+	* src/man.c (LESS_PROMPT): Make " Manual page" a translatable 
+	message.
+
+	* man/de_DE.ISO_8859-1: rename as man/de_DE.88591
+	
+	* nls/THANKS, man/THANKS: new.
+	
+	* src/whatis.c: If $POSIXLY_CORRECT, force apropos to do extended 
+	regex matching.
+
+Sat May 20 12:27:47 BST 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* src/man.c: if -f or -k, simply execv() the program, passing
+	the entire argv[] to it.
+
+	* man/man1/man.man1: document change.
+
+	* src/whatis.c: ignore -f, --whatis, -k and --apropos
+
+Sat May 13 18:10:50 BST 1995  Markus Armbruster
+
+	* Version: 2.3.7
+
+	* lib/cleanup.c (pop_all_cleanups): new
+	* src/man.c, src/security.c: use pop_all_cleanups() in children.
+
+	* general: use fork() instead of vfork() in situations where
+	vfork() could cause problems.
+
+Tue May  9 23:30:58 BST 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* manual pages: aesthetic/grammer changes.
+
+	* flex files: process with flex-2.5.2
+
+Mon May  8 11:15:07 BST 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* include/manconfig.h.in: #define some exit codes.
+	* all sources: use the codes.
+	* English manual pages: add EXIT STATUS section where
+	appropriate
+
+	* src/man.c (make_display_command): back out execing the pager
+	as PAGER does not have to be a simple program name.
+
+	* configure.in: prepend "exec " to the default pager.
+
+	* src/mandb.c: fix stupid bug where global databases remain
+	owned by the creator in all circumstances. Clean up.
+
+	* src/straycats.c, src/check_mandirs.c: homogenized and
+	re-worded messages emitted by mandb.
+ 
+Mon May  8 11:15:07 BST 1995  Markus Armbruster
+
+	* lib/cleanup.c, lib/cleanup.h: new functions.  Install
+	sighandler, initialise and operate a stack of cleanup funcs
+	callable on exit().
+
+	* src/mandb.c, src/man.c: modify to use cleanup functions.
+
+Tue Apr 25 20:21:51 BST 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* Version: 2.3.6
+
+	* src/whatis.c: new, replaced with edited version from 2.4 alpha 
+	source tree. Apropos now does _real_ word matches.
+
+	* man/man1/apropos.man1: remove description of option -e.
+
+Mon Apr 24 17:26:54 BST 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* src/man.c (get_section_list): Ignore empty $MANSECT.
+	* src/man.c (main): if (!*pager) pager = CAT;
+
+	* libdb/db_storage.h, include/manconfig.h.in, src/check_mandirs.c,
+	  src/straycats.c: small modifications to fix broken
+	FAVOUR_STRAYCATS behaviour and properly handle situation when 
+	STRAYCAT and WHATIS_CAT share namespace. Move definition of
+	FAVOUR_STRAYCATS to include/manconfig.h.in. From Zoltan.
+
+	* zsoelim/zsoelim.c: exit 1 on command line file open failure.
+	
+	* src/man.c (man_getopt): consolidate incompatible option parsing.
+	* src/man.c (usage): update wrt. option parsing.
+
+	* src/man.c (display): only prompt/attempt display if found==1.
+
+	* src/man.c (make_display_command): exec the pager.
+ 
+Fri Apr 21 15:16:59 BST 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* Version: 2.3.5 (public release)
+
+	* src/whatis.c: fix a couple of problems caused by whatis/apropos
+	split.
+
+	* configure.in: remove determination of viable gencat program,
+	always use our own.
+
+Wed Apr 19 09:53:27 BST 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* GNUmakefile.in: renamed Makefile to differentiate between
+	GNU make and others.
+
+	* configure.in: create bogus ./makefile to catch non GNU make
+	programs.
+
+Mon Apr 17 11:06:32 BST 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* Version: 2.3.4
+
+	* src/man.c (format_display_and_save): don't save cat if 
+	formatting process fails and/or produces nothing.
+
+Sat Apr  8 18:02:52 BST 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* src/mandb.c: change #ifdef SECURE_MAN_UID to 
+	#if defined(SECURE_MAN_UID) && defined(MAN_DB_UPDATES) as the 
+	databases should be owned by their creators if man is not
+	responsible for updating them.
+
+	* src/man.c: minor changes regarding MAN_DB_UPDATES
+
+	* include/manconfig.h.in: update CATMODE and DBMODE w.r.t.
+	recent MAN_DB_UPDATES/MAN_CATS definitions.
+
+	* src/mandb.c: changes to operation. Work on a temporary copy of 
+	the database, then rename() to actual database. Catch SIGINT,
+	SIGTERM and remove the temp copy if necessary.
+
+	* src/compression.c (decompress): kill(getpid(), SIGINT) instead of 
+	exit(0) if child (decompressing man page) fails. 
+
+	* src/straycats.c (check_for_stray): kill(getpid(), SIGINT) instead of
+	exit(0) if child (decompressing cat page) fails.
+
+	* libdb/db_lookup.c (make_content): ndbm limit is 4k not 1k.
+
+Mon Apr  3 20:52:06 BST 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* docs/NEWS: new
+
+	* README: more Linux-system information.
+
+	* configure.in, acconfig.h: #define NDEBUG if !--enable-debug
+
+	* include/Defines.in: comment out @LEXLIB@, not required in link
+	  stage.
+
+Sun Apr  2 17:42:02 BST 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* Version: 2.3.3
+
+	* README: add sections referring to default preprocessors and
+	system specific notes. 
+
+	* xcat/xcat.l, zsoelim,zsoelim.l, src/lexgrog.l: process with
+	flex-2.5.1
+ 
+Fri Mar 31 17:12:44 BST 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* src/whatis.c (display): add free(string)
+
+	* src/whatis.c, src/Makefile.in: produce separate object files for
+	apropos and whatis so that the programs know which one they are
+	regardless of actual program-filename.
+
+	* All Makefile.in, include/Defines.in: append CPPFLAGS supplied to
+	./configure or make to the standard $(CPPFLAGS) variable. 
+	Allows configuring with unusual #include directories, eg. 
+	CPPFLAGS=-I/usr/src/gdbm LDFLAGS=-L/usr/src/gdbm ./configure
+
+	* configure.in (--with-db=LIBRARY): override the default database
+	interface library on systems having a choice. Options={db,gdbm,ndbm}
+	
+	* configure.in: Re: sec 5.6 of the autoconf manual, replace 
+	(if test a=b -o a=c) with 
+	(if test a=b || test a=c) 
+
+Tue Mar 28 16:44:46 BST 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* Version: 2.3b2
+
+	* lib/flock.c, lib/flock.h: New. flock() wrapper to fcntl() for
+	systems that lack flock().
+
+	* xcat/xcat.l: #include "manconfig.h". For systems not supporting
+	__inline__
+
+	* include/Defines.in (%.d : %.c): modify rule to account for C
+	compilers other than gcc
+
+	* All Makefiles.in (cd $dir && $(MAKE)): change to $(MAKE) -C $dir
+	* nls/Makefile.sub.in: merge into nls/Makefile.in
+
+Mon Mar 27 22:42:53 BST 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* src/globbing.c (look_for_file): don't rely on GLOB_NOMATCH as
+	AIX doesn't have it.
+
+	* configure.in, include/manconfig.h.in (man_ac_version): new,
+	replaces ac_version and is more robust
+	* configure.in, aclocal.m4: rename non-autoconf macros so that
+	future versions of autoconf won't clash
+
+	* gencat/gencat.c, gencat/genlib.c: tidy up header includes and
+	remove unused variable definitions
+
+	* configure.in: check for gencat
+
+Mon Mar 27 12:51:47 BST 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* Version 2.3b1
+
+	* src/man.c: small HAS_TROFF/NROFF_MISSING changes from Markus.
+
+Thu Mar 23 18:09:46 GMT 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* src/man.c: man will only _create_ user db's if
+	MAN_DB_CREATES is #defined (It is not defined by default)
+
+	* add ability to install programs/man pages with transformed names.
+	ie --program-prefix=PREFIX, 
+	   --program-suffix=SUFFIX and
+	   --program-transform-name=EXP
+	arguments to configure are now observed.
+
+	* src/man.c (try_db): store an info->addr==NULL entry in the 
+	hashtable if we fail to access this db. Only try to open the 
+	db once. If the db access succeeds, but the lookup fails to find 
+	anything, store info==NULL in the hashtable.
+
+	* libdb/db_ver.c (dbver_rd): don't die if wrong version. Issue a
+	message, return 1 and let the caller decide what to do. 
+ 
+Mon Mar 20 16:13:23 GMT 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* src/whatis.c (get_whatis): new. Use the pointer member of mandata
+	structure to access the whatis string.
+	(display): modify to use get_whatis().
+	
+	* src/checkmandirs.c (splitline): don't store whatis referenced
+	`whatis' lines in the db.
+
+	* libdb/db_lookup.c (make_content): store a NULL whatis as "" rather
+	than "-".
+
+Sun Mar 19 16:37:58 GMT 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* src/lexgrog.l: wipe out roff comment lines (again).
+
+	* src/whatis.c: use BSD style regex if POSIX unavailable. Ignore
+	--regex if neither available. Fix failed-regex-compilation error
+	message.
+
+	* lib/regex.c, lib/regex.h: remove
+	
+	* configure.in: account for regex changes.
+
+	* libdb/db_delete.c (dbdelete): don't barf on delete request of a
+	multi-key that is not listed in the main key, return NO_ENTRY.
+
+	* src/man.c (try_section): don't try to delete db entry for missing
+	straycat. Return 0 and leave that to the caller.
+
+Sat Mar 18 12:31:48 GMT 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* Replaced strncasecmp() calls with strncmp(). Removed partial 
+	support for man dirs named .../MAN.
+
+	* lib/{alloca.c,putenv.c,memcmp.c}: new
+	lib/{getopt.c,getopt1.c,getopt.h,error.c,xstrdup.c,xmalloc.c}:
+	newer replacements
+
+	* All Makefile.in, include/Defines.in, include/manconfig.h.in:
+	use standard (GNU coding) installation variables: 
+	bindir, sysconfdir, man?ext, man?dir, localedir, manroot.
+	These variables, along with prefix and exec_prefix may be specified
+	on the `make' command line.
+
+	* configure.in: move definition of BINDIR and config_prefix to 
+	include/Defines.in to allow dynamic evaluation. Rename config_prefix
+	to sysconfdir.
+
+	* libdb/db_lookup.c (list_extensions): fix return count.
+
+	* libdb/db_delete.c (dbdelete): take account of situation 
+	where there were multiple name entries and they are subsequently
+	deleted. When deleting the last one (which still has a multi-key
+	entry), delete the standard key too, rather than recomputing it's
+	content (which would be nothing and cause a "corrupt db" message).
+
+Fri Mar 17 23:36:44 GMT 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* src/man.c (glob_for_file, make_names): remove
+	src/globbing.c: new file
+	lib/glob.c, lib/glob.h, lib/fnmatch.c, lib/fnmatch.h: replacements
+	from GNU glob.tar.gz
+	configure.in: glob changes. 
+	Use POSIX glob replacement.
+	Allow --extension to be used in globbing environment. Don't search
+	for cats in alternate cat directory if no index.
+
+	* All Makefile.in: add standard (GNU coding) targets: all, clean, 
+	mostlyclean, distclean, realclean, install, uninstall, TAGS, dist 
+	Other configuration/goal modifications
+
+	* Makefile.in: force config.status to do selective re-creation
+
+	* src/zsoelim.l: cater for ".SH \f?NAME\f?"
+
+	* acconfig.m4 (AC_FUNC_PCLOSE), src/man.c (display): small changes
+	from Markus
+
+	* Makefile.in, README: change `make all' to equal `make nls=off'
+	rather than `make nls=all'
+
+	* include/Defines.in: move -DDEFAULT_MANROFFSEQ to
+	include/manconfig.h
+
+	* include/manconfig.h: change inline parsing. Use autoconf-2.2
+
+Thu Mar 16 12:38:15 GMT 1995  Markus Armbruster (armbru@pond.sub.org)
+
+	* Version: 2.2a20
+	
+	* zsoelim/zsoelim.l: general fixes
+
+	* configure.in: don't add -lc as library containing db routines.
+
+	* lib/glob.c: ultrix fixes
+
+	* lib/rename.c: replacement
+
+	* lib/strappend.c: small fix and copyright notice
+
+Wed Mar 15 11:17:58 GMT 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* src/lexgrog.l: modifications to whatis parser, mainly for
+	stray cats.
+
+	* src/man.c (main): add drop_effective_privs() and
+	regain_effective_privs() around manpath configuration so that 
+	users' `hidden' manpaths are found and used.
+
+	* substantial configuration changes regarding all Makefiles to
+	allow `alternate build directory' support. man_db may be built
+	in *any* directory. Aids multi-architecture builds and testing 
+	of various configuration options.
+
+	* rationalised source files to #include "local_header" and
+	#include <system_header>. CPPFLAGS uses -I- to limit -I paths
+	to "" resolving only. Other alternate build directory mods.
+
+	* src/comp_src.h.in: moved to ./comp_src.h.in
+	src/manconfig.h, src/path.h.in: combined into ./manconfig.h.in
+
+	* *ensure* that lib/{regex,fnmatch,getopt}.h are only #included
+	if the replacement c source is used. Otherwise use system routines
+	and system headers.
+
+	* ./configure.in, acconfig.h, aclocal.m4 (AC_FUNC_PCLOSE,
+	BROKEN_PCLOSE): new autoconf macro 
+
+	* gencat is not installed by default. (cd gencat && make install)
+
+	* tools/mkcatdirs: re-written
+	tools/checkman: new utility to check for duplicate manual pages
+	across manual page hierarchies.
+
+	* docs/INSTALL, README: new
+	
+	* src/man.c (display): attempt to open tmp_cat_filename(), if
+	unable, don't try to save cat.
+	
+Sun Mar 12 18:12:13 GMT 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* Version 2.2a19
+	
+	* all source (main): replace mkprogname(%s) with 
+	xstrdup(basename(%s))
+
+	* src/util.c (strappend): remove
+	* lib/strappend.c: new
+
+Mon Mar  6 20:05:27 GMT 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+	
+	* src/man.c (--local): re-enable support for compressed local
+	files. eg `man -l foo.1.gz'
+
+	* src/man.c (make_roff_command): Check in alternate catdir then 
+	mandir for external format script if ALT_EXT_FORMAT #defined.
+
+	* zsoelim/zsoelim.l: partial rewrite to mimick GNU soelim 
+	`bad roff request' error behaviour.
+
+Mon Mar  6 13:51:32 GMT 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* src/man.c: fix SEGV if arg --local used
+
+	* src/man.c (gripe_system): exit with errorcode of failed command
+
+Sun Mar  5 20:54:13 GMT 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* Version 2.2a18
+
+	* src/catman.c (main): check individual cat directories for
+	existence and perms.
+	
+	* src/man.c (commit_tmp_cat): fix SEGV 
+
+	* src/man.c: NO_MAN_UPDATES & NO_MAN_CATS #defined code
+	regions for experimental CERN use, untested and incomplete.
+
+	* configure.in, src/Makefile, src/paths.h.in: undo bogus dependance
+	on NLS for output device=latin1.
+	
+	* configure.in (--with-device=<device>): new option to select 
+	default nroff output device. Test that nroff can handle selected
+	output device (if any).
+
+Thu Mar  2 19:30:45 GMT 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* src/lexgrog.l (too_big), (add_str_to_whatis), 
+	(add_char_to_whatis): new functions
+	(find_name): add extra argument.
+	add string bounds checking, add new condition to terminate NAME
+	section: <man_name>\n{W}*\n+.+ 
+
+	* src/check_mandirs.c, src/straycats.c, src/manconfig.h: change
+	callers of find_name().
+
+	* src/man.c (try_db_section): warn of re-cache failure, but don't
+	exit.
+	lots of changes/simplifications w.r.t. global/user hierarchies.
+	global_manpath == 1 for global hierarchy, global_manpath == 0 for 
+	user. global_manpath is set once we know which hierarchy we are
+	displaying from.
+
+Tue Feb 28 13:34:15 GMT 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* src/man.c (display): fix SEGV.
+	
+	* src/util.c (strappend): allow realloc of NULL string.
+
+	* src/man.c: replace strappend(xstrdup("string"), ...) with
+			     strappend(NULL, string, ...)
+
+	* src/straycats.c (check_for_stray): allow any supported
+	straycat compression extension if COMP_SRC is #defined. 
+	Replace static buffers with dynamic.
+
+	* src/check_mandirs.c, src/whatis.c: replace static buffers 
+	with dynamic.
+
+	* src/util.c: (mkdbname): new function.
+	  src/*.c: replace static database[PATH_MAX] with mkdbname() calls.
+
+Sun Feb 26 20:58:59 GMT 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* Version 2.2a17
+
+	* src/whatis.c: warn if no index or whatis db's available.
+
+	* src/man.c: Fixes to setuid/privs code regarding user manual 
+	trees and ruid==0 from Markus.
+
+	* configure.in: add checks for AIX, USG, stdlib.h, MINIX, ISC_POSIX
+
+	* lib/glob.c: ensure that _POSIX_VERSION can be defined
+
+Sun Feb 19 12:38:10 GMT 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+	
+	* Version 2.2a16
+
+	* Various portability fixes provided by Philippe Defert
+	(defert@cern.ch)
+	
+	* FSSTND changes regarding /usr, /var/catman searching
+
+	* Some header file re-arrangement to aid user configuration.
+
+Sun Feb 12 15:00:44 GMT 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* Version 2.2a15
+
+Sat Feb  4 10:54:21 GMT 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* man(1), manpath(5): revisions.
+ 
+Thu Feb  2 23:36:20 GMT 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* src/catman.c (do_access): new
+
+	* src/man.c (do_chown): new
+	catman changes, don't do_prompt() if print_where==1
+
+	* src/manp.c: changed an !is_directory() to is_directory() != 1
+
+Sat Jan 28 09:39:07 1995 Markus Armbruster (armbru@pond.sub.org)
+
+	* man.c: **changes** ??
+
+Sun Jan 22 16:15:04 GMT 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+	
+	* Version 2.2a14+
+
+	* configure.in, libdb/mydbm.h libdb/db_gdbm.c: if using gdbm, 
+	explicitly test for gdbm_exists() rather than use header #defines.
+
+	* man/man1/mandb.man1, man/man1/catman.man1: moved to man/man8 and
+	renamed.
+
+	* apropos(1), whatis(1), manpath(1), zsoelim(1), catman(8),
+	mandb(8) manual pages: significant revisions.
+
+Sat Jan 21 14:33:28 GMT 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* incorporate Markus' changes with my post 2.2a13 changes.
+	
+	* src/version.c (ver): fix, use fprintf() instead of error().
+
+Thu 22 Dec 1994 15:12:38 +0100 1994 Markus Armbruster (armbru@pond.sub.org)
+
+	* src/man.c (make_roff_command, make_display_command, 
+		     open_cat_stream, close_cat_stream, display,
+		     find_cat_file, checked_system, 
+		     get_preprocessors): new functions
+
+	* src/man.c (format_and_display, format_and_display_file,
+		     display_cat_file, parse_roff_directive,
+		     add_directive): removed functions
+	
+	* src/man.c (glob_for_file, make_name): made consistent.
+
+	* src/util.c (strappend): new function.
+		     (do_system_command): changed/renamed to do_system().
+
+	* src/manp.c (global_catpath): replaced/fixed
+	
+	* src/security, src/fake_security (do_system_command_drop_privs):
+	  renamed to do_system_dropped_privs().
+
+	* lib/rename.c: new file 
+
+Mon Jan  9 20:42:38 GMT 1995  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* nls/Makefile, man/Makefile: allow for bogus or non existent 
+	native languages passed in $nls.
+
+	* src/man.c (do_prompt): replaced with less friendly but more
+	portable version.
+
+	* inline directives replaced with __inline__ to be more ansi.  
+
+Mon Dec 19 12:59:28 GMT 1994  Wilf. (G.Wilford@ee.surrey.ac.uk)
+	
+	* Version: 2.2a14
+
+	* aclocal.m4, configure.in: don't define variable nroff_device
+
+	* src/Makefile, src/paths.h.in: define GNU_NROFF_DEVICE.
+	If nls != off, GNU_NROFF_DEVICE=" -Tlatin1"
+	else,          GNU_NROFF_DEVICE=" -Tascii"
+
+	* src/man.c, src/catman.c, src/security.c: #include <vfork.h> if
+	available. _exit() from child rather than exit().
+
+Sun Dec 18 17:54:22 GMT 1994  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* src/util.c (basename): removed
+	lib/basename.c: extracted from src/util.c
+	configure.in: check for/replace basename function if necessary.
+
+	* src/catman.c (add_arg): replace strdup() with xstrdup().
+
+	* soelim/soelim.*: renamed zsoelim/zsoelim.*
+	
+	* manual pages: reflect soelim - zsoelim name change.
+
+Fri Dec 16 12:17:48 GMT 1994  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* configure.in: correctly determine db header and required library
+
+	* src/man.c (main, do_extern): pass manpath to whatis / apropos in
+	case man was called with -M or -m.
+
+	* src/catman.c (main): interrogate $MANSECT for manual sections.
+
+	* man/man1/catman.man1, man/man1/man.man1 ($MANSEC): replace with
+	the correct variable - $MANSECT.
+
+	* src/man.c: new option (-7 or --ascii) passes page through minimal
+	latin1 to ascii translator. Only useful for nroff written in ascii
+	and formatted with -Tlatin1.
+
+	* man/man1/man.man1: document it.
+
+	* src/man.c (make_command): new routine to piece together man's
+	system() call. 
+
+Thu Dec 15 13:52:42 GMT 1994  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* Version: 2.2a13
+
+	* src/catman.c (parse_for_sec): only supply man with -L locale
+	arguments if locale!=0x0
+
+	* src/Makefile: fix libmandb.a rule
+
+Wed Dec 14 22:49:59 GMT 1994  Wilf. (G.Wilford@ee.surrey.ac.uk)
+	
+	* Version 2.2a12
+
+	* major package restructure with creation of new subdirectories
+	for xcat and the db routines. Allowed split up of single db source
+	file into some constituent function parts.
+
+	* some Makefile restructuring to allow arbitrary ordering of 
+	subdirectory builds.
+
+	* ./dblib/*, ./xcat/*: new or moved from src/.
+
+	* src/db_storage.c: moved and split up into ./dblib/*.c
+	  src/mydbm.h, db_storage.h: moved into ./dblib
+	  src/nls.h: moved to ./nls.h
+	  src/xcat.c, src/xcat.l, src/Register: moved into ./xcat
+
+Wed Dec 14 00:17:11 GMT 1994  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* src/manconfig.h: #include <stddef.h> for size_t declaration.
+
+	* src/checkmandirs.c (reset_db_time): remove use of strerror() in
+	debug line for systems without it.
+
+	* src/manp.c: ensure no warnings given if quiet==1
+
+Tue Dec 12 22:10:07 GMT 1994  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* src/xcat.l: allow duplicate message id's to exist in single C
+	source file, do not duplicate in the relative message file or
+	src/man_db-nls.h. Warn of such duplications as they may be in error.
+
+Tue Dec 12 19:05:21 GMT 1994  Markus Armbruster (armbru@pond.sub.org)
+
+	* configure.in: fix definition of BINDIR when --prefix not used
+
+	* src/man.c: replace "export foo=bar" with "foo=bar; export foo" in
+	system() command
+	
+	* soelim/Makefile: do not backup old soelim before install
+
+	* lib/error.h: new
+
+	* convert all error message to the form 
+		error(int exitcode, int errno, char *message)
+	where exitcode!=0 causes exit(exitcode) after message and errno!=0
+	causes the error text to be appended to the message. All messages
+	have "<program_name>: " prepended.
+
+	* all C source: #include "../lib/error.h" and replace prognam with
+	program_name.
+
+	* src/db_storage.c (ndbm_flopen, btree_flopen): generalised
+	(ndbm_trun_open, btree_trunc_open): removed
+	(ndbm_flclose): new
+
+	* src/gripes.c: functions copied to relevant caller.
+	src/gripes.c, src/gripes.h: removed
+
+Sun Dec 11 15:16:42 GMT 1994  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* Version: 2.2a11 (not released)
+
+	* src/man.c (main): putenv("LESSCHARSET=latin1"), remove from
+	less_options[]
+
+	* src/lexgrog.l: translate \\[ ] (escaped space) to space,
+			 accept '\" as *roff comment,
+			 add a space at *roff end-of-line if necessary.
+
+Sat Dec 10 21:37:41 GMT 1994  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* man/man1/catman.man1: new
+	
+	* soelim/soelim.man1: new
+
+	* src/man.c (display_cat_file): if (COMP_SRC), support straycats
+	with any supported compression extension or none at all.
+	src/man.c (make_cat_file): replace execle() with execve().
+
+	* src/catman.c: added ARG_MAX support and use execve() instead of
+	system(). This should now behave on systems with small execve() 
+	argument capacity by batching more, but smaller, man jobs.
+
+	* Makefile: `make all' now equates to `make nls=all'
+
+Thu Dec  8 00:03:12 GMT 1994  Wilf. (G.Wilford@ee.surrey.ac.uk)
+
+	* Version: 2.2a10
+
+	* src/catman.c: new utility.
+	src/man.c (main): minor changes wrt --catman flag.
+
+	* src/paths.h.in (MAN_BIN): add definition for catman.
+
+	* dvi/: provide dvi files of the packages' manual pages.
+
+Tue Dec  6 20:58:19 GMT 1994  Wilf.  (G.Wilford@ee.surrey.ac.uk)
+
+	* man/man.man1: addition of EXAMPLES section.
+
+	* src/man.c (do_prompt): change message.
+	src/man.c (need_to_rerun): make -u really force an update.
+	src/checkmandirs.c (reset_db_time): new function.
+
+	* src/mydbm.h, src/db_storage.c (ndbm_flopen, ndbm_trunc_flopen): 
+	provide file locking mechanism for ndbm. 
+	src/db_storage.c (btree_trunc_flopen): renamed (btree_trunc_open),
+	add mode argument to open() call.
+
+	* src/db_storage.c (make_content): add `static' to declaration of
+	(dash).
+
+	* src/man.c (try_db_section): ensure db found file entry is 
+	consistent with the physical file, if not, update the db entry
+	before proceeding. Cache consistency should be getting much better
+	in a wide variety of circumstances now. This check is not performed
+	for straycats.
+
+Tue Dec  6 12:05:57 GMT 1994  Wilf.  (G.Wilford@ee.surrey.ac.uk)
+
+	* man/man.man1, man/mandb.man1: large changes.
+	
+	* aclocal.m4, configure.in (AC_PROG_GNU_ROFF): test for GNU nroff
+	src/man.c: Do not use col with GNU nroff -Tlatin1 as (a) it is not
+	needed: see grotty(1) and (b) it is not 8 bit clean. continuation
+	dashes should now reappear.
+
+Wed Nov 23 16:49:48 GMT 1994  Wilf.  (G.Wilford@ee.surrey.ac.uk)
+
+	* src/check_mandirs.c (test_manfile): Provide better checking for
+	the existence of both foo.1 and foo.1.gz type problems. This should
+	catch any problems earlier and relieve the db interface code of the
+	job of identifying such problems.
+
+	* src/man.c (manopt_to_env): cater for $MANOPT option arguments 
+	that contain spaces (for -r).
+	src/man.c (man_getopt): revise, change duplicate option behaviour,
+	modify -[tTZ] handling and add option -D.
+	src/man/man1/man.man1: document.
+
+	* src/man.c: create LESS_OPTS and LESS_PROMPT and move their
+	definitions to src/paths.h[.in].
+
+	* configure.in: append -s by default to whatever pager is found.
+	favour db.h and -ldb above gdbm.h and -lgdbm.
+	N.B.
+		db creates 	index.bt
+		gdbm creates 	index.db
+		ndbm creates	index.dir and index.pag
+
+Wed Nov 23 16:46:59 GMT 1994  Zoltan Hidvegi (hzoli@cs.elte.hu)
+
+	* src/man.c: changes relating to (less_options) and (prompt). Add
+	command line support for less' prompt: option -r.
+
+	* man/man1/man.man1: document it.
+
+Sat Nov 19 20:19:39 GMT 1994  Wilf.  (G.Wilford@ee.surrey.ac.uk)
+
+	* Version: 2.2a9
+
+	* src/mydbm.h, src/db_storage.c: incorporate completely new
+	database type: a binary tree method using the Berkeley db-1.85.1
+	library. Currently experimental and is not used by default, it has
+	the potential of enhanced speed and easy maintenance as it allows 
+	storage of identical keys, thus reducing the amount of work necessary
+	to store and lookup multi sectional manual pages such as manpath.1
+	and manpath.5. During initial tests, the `walk through' algorithm, 
+	used in apropos searches was 65% faster and the general database 
+	open function is 100% faster when compared with gdbm-1.7.3.
+
+	* src/whatis.c (apropos): #define-optimised for btree database type.
+
+	* src/convert_name.c (convert_name): reorder actions to stop certain
+	catfiles ending up with a double compression extension, for
+	instance: foo.1.gz.gz.
+
+	* src/Makefile, src/man.c: enable -DNO_DEFAULT_TBL_OR_COL as an
+	experiment.
+
+Fri Nov 18 21:00:47 GMT 1994  Wilf.  (G.Wilford@ee.surrey.ac.uk)
+
+	* Version: 2.2a8 (not released)
+
+	* configure.in (config_file, config_prefix): Fix behaviour.
+	
+	* src/*.[cl], soelim/soelim.l: 
+		s,malloc,xmalloc,g
+		s,realloc,xrealloc,g 
+		s,strdup,xstrdup,g
+	src/manconfig.h: remove redefinitions of malloc, realloc and strdup.
+
+Thu Nov 17 22:01:11 GMT 1994  Wilf.  (G.Wilford@ee.surrey.ac.uk)
+
+	* src/lexgrog.l: changed catfile whatis extraction rules to be a
+	little more forgiving. Increased char array size from 1024 to 2048.
+
+	* mkcatdirs: shell script to create relative cat dirs.
+
+	* src/$PROGS: replaced all occurances of `optional_argument' with
+	`required_argument' in (long_options).
+
+	* src/man.c, src/compression.c, src/straycats.c: ensure that a
+	failed child process is recognised and dealt with (normally exit(0)).
+
+	* src/man.c (make_cat_file): removed need to filter-then-copy if not
+	setuid. [untested]
+
+	* src/man.c, src/mandb.c (main): optional profiling support if 
+	__profile__ defined.
+
+	* configure.in (config_file, config_prefix): don't work unless
+	--prefix=<something> is a command line option, temporarily setting
+	them to /etc/man_db.config and /etc respectively.
+
+Wed Nov 16 20:34:54 GMT 1994  Wilf.  (G.Wilford@ee.surrey.ac.uk)
+
+	* Version: 2.2a7
+
+	* src/man.c (format_and_display_file): Fix bug which caused 
+	`man -l -' to fail. Produce sensible error message when -l file
+	is inaccessable. Allow compressed manual pages to be specified when
+	using -l (must have correct extension)
+
+	* soelim/soelim.l (main): ensure (progname) is the basename of
+	argv[0] .
+
+	* src/manpath.c (main): remove local declaration of (quiet).
+	add `--global' option.
+
+Wed Nov 16 20:29:20 GMT 1994  Markus Armbruster (armbru@pond.sub.org)
+
+	* configure.in: if $prefix=/usr, put config file in /etc else
+	put it in $prefix/etc
+	src/manconfig.h (CONFIG_FILE): move to paths.h.in
+
+	* src/nls.h (LC_MESSAGES): define as (LC_ALL) in all cases where
+	(LC_MESSAGES) is not defined in <locale.h>
+
+	* src/lexgrog.l: #include "manconfig.h" to redefine strdup() to
+	xstrdup()
+
+Tue Nov 15 21:38:19 GMT 1994  Wilf.  (G.Wilford@ee.surrey.ac.uk)
+
+	* src/manp.c (is_global_mandir): new
+	src/man.c (locate_page): use it instead of (global_catpath)
+
+	* src/*.h: add suitable predicates to function prototype 
+	declarations
+	moved all function declarations to header files
+	src/compression.h.in: renamed to comp_src.h.in
+
+Mon Nov 14 18:17:48 GMT 1994  Wilf.  (G.Wilford@ee.surrey.ac.uk)
+
+	* Version: 2.2a6
+	
+	* src/hashtable.c, src/hashtable.h (struct nlist): replaced
+	(union) member with (void *) and simplified. Modified users.
+
+	* src/man.c (make_cat_file): fixed NULL ptr reference in call to
+	(execle)
+	src/man.c: determined and fixed memory leaks using Checker.
+
+Mon Nov 14 03:33:37 GMT 1994  Wilf.  (G.Wilford@ee.surrey.ac.uk)
+
+	* src/db_storage.c (replace_if_necessary, split_data, 
+	list_extensions): new
+	src/db_storage.c (free_content): replaced with (free_mandata_struct)
+	all callers changed 
+	src/db_storage.c (split_content_keep, split_content_temp): replaced
+	with (split_content)
+
+Sun Nov 13 13:50:46 GMT 1994  Wilf.  (G.Wilford@ee.surrey.ac.uk)
+	
+	* src/nls.h: change of macros, add (NLS_INIT, EXIT_FUNC)
+	src/*.c: removed (NLS_CLOSE) macros, adjustments due to above
+	src/version.c (close_catalogue): new 
+	configure.in (AC_HAVE_FUNCS): (atexit, on_exit)
+
+	* getmandbver.c: removed
+
+Sat Nov 12 14:18:02 GMT 1994  Wilf.  (G.Wilford@ee.surrey.ac.uk)
+
+	* src/security.h: new, contains security macros from src/manconfig.h
+	src/manconfig.h: removed security macros
+	src/security.c, src/security.h: replaced (SYSV_SAVED_IDS) with
+	(BROKEN_LINUX_SAVED_IDS) 
+
+	* src/paths.h.in, src/compression.h.in, configure.in: changed
+	compression defines
+	src/paths.h.in: defined (STD_SECTIONS), got rid of (MANPATH_MAIN)
+	src/*.c: removed all (MANPATH_MAIN) defines
+	configure.in: added (COMP_CAT) and (COMP_SRC) definitions
+	src/manconfig.h: removed (COMP_SRC) definition
+
+	* All manual pages: Fixed to be compatible with native *roff
+	implementations having a request argument limit of 6
+
+	* src/db_storage.c (gripe_extract_data, gripe_corrupt_data):
+	new routines
+
+	* All Makefiles: add (exec_prefix, mandir, bindir) where necessary
+ 
+Sat Nov 12 13:38:59 GMT 1994  Markus Armbruster (armbru@pond.sub.org)
+
+	* soelim/Makefile (install): made more portable
+
+	* src/manconfig.h: changes to (POSIX_SAVED_IDS) definition
+
+	* src/man.c (main): removed unnecessary #ifdef conditions regading
+	(SECURE_MANUID)
+
+Sat Nov 12 13:24:17 GMT 1994  Wilf.  (G.Wilford@ee.surrey.ac.uk)
+
+	* src/ult_src.c (ult_src): no longer follow an absolute .so include
+	src/ult_src.c (test_for_include): new
+
+Fri Nov 11 10:16:32 GMT 1994  Wilf.  (G.Wilford@ee.surrey.ac.uk)
+
+	* src/man.c (manopt_to_env): generalised
+
+	* src/man.c (do_extern): removed (gripe_alloc) call,
+	modified callers
+	src/manp.c: removed (gripe_alloc) calls, general tidy
+	src/gripes.c (gripe_alloc): removed
+
+	* src/ult_src.c (ult_src): fixed loop when (buf) != NULL 
+	changed absolute .so include actions
+	configure.in (AC_HAVE_FUNCS): removed (memmove)
+
+	* src/mydbm.h (copy_datum): added references
+	src/db_storage.c (copy_datum): added function
+	Fixes for `native ndbm' data corruption by Markus Armbruster
+
+	* src/Makefile: removed dbver.o as dependency of manpath
+
+	* aclocal.m4 (AC_FUNC_SPRINTF_COUNT): new file and macro
+	configure.in: use it
+	acconfig.h: add (SPRINTF_CHARCOUNT)
+	src/check_mandirs (add_dir_entries): use it
+	src/whatis.c (display): use it
+
+	* src/check_mandirs.c (test_mandirs): added a (free(exists))
+
+	* src/straycats.c (check_for_stray): Fixes regarding straycats
+	with no compression extension  
+
+Fri Nov 11 00:29:15 GMT 1994  Wilf.  (G.Wilford@ee.surrey.ac.uk)
+
+	* lib/xmalloc.c, lib/xstrdup.c, lib/error.c: replaced
+	lib/strdup.c: removed
+	lib/strstr.c: replaced
+	lib/strsep.c, lib/strspn.c, lib/strcspn.c, lib/ansidecl.h: new
+	configure.in (AC_REPLACE_FUNCS): with respect to above
+
+	* src/check_mandirs.c (testmandirs): (free_hashtab) only if 
+	necessary
+
+Thu Nov 10 11:07:52 GMT 1994  Wilf.  (G.Wilford@ee.surrey.ac.uk)
+	
+	* Version: 2.2a5
+
+	* src/man.c (usage, man_getopt, parse_roff_directive, ditroff): 
+	add `-Z' option
+	man/man1/man.man1: document it
+
+Wed Nov  9 20:16:35 GMT 1994  Wilf.  (G.Wilford@ee.surrey.ac.uk)
+
+	* configure.in (prefix, nroff, neqn, groff, soelim, CFLAGS, 
+	LDFLAGS): portability changes.
+        Suggestions from Markus Armbruster <armbru@pond.sub.org>
+	gencat/Makefile (CFLAGS, LDFLAGS): definitions removed
+
+	* soelim/Makefile (install): procedural changes
+
+	* src/ult_src.c (ult_softlink): changes regarding S_ISLNK
+
+	* src/manconfig.h: #define __inline
+
+	* src/man.c, src/whatis.c, src/nls.c (LC_MESSAGES): define 
+	as LC_ALL if necessary
+
+Tue Nov  8 23:17:22 GMT 1994  Wilf.  (G.Wilford@ee.surrey.ac.uk)
+
+	* src/version.c (ver): aesthetic changes 
+	* src/man.c, src/whatis.c, src/manpath.c, src/mandb.c (usage, ver): 
+	calling changes
+
+	* src/version.h, src/update_db: removed
+
+	* src/convert_name.c (conver_name): argument changes
+	src/man.c (format_and_display): caller of above changed
+	(need_to_rerun, locate_page): new functions to split (man) 
+	(format_and_display_nosave): renamed to format_and_display_file
+
+	* soelim/soelim.l (usage, ver): new functions 
+	removal of NLS dependence
+
+	* Version: 2.2a4

@@ -1,0 +1,10 @@
+/.deps/
+/.dirstamp
+fuser
+killall
+peekfd
+prtstat
+pslog
+pstree
+signames.h
+socket_test

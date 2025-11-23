@@ -1,0 +1,1840 @@
+# Serbian translation for psmisc-man
+# Copyright © 2021 Free Software Foundation, Inc.
+# This file is distributed under the same license as the psmisc package.
+# Мирослав Николић <miroslavnikolic@rocketmail.com>, 2021–2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: psmisc-man 23.6-rc1\n"
+"Report-Msgid-Bugs-To: Craig Small <csmall@dropbear.xyz>\n"
+"POT-Creation-Date: 2024-01-13 14:23+1100\n"
+"PO-Revision-Date: 2023-02-26 09:15+0100\n"
+"Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
+"Language-Team: Serbian <(nothing)>\n"
+"Language: sr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Bugs: Report translation errors to the Language-Team address.\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Gtranslator 41.0\n"
+
+#. type: TH
+#: ../doc/fuser.1:9
+#, no-wrap
+msgid "FUSER"
+msgstr "FUSER"
+
+#. type: TH
+#: ../doc/fuser.1:9
+#, no-wrap
+msgid "2022-11-02"
+msgstr "02.11.2022."
+
+#. type: TH
+#: ../doc/fuser.1:9 ../doc/killall.1:9 ../doc/peekfd.1:9 ../doc/prtstat.1:9
+#: ../doc/pstree.1:9
+#, no-wrap
+msgid "psmisc"
+msgstr "psmisc"
+
+#. type: TH
+#: ../doc/fuser.1:9 ../doc/killall.1:9 ../doc/peekfd.1:9 ../doc/prtstat.1:9
+#: ../doc/pstree.1:9
+#, no-wrap
+msgid "User Commands"
+msgstr "Корисничке наредбе"
+
+#. type: SH
+#: ../doc/fuser.1:10 ../doc/killall.1:10 ../doc/peekfd.1:10 ../doc/pslog.1:10
+#: ../doc/prtstat.1:10 ../doc/pstree.1:10
+#, no-wrap
+msgid "NAME"
+msgstr "НАЗИВ"
+
+#. type: Plain text
+#: ../doc/fuser.1:12
+msgid "fuser - identify processes using files or sockets"
+msgstr "fuser – одређује процесе користећи датотеке или прикључнице"
+
+#. type: SH
+#: ../doc/fuser.1:12 ../doc/killall.1:12 ../doc/peekfd.1:12 ../doc/pslog.1:12
+#: ../doc/prtstat.1:12 ../doc/pstree.1:12
+#, no-wrap
+msgid "SYNOPSIS"
+msgstr "УВОД"
+
+#. type: Plain text
+#: ../doc/fuser.1:28
+msgid ""
+"B<fuser> [B<-fuv>] [B<-a>|B<-s>] [B<-4>|B<-6>] [B<-c>|B<-m>|B<-n> I<space>] "
+"[B<\\ -k> [B<-i>] [B<-M>] [B<-w>] [B<->I<SIGNAL>] ] I<name> ..."
+msgstr ""
+"B<fuser> [B<-fuv>] [B<-a>|B<-s>] [B<-4>|B<-6>] [B<-c>|B<-m>|B<-n> I<размак>] "
+"[B<\\ -k> [B<-i>] [B<-M>] [B<-w>] [B<->I<СИГНАл>] ] I<назив> ..."
+
+#. type: Plain text
+#: ../doc/fuser.1:30
+msgid "B<fuser -l>"
+msgstr "B<fuser -l>"
+
+#. type: Plain text
+#: ../doc/fuser.1:32
+msgid "B<fuser -V>"
+msgstr "B<fuser -V>"
+
+#. type: SH
+#: ../doc/fuser.1:33 ../doc/killall.1:45 ../doc/peekfd.1:23 ../doc/pslog.1:19
+#: ../doc/prtstat.1:21 ../doc/pstree.1:36
+#, no-wrap
+msgid "DESCRIPTION"
+msgstr "ОПИС"
+
+#. type: Plain text
+#: ../doc/fuser.1:38
+msgid ""
+"B<fuser> displays the PIDs of processes using the specified files or file "
+"systems.  In the default display mode, each file name is followed by a "
+"letter denoting the type of access:"
+msgstr ""
+"B<fuser> приказује ПИБ-ове процеса користећи наведене датотеке или системе "
+"датотека. У основном режиму приказа, за сваким називом датотеке следи слово "
+"које означава врсту приступа:"
+
+#. type: TP
+#: ../doc/fuser.1:41
+#, no-wrap
+msgid "B<c>"
+msgstr "B<c>"
+
+#. type: Plain text
+#: ../doc/fuser.1:44
+msgid "current directory."
+msgstr "тренутни директоријум."
+
+#. type: TP
+#: ../doc/fuser.1:44
+#, no-wrap
+msgid "B<e>"
+msgstr "B<e>"
+
+#. type: Plain text
+#: ../doc/fuser.1:47
+msgid "executable being run."
+msgstr "извршна која је покренута."
+
+#. type: TP
+#: ../doc/fuser.1:47
+#, no-wrap
+msgid "B<f>"
+msgstr "B<f>"
+
+#. type: Plain text
+#: ../doc/fuser.1:52
+msgid "open file.  B<f> is omitted in default display mode."
+msgstr "отвара датотеку.  B<f> је изостављено у основном режиму приказа."
+
+#. type: TP
+#: ../doc/fuser.1:52
+#, no-wrap
+msgid "B<F>"
+msgstr "B<F>"
+
+#. type: Plain text
+#: ../doc/fuser.1:57
+msgid "open file for writing.  B<F> is omitted in default display mode."
+msgstr ""
+"отвара датотеку за писање.  B<F> је изостављено у основном режиму приказа."
+
+#. type: TP
+#: ../doc/fuser.1:57
+#, no-wrap
+msgid "B<r>"
+msgstr "B<r>"
+
+#. type: Plain text
+#: ../doc/fuser.1:60
+msgid "root directory."
+msgstr "корени директоријум."
+
+#. type: TP
+#: ../doc/fuser.1:60
+#, no-wrap
+msgid "B<m>"
+msgstr "B<m>"
+
+#. type: Plain text
+#: ../doc/fuser.1:63
+msgid "mmap'ed file or shared library."
+msgstr "м-мапирана датотека или дељена библиотека."
+
+#. type: TP
+#: ../doc/fuser.1:63
+#, no-wrap
+msgid "B<.>"
+msgstr "B<.>"
+
+#. type: Plain text
+#: ../doc/fuser.1:66
+msgid "Placeholder, omitted in default display mode."
+msgstr "Држач места, изостављен у основном режиму приказа."
+
+#. type: Plain text
+#: ../doc/fuser.1:75
+msgid ""
+"B<fuser> returns a non-zero return code if none of the specified files is "
+"accessed or in case of a fatal error.  If at least one access has been "
+"found, B<fuser> returns zero."
+msgstr ""
+"B<fuser> даје ненулти резултујући код ако није приступљено ниједној од "
+"наведених датотека или у случају кобне грешке. Ако је нађен барем један "
+"приступ, B<fuser> враћа нулу."
+
+#. type: Plain text
+#: ../doc/fuser.1:89
+msgid ""
+"In order to look up processes using TCP and UDP sockets, the corresponding "
+"name space has to be selected with the B<-n> option. By default B<fuser> "
+"will look in both IPv6 and IPv4 sockets.  To change the default behavior, "
+"use the B<-4> and B<-6> options.  The socket(s) can be specified by the "
+"local and remote port, and the remote address.  All fields are optional, but "
+"commas in front of missing fields must be present:"
+msgstr ""
+"Да бисте тражили процесе користећи ТЦП и УДП прикључнице, одговарајући "
+"називни простор треба бити изабран опцијом B<-n>. По основи B<fuser> ће "
+"тражити и у IPv6 и у IPv4 прикључници. Да измените основно понашање, "
+"користите опције B<-4> и B<-6>. Прикључница може бити наведена локалним и "
+"удаљеним прикључником, и удаљеном адресом. Сва поља су изборна, али зарези "
+"испред недостајућих поља морају бити присутни:"
+
+#. type: Plain text
+#: ../doc/fuser.1:91
+msgid "[I<lcl_port>][,[I<rmt_host>][,[I<rmt_port>]]]"
+msgstr "[I<lcl_port>][,[I<rmt_host>][,[I<rmt_port>]]]"
+
+#. type: Plain text
+#: ../doc/fuser.1:94
+msgid ""
+"Either symbolic or numeric values can be used for IP addresses and port "
+"numbers."
+msgstr ""
+"Или симболичке или бројевне вредности се могу користити за ИП адресе и "
+"бројеве прикључника."
+
+#. type: Plain text
+#: ../doc/fuser.1:97
+msgid ""
+"B<fuser> outputs only the PIDs to stdout, everything else is sent to stderr."
+msgstr ""
+"B<fuser> шаље само ПИБ-ове на сатндардни излаз, све остало шаље на "
+"стандардну грешку."
+
+#. type: SH
+#: ../doc/fuser.1:97 ../doc/killall.1:78 ../doc/peekfd.1:28 ../doc/pslog.1:23
+#: ../doc/prtstat.1:27 ../doc/pstree.1:89
+#, no-wrap
+msgid "OPTIONS"
+msgstr "ОПЦИЈЕ"
+
+#. type: TP
+#: ../doc/fuser.1:98
+#, no-wrap
+msgid "B<-a>, B<--all>"
+msgstr "B<-a>, B<--all>"
+
+#. type: Plain text
+#: ../doc/fuser.1:102
+msgid ""
+"Show all files specified on the command line.  By default, only files that "
+"are accessed by at least one process are shown."
+msgstr ""
+"Приказује све датотеке наведене на линији наредби. По основи, само датотеке "
+"којима је приступио барем један процес су приказане."
+
+#. type: IP
+#: ../doc/fuser.1:102 ../doc/pstree.1:97
+#, no-wrap
+msgid "B<-c>"
+msgstr "B<-c>"
+
+#. type: Plain text
+#: ../doc/fuser.1:105
+msgid "Same as B<-m> option, used for POSIX compatibility."
+msgstr "Исто као опција B<-m>, користи се за ПОСИКС сагласност."
+
+#. type: TP
+#: ../doc/fuser.1:105
+#, no-wrap
+msgid "B<-f>"
+msgstr "B<-f>"
+
+#. type: Plain text
+#: ../doc/fuser.1:108
+msgid "Silently ignored, used for POSIX compatibility."
+msgstr "Неприметно занемарена, користи се за ПОСИКС сагласност."
+
+#. type: TP
+#: ../doc/fuser.1:108
+#, no-wrap
+msgid "B<-k>, B<--kill>"
+msgstr "B<-k>, B<--kill>"
+
+#. type: Plain text
+#: ../doc/fuser.1:120
+msgid ""
+"Kill processes accessing the file.  Unless changed with B<->I<SIGNAL\\/>, "
+"SIGKILL is sent.  An B<fuser> process never kills itself, but may kill other "
+"B<fuser> processes.  The effective user ID of the process executing B<fuser> "
+"is set to its real user ID before attempting to kill."
+msgstr ""
+"Убија процесе који приступају датотеци. Осим ако није измењено са B<-"
+">I<СИГНАЛ\\/>, шаље се „SIGKILL“. B<fuser> процес никада не убија самог "
+"себе, али може убити друге B<fuser> процесе. Стварни ИБ корисника процеса "
+"који извршава B<fuser> се поставља на његов стварни ИБ корисника пре "
+"покушаја убијања."
+
+#. type: IP
+#: ../doc/fuser.1:120 ../doc/killall.1:99
+#, no-wrap
+msgid "B<-i>, B<--interactive>"
+msgstr "B<-i>, B<--interactive>"
+
+#. type: Plain text
+#: ../doc/fuser.1:127
+msgid ""
+"Ask the user for confirmation before killing a process.  This option is "
+"silently ignored if B<-k> is not present too."
+msgstr ""
+"Пита корисника за потврду пре убијања процеса. Ова опција се неприметно "
+"занемарује ако и B<-k> такође није присутна."
+
+#. type: TP
+#: ../doc/fuser.1:127
+#, no-wrap
+msgid "B<-I>, B<--inode>"
+msgstr "B<-I>, B<--inode>"
+
+#. type: Plain text
+#: ../doc/fuser.1:133
+msgid ""
+"For the name space B<file> let all comparisons be based on the inodes of the "
+"specified file(s)  and never on the file names even on network based file "
+"systems."
+msgstr ""
+"За називни простор B<file> пушта да се сва поређења заснивају на и-чворовима "
+"наведене датотеке и никада на називима датотека чак и на системима датотека "
+"заснованим на мрежи."
+
+#. type: TP
+#: ../doc/fuser.1:133
+#, no-wrap
+msgid "B<-l>, B<--list-signals>"
+msgstr "B<-l>, B<--list-signals>"
+
+#. type: Plain text
+#: ../doc/fuser.1:136 ../doc/killall.1:103
+msgid "List all known signal names."
+msgstr "Исписује све познате називе сигнала."
+
+#. type: TP
+#: ../doc/fuser.1:136
+#, no-wrap
+msgid "B<-m>I< NAME>, B<--mount >I<NAME>"
+msgstr "B<-m>I< НАЗИВ >, B<--mount >I<НАЗИВ>"
+
+#. type: Plain text
+#: ../doc/fuser.1:144
+msgid ""
+"I<NAME> specifies a file on a mounted file system or a block device that is "
+"mounted.  All processes accessing files on that file system are listed.  If "
+"a directory is specified, it is automatically changed to I<NAME>/ to use any "
+"file system that might be mounted on that directory."
+msgstr ""
+"I<НАЗИВ> наводи датотеку на прикаченом систему датотека или блок уређај који "
+"је прикачен. Сви процеси који приступају датотекама на том систему датотека "
+"су исписани. Ако је наведен директоријум, аутоматски се мења у „I<НАЗИВ>/“ "
+"да би користио било који систем датотека који може бити прикачен на том "
+"директоријуму."
+
+#. type: TP
+#: ../doc/fuser.1:144
+#, no-wrap
+msgid "B<-M>, B<--ismountpoint>"
+msgstr "B<-M>, B<--ismountpoint>"
+
+#. type: Plain text
+#: ../doc/fuser.1:152
+msgid ""
+"Request will be fulfilled only if I<NAME> specifies a mountpoint.  This is "
+"an invaluable seat belt which prevents you from killing the machine if "
+"I<NAME> happens to not be a filesystem."
+msgstr ""
+"Захтев ће бити испуњен само ако I<НАЗИВ> наводи тачку качења. Ово је "
+"непроцењиви сигурносни појас који вас спречава да убијете рачунар ако се "
+"деси да I<НАЗИВ> није систем датотека."
+
+#. type: TP
+#: ../doc/fuser.1:152
+#, no-wrap
+msgid "B<-w>"
+msgstr "B<-w>"
+
+#. type: Plain text
+#: ../doc/fuser.1:158
+msgid ""
+"Kill only processes which have write access.  This option is silently "
+"ignored if B<-k> is not present too."
+msgstr ""
+"Убија само процесе који имају приступ писања. Ова опција је неприметно "
+"занемарена ако B<-k> такође није присутна."
+
+#. type: TP
+#: ../doc/fuser.1:158
+#, no-wrap
+msgid "B<-n>I< NAMESPACE>, B<--namespace >I<NAMESPACE>"
+msgstr "B<-n>I< НАЗИВНИ_ПРОСТОР>, B<--namespace >I<НАЗИВНИ_ПРОСТОР>"
+
+#. type: Plain text
+#: ../doc/fuser.1:173
+msgid ""
+"Select a different name space.  The name spaces B<file> (file names, the "
+"default), B<udp> (local UDP ports), and B<tcp> (local TCP ports) are "
+"supported.  For ports, either the port number or the symbolic name can be "
+"specified.  If there is no ambiguity, the shortcut notation I<name>B</"
+">I<space> (e.g., I<80>B</>I<tcp>)  can be used."
+msgstr ""
+"Бира другачији називни простор. Називни простори B<датотека> (називи "
+"датотека, основно), B<удп> (локални УДП прикључници), и B<тцп> (локални ТЦП "
+"прикључници) су подржани. За прикључнике, може бити наведен или број "
+"прикључника или симболички назив. Ако нема нејасноће, запис пречице "
+"I<назив>B</>I<простор> (нпр., I<80>B</>I<tcp>) се може користити."
+
+#. type: TP
+#: ../doc/fuser.1:173
+#, no-wrap
+msgid "B<-s>, B<--silent>"
+msgstr "B<-s>, B<--silent>"
+
+#. type: Plain text
+#: ../doc/fuser.1:183
+msgid ""
+"Silent operation.  B<-u> and B<-v> are ignored in this mode.  B<-a> must not "
+"be used with B<-s>."
+msgstr ""
+"Тиха радња. B<-u> и B<-v> су занемарене у овом режиму.  B<-a> се не може "
+"користити са B<-s>."
+
+#. type: TP
+#: ../doc/fuser.1:183
+#, no-wrap
+msgid "B<->I<SIGNAL>"
+msgstr "B<->I<СИГНАЛ>"
+
+#. type: Plain text
+#: ../doc/fuser.1:193
+msgid ""
+"Use the specified signal instead of SIGKILL when killing processes.  Signals "
+"can be specified either by name (e.g., B<-HUP>)  or by number (e.g., "
+"B<-1>).  This option is silently ignored if the B<-k> option is not used."
+msgstr ""
+"Користи наведени сигнал уместо „SIGKILL“ приликом убијања процеса. Сигнали "
+"могу бити наведени или према називу (нпр., B<-HUP>) или према броју (нпр., "
+"B<-1>). Ова опција се неприметно занемарује ако се опција B<-k> не користи."
+
+#. type: IP
+#: ../doc/fuser.1:193 ../doc/killall.1:118
+#, no-wrap
+msgid "B<-u>, B<--user>"
+msgstr "B<-u>, B<--user>"
+
+#. type: Plain text
+#: ../doc/fuser.1:196
+msgid "Append the user name of the process owner to each PID."
+msgstr "Додаје корисничко име власника процеса сваком ПИБ-у."
+
+#. type: IP
+#: ../doc/fuser.1:196 ../doc/killall.1:121
+#, no-wrap
+msgid "B<-v>, B<--verbose>"
+msgstr "B<-v>, B<--verbose>"
+
+#. type: Plain text
+#: ../doc/fuser.1:207
+msgid ""
+"Verbose mode.  Processes are shown in a B<ps>-like style.  The fields PID, "
+"USER and COMMAND are similar to B<ps>.  ACCESS shows how the process "
+"accesses the file.  Verbose mode will also show when a particular file is "
+"being accessed as a mount point, knfs export or swap file.  In this case "
+"B<kernel> is shown instead of the PID."
+msgstr ""
+"Опширан режим. Процеси се приказују у B<ps>-сличном стили. Поља ПИБ, "
+"КОРИСНИК и НАРЕДБА су слична са B<ps>. ПРИСТУП показује процес приступа "
+"датотеци. Режим опширности биће такође приказан када се посебној датотеци "
+"приступи као тачки качења, „knfs“ извозу или разменској датотеци. У том "
+"случају B<kernel> се приказује уместо ПИБ-а."
+
+#. type: IP
+#: ../doc/fuser.1:207 ../doc/killall.1:123
+#, no-wrap
+msgid "B<-V>, B<--version>"
+msgstr "B<-V>, B<--version>"
+
+#. type: Plain text
+#: ../doc/fuser.1:210 ../doc/killall.1:125 ../doc/pslog.1:27
+#: ../doc/pstree.1:165
+msgid "Display version information."
+msgstr "Приказује информације о издању."
+
+#. type: TP
+#: ../doc/fuser.1:210
+#, no-wrap
+msgid "B<-4>, B<--ipv4>"
+msgstr "B<-4>, B<--ipv4>"
+
+#. type: Plain text
+#: ../doc/fuser.1:215
+msgid ""
+"Search only for IPv4 sockets.  This option must not be used with the B<-6> "
+"option and only has an effect with the tcp and udp namespaces."
+msgstr ""
+"Тражи само ИПи4 прикључнице. Ова опција се не сме користити са опцијом B<-6> "
+"и има дејства само са тцп и удп називним просторима."
+
+#. type: TP
+#: ../doc/fuser.1:215
+#, no-wrap
+msgid "B<-6>, B<--ipv6>"
+msgstr "B<-6>, B<--ipv6>"
+
+#. type: Plain text
+#: ../doc/fuser.1:220
+msgid ""
+"Search only for IPv6 sockets.  This option must not be used with the B<-4> "
+"option and only has an effect with the tcp and udp namespaces."
+msgstr ""
+"Тражи само ИПи6 прикључнице. Ова опција се не сме користити са опцијом B<-4> "
+"и има дејства само са тцп и удп називним просторима."
+
+#. type: SH
+#: ../doc/fuser.1:220 ../doc/killall.1:143 ../doc/peekfd.1:43
+#: ../doc/prtstat.1:35 ../doc/pstree.1:168
+#, no-wrap
+msgid "FILES"
+msgstr "ДАТОТЕКЕ"
+
+#. type: TP
+#: ../doc/fuser.1:221 ../doc/killall.1:144 ../doc/pstree.1:169
+#, no-wrap
+msgid "/proc"
+msgstr "/proc"
+
+#. type: Plain text
+#: ../doc/fuser.1:224 ../doc/killall.1:147 ../doc/pstree.1:172
+msgid "location of the proc file system"
+msgstr "место „proc“ система датотека"
+
+#. type: SH
+#: ../doc/fuser.1:224
+#, no-wrap
+msgid "EXAMPLES"
+msgstr "ПРИМЕРИ"
+
+#. type: TP
+#: ../doc/fuser.1:225
+#, no-wrap
+msgid "B<fuser -km /home>"
+msgstr "B<fuser -km /home>"
+
+#. type: Plain text
+#: ../doc/fuser.1:228
+msgid "kills all processes accessing the file system /home in any way."
+msgstr ""
+"убија све процесе приступајући /личној_фасцикли система датотека у сваком "
+"случају."
+
+#. type: TP
+#: ../doc/fuser.1:228
+#, no-wrap
+msgid "B<if fuser -s /dev/ttyS1; then :; else >I<command>B<; fi>"
+msgstr "B<if fuser -s /dev/ttyS1; then :; else >I<наредба>B<; fi>"
+
+#. type: Plain text
+#: ../doc/fuser.1:233
+msgid "invokes I<command> if no other process is using /dev/ttyS1."
+msgstr "призива I<наредбу> ако ниједан други процес не користи „/dev/ttyS1“."
+
+#. type: TP
+#: ../doc/fuser.1:233
+#, no-wrap
+msgid "B<fuser telnet/tcp>"
+msgstr "B<fuser telnet/tcp>"
+
+#. type: Plain text
+#: ../doc/fuser.1:236
+msgid "shows all processes at the (local) TELNET port."
+msgstr "приказује све процесе на (локалном) „TELNET“ прикључнику."
+
+#. type: SH
+#: ../doc/fuser.1:236
+#, no-wrap
+msgid "RESTRICTIONS"
+msgstr "ОГРАНИЧЕЊА"
+
+#. type: Plain text
+#: ../doc/fuser.1:239
+msgid ""
+"Processes accessing the same file or file system several times in the same "
+"way are only shown once."
+msgstr ""
+"Процеси који приступају истој датотеци или систему датотека више пута на "
+"исти начин се приказују само једном."
+
+#. type: Plain text
+#: ../doc/fuser.1:242
+msgid ""
+"If the same object is specified several times on the command line, some of "
+"those entries may be ignored."
+msgstr ""
+"Ако је исти објекат наведен више пута на линији наредби, неки од тих уноса "
+"се могу занемарити."
+
+#. type: Plain text
+#: ../doc/fuser.1:248
+msgid ""
+"B<fuser> may only be able to gather partial information unless run with "
+"privileges.  As a consequence, files opened by processes belonging to other "
+"users may not be listed and executables may be classified as mapped only."
+msgstr ""
+"B<fuser> може бити у могућности да прикупи делимичне информације само ако се "
+"покреће са привилегијама. Као последица тога, датотеке које су отворили "
+"процеси који припадају другим корисницима можда неће бити на списку, а "
+"извршне датотеке могу бити класификоване само као мапиране."
+
+#. type: Plain text
+#: ../doc/fuser.1:257
+msgid ""
+"B<fuser> cannot report on any processes that it doesn't have permission to "
+"look at the file descriptor table for.  The most common time this problem "
+"occurs is when looking for TCP or UDP sockets when running B<fuser> as a non-"
+"root user.  In this case B<fuser> will report no access."
+msgstr ""
+"B<fuser> не може извештавати ни о једном процесу за који нема дозволу да "
+"прегледа табелу описника датотеке. Овај проблем се најчешће јавља када се "
+"траже ТЦП или УДП прикљчнице када се B<fuser> покрене као корисник који није "
+"администратор. У овом случају B<fuser> неће пријавити приступ."
+
+#. type: Plain text
+#: ../doc/fuser.1:262
+msgid ""
+"Installing B<fuser> SUID root will avoid problems associated with partial "
+"information, but may be undesirable for security and privacy reasons."
+msgstr ""
+"Инсталирање B<fuser> СУИБ-а корена ће избећи проблеме повезане са делимичним "
+"информацијама, али може бити непожељно из разлога безбедности и приватности."
+
+#. type: Plain text
+#: ../doc/fuser.1:268
+msgid ""
+"B<udp> and B<tcp> name spaces, and UNIX domain sockets can't be searched "
+"with kernels older than 1.3.78."
+msgstr ""
+"B<udp> и B<tcp> називни простори, и прикључнице ЈУНИКС домена се не могу "
+"претраживати језгрима старијим од 1.3.78."
+
+#. type: Plain text
+#: ../doc/fuser.1:272
+msgid "Accesses by the kernel are only shown with the B<-v> option."
+msgstr "Приступи језгром се приказују само опцијом B<-v>."
+
+#. type: Plain text
+#: ../doc/fuser.1:278
+msgid ""
+"The B<-k> option only works on processes.  If the user is the kernel, "
+"B<fuser> will print an advice, but take no action beyond that."
+msgstr ""
+"Опција B<-k> ради само на процесима. Ако је корисник језгро, B<fuser> ће "
+"исписати савет, али неће преузети никакву радњу након тога."
+
+#. type: Plain text
+#: ../doc/fuser.1:283
+msgid ""
+"B<fuser> will not see block devices mounted by processes in a different "
+"mount namespace.  This is due to the device ID shown in the process' file "
+"descriptor table being from the process namespace, not fuser's; meaning it "
+"won't match."
+msgstr ""
+"B<fuser> неће видети блок уређаје прикачене процесима на различитим називним "
+"просторима качења.  Ово је зато што је ИД уређаја приказан у табели описника "
+"датотеке процеса из називног простора процеса, не из „fuser“-а; значење се "
+"неће поклопити."
+
+#. type: SH
+#: ../doc/fuser.1:283 ../doc/peekfd.1:56 ../doc/pstree.1:172
+#, no-wrap
+msgid "BUGS"
+msgstr "ГРЕШКЕ"
+
+#. type: Plain text
+#: ../doc/fuser.1:289
+msgid ""
+"B<fuser -m /dev/sgX> will show (or kill with the B<-k> flag) all processes, "
+"even if you don't have that device configured.  There may be other devices "
+"it does this for too."
+msgstr ""
+"B<fuser -m /dev/sgX> ће приказати (или убити опцијом B<-k>) све процесе, чак "
+"и ако нисте подесили тај уређај. Могу постојати други уређаји који то такође "
+"раде."
+
+#. type: Plain text
+#: ../doc/fuser.1:293
+msgid ""
+"The mount B<-m> option will match any file within the same device as the "
+"specified file, use the B<-M> option as well if you mean to specify only the "
+"mount point."
+msgstr ""
+"Опција качења B<-m> поклопиће било коју датотеку у истом уређају као "
+"наведену датотеку, користите опцију B<-M> ако желите да наведете само тачку "
+"качења."
+
+#. type: Plain text
+#: ../doc/fuser.1:301
+msgid ""
+"B<fuser> will not match mapped files, such as a process' shared libraries if "
+"they are on a B<btrfs>(5)  filesystem due to the device IDs being different "
+"for B<stat>(2)  and I</proc/E<lt>PIDE<gt>/maps>."
+msgstr ""
+
+#. type: SH
+#: ../doc/fuser.1:301 ../doc/killall.1:170 ../doc/peekfd.1:63 ../doc/pslog.1:27
+#: ../doc/pstree.1:174
+#, no-wrap
+msgid "SEE ALSO"
+msgstr "ВИДИТЕ ТАКОЂЕ"
+
+#. type: Plain text
+#: ../doc/fuser.1:310
+#, fuzzy
+#| msgid ""
+#| "B<kill>(1), B<killall>(1), B<lsof>(8), B<mount_namespaces>(7), "
+#| "B<pkill>(1), B<ps>(1), B<kill>(2)."
+msgid ""
+"B<kill>(1), B<killall>(1), B<stat>(2), B<btrfs>(5), B<lsof>(8), "
+"B<mount_namespaces>(7), B<pkill>(1), B<ps>(1), B<kill>(2)."
+msgstr ""
+"B<kill>(1), B<killall>(1), B<lsof>(8), B<mount_namespaces>(7), B<pkill>(1), "
+"B<ps>(1), B<kill>(2)."
+
+#. type: TH
+#: ../doc/killall.1:9
+#, no-wrap
+msgid "KILLALL"
+msgstr "УБИЈ_СВЕ"
+
+#. type: TH
+#: ../doc/killall.1:9
+#, fuzzy, no-wrap
+#| msgid "2021-06-21"
+msgid "2023-06-17"
+msgstr "21.06.2021."
+
+#. type: Plain text
+#: ../doc/killall.1:12
+msgid "killall - kill processes by name"
+msgstr "killall – убија процесе по називу"
+
+#. type: Plain text
+#: ../doc/killall.1:38
+msgid ""
+"B<killall> [B<-Z>,B<\\ --context> I<pattern>] [B<-e>,B<\\ --exact>] [B<-g>,"
+"B<\\ --process-group>] [B<-i>,B<\\ --interactive>] [B<-n>,B<\\ --ns> I<PID>] "
+"[B<-o>,B<\\ --older-than> I<TIME>] [B<-q>,B<\\ --quiet>] [B<-r>,B<\\ --"
+"regexp>] [B<-s>,B<\\ --signal> I<SIGNAL>,\\ B<->I<SIGNAL>] [B<-u>,B<\\ --"
+"user> I<user>] [B<-v>,B<\\ --verbose>] [B<-w>,B<\\ --wait>] [B<-y>,B<\\ --"
+"younger-than> I<TIME>] [B<-I>,B<\\ --ignore-case>] [B<-V>,B<\\ --version>] "
+"[B<-->] I<name> ..."
+msgstr ""
+"B<killall> [B<-Z>,B<\\ --context> I<образац>] [B<-e>,B<\\ --exact>] [B<-g>,"
+"B<\\ --process-group>] [B<-i>,B<\\ --interactive>] [B<-n>,B<\\ --ns> I<ПИД>] "
+"[B<-o>,B<\\ --older-than> I<ВРЕМЕ>] [B<-q>,B<\\ --quiet>] [B<-r>,B<\\ --"
+"regexp>] [B<-s>,B<\\ --signal> I<СИГНАЛ>,\\ B<->I<СИГНАЛ>] [B<-u>,B<\\ --"
+"user> I<user>] [B<-v>,B<\\ --verbose>] [B<-w>,B<\\ --wait>] [B<-y>,B<\\ --"
+"younger-than> I<ВРЕМЕ>] [B<-I>,B<\\ --ignore-case>] [B<-V>,B<\\ --version>] "
+"[B<-->] I<назив> ..."
+
+#. type: Plain text
+#: ../doc/killall.1:41
+#, fuzzy
+#| msgid "B<killall> B<-V>,B<\\ --version>"
+msgid "B<killall> B<-l>, B<--list>"
+msgstr "B<killall> B<-V>,B<\\ --version>"
+
+#. type: Plain text
+#: ../doc/killall.1:44
+msgid "B<killall> B<-V>,B<\\ --version>"
+msgstr "B<killall> B<-V>,B<\\ --version>"
+
+#. type: Plain text
+#: ../doc/killall.1:49
+msgid ""
+"B<killall> sends a signal to all processes running any of the specified "
+"commands.  If no signal name is specified, SIGTERM is sent."
+msgstr ""
+"B<killall> шаље сигнал свим процесима који обављају било коју од наведених "
+"наредби. Ако није наведен ниједан назив сигнала, шаље се „SIGTERM“."
+
+#. type: Plain text
+#: ../doc/killall.1:58
+#, fuzzy
+#| msgid ""
+#| "Signals can be specified either by name (e.g.  B<-HUP> or B<-SIGHUP>)  or "
+#| "by number (e.g.  B<-1>)  or by option B<-s>."
+msgid ""
+"Signals can be specified either by name (e.g.\\& B<-HUP> or B<-SIGHUP>)  or "
+"by number (e.g.\\& B<-1>)  or by option B<-s>."
+msgstr ""
+"Сигнали могу бити наведени или према називу (нпр. B<-HUP> или B<-SIGHUP>) "
+"или према броју (нпр. B<-1>) или опцијом B<-s>."
+
+#. type: Plain text
+#: ../doc/killall.1:65
+msgid ""
+"If the command name is not regular expression (option B<-r>)  and contains a "
+"slash (B</>), processes executing that particular file will be selected for "
+"killing, independent of their name."
+msgstr ""
+"Ако назив наредбе није регуларни израз (опција B<-r>)  и садржи косу црту "
+"(B</>), процеси који извршавају ту посебну датотеку биће изабрани за "
+"убијање, независно од њиховог назива."
+
+#. type: Plain text
+#: ../doc/killall.1:72
+msgid ""
+"B<killall> returns a zero return code if at least one process has been "
+"killed for each listed command, or no commands were listed and at least one "
+"process matched the B<-u> and B<-Z> search criteria.  B<killall> returns non-"
+"zero otherwise."
+msgstr ""
+"B<killall> даје нулу као резултирајући код ако је барем један процес убијен "
+"за сваку исписану наредбу, или није исписана ниједна наредба а барем један "
+"процес одговара B<-u> и B<-Z> критеријуму претраге. B<killall> даје не-нулу "
+"у супротном."
+
+#. type: Plain text
+#: ../doc/killall.1:78
+msgid ""
+"A B<killall> process never kills itself (but may kill other B<killall> "
+"processes)."
+msgstr ""
+"Процес B<killall> никада не убија самог себе (али може убити друге "
+"B<killall> процесе)."
+
+#. type: IP
+#: ../doc/killall.1:79
+#, no-wrap
+msgid "B<-e>, B<--exact>"
+msgstr "B<-e>, B<--exact>"
+
+#. type: Plain text
+#: ../doc/killall.1:93
+msgid ""
+"Require an exact match for very long names.  If a command name is longer "
+"than 15 characters, the full name may be unavailable (i.e.  it is swapped "
+"out).  In this case, B<killall> will kill everything that matches within the "
+"first 15 characters.  With B<-e>, such entries are skipped.  B<killall> "
+"prints a message for each skipped entry if B<-v> is specified in addition to "
+"B<-e>."
+msgstr ""
+"Захтева тачно подударање за врло дуге називе. Ако је назив наредбе дужи од "
+"15 знакова, пун назив можда неће бити доступан (тј. замењен је). У овом "
+"случају, B<killall> ће убити све што се подудара са првих 15 знакова. Са B<-"
+"e>, такви уноси се прескачу. B<killall> исписује поруку за сваки прескочени "
+"унос ако је B<-v> наведена поред B<-e>."
+
+#. type: IP
+#: ../doc/killall.1:93
+#, no-wrap
+msgid "B<-I>, B<--ignore-case>"
+msgstr "B<-I>, B<--ignore-case>"
+
+#. type: Plain text
+#: ../doc/killall.1:95
+msgid "Do case insensitive process name match."
+msgstr "Одрађује покапање назива процеса без разликовања величине слова."
+
+#. type: IP
+#: ../doc/killall.1:95
+#, no-wrap
+msgid "B<-g>, B<--process-group>"
+msgstr "B<-g>, B<--process-group>"
+
+#. type: Plain text
+#: ../doc/killall.1:99
+msgid ""
+"Kill the process group to which the process belongs.  The kill signal is "
+"only sent once per group, even if multiple processes belonging to the same "
+"process group were found."
+msgstr ""
+"Убија групу процеса којој процес припада. Сигнал убијања шаље се само једном "
+"по групи, чак и ако је пронађено више процеса који припадају истој групи "
+"процеса."
+
+#. type: Plain text
+#: ../doc/killall.1:101
+msgid "Interactively ask for confirmation before killing."
+msgstr "Међудејствено пита за потврду пре убијања."
+
+#. type: IP
+#: ../doc/killall.1:101
+#, no-wrap
+msgid "B<-l>, B<--list>"
+msgstr "B<-l>, B<--list>"
+
+#. type: IP
+#: ../doc/killall.1:103
+#, no-wrap
+msgid "B<-n>, B<--ns>"
+msgstr "B<-n>, B<--ns>"
+
+#. type: Plain text
+#: ../doc/killall.1:106
+msgid ""
+"Match against the PID namespace of the given PID. The default is to match "
+"against all namespaces."
+msgstr ""
+"Упоређује са називним простором ПИБ-а датог ПИБ-а. Основно је да упоређује "
+"са свим називним просторима."
+
+#. type: IP
+#: ../doc/killall.1:106
+#, no-wrap
+msgid "B<-o>, B<--older-than>"
+msgstr "B<-o>, B<--older-than>"
+
+#. type: Plain text
+#: ../doc/killall.1:111
+msgid ""
+"Match only processes that are older (started before) the time specified.  "
+"The time is specified as a float then a unit.  The units are s,m,h,d,w,M,y "
+"for seconds, minutes, hours, days, weeks, months and years respectively."
+msgstr ""
+"Упоређује само процесе који су старији (започети пре) наведеног времена. "
+"Време је назначено као вредност са покретним зарезом а затим јединица. "
+"Јединице су „s,m,h,d,w,M,y“ за секунде, минуте, сате, дане, недеље, месеце и "
+"године."
+
+#. type: IP
+#: ../doc/killall.1:111
+#, no-wrap
+msgid "B<-q>, B<--quiet>"
+msgstr "B<-q>, B<--quiet>"
+
+#. type: Plain text
+#: ../doc/killall.1:113
+msgid "Do not complain if no processes were killed."
+msgstr "Не жали се ако није убијен ниједан процес."
+
+#. type: IP
+#: ../doc/killall.1:113
+#, no-wrap
+msgid "B<-r>, B<--regexp>"
+msgstr "B<-r>, B<--regexp>"
+
+#. type: Plain text
+#: ../doc/killall.1:116
+msgid ""
+"Interpret process name pattern as a POSIX extended regular expression, per "
+"B<regex>(3)."
+msgstr ""
+"Тумачи шаблон назива процеса као проширени регуларни израз ПОСИКСА, за "
+"B<regex>(3)."
+
+#. type: IP
+#: ../doc/killall.1:116
+#, no-wrap
+msgid "B<-s>, B<--signal>, B<->I<SIGNAL>"
+msgstr "B<-s>, B<--signal>, B<->I<СИГНАЛ>"
+
+#. type: Plain text
+#: ../doc/killall.1:118
+msgid "Send this signal instead of SIGTERM."
+msgstr "Шаље овај сигнал уместо „SIGTERM“-а."
+
+#. type: Plain text
+#: ../doc/killall.1:121
+msgid ""
+"Kill only processes the specified user owns.  Command names are optional."
+msgstr ""
+"Убија само процесе које поседује наведени корисник. Називи наредби су "
+"изборни."
+
+#. type: Plain text
+#: ../doc/killall.1:123
+msgid "Report if the signal was successfully sent."
+msgstr "Извештава ако је сигнал успешно послат."
+
+#. type: IP
+#: ../doc/killall.1:125
+#, no-wrap
+msgid "B<-w>, B<--wait>"
+msgstr "B<-w>, B<--wait>"
+
+#. type: Plain text
+#: ../doc/killall.1:133
+msgid ""
+"Wait for all killed processes to die.  B<killall> checks once per second if "
+"any of the killed processes still exist and only returns if none are left.  "
+"Note that B<killall> may wait forever if the signal was ignored, had no "
+"effect, or if the process stays in zombie state."
+msgstr ""
+"Чека да сви убијени процеси умру. B<killall> проверава једном у секунди да "
+"ли неки од убијених процеса и даље постоји и резултира само ако ниједан није "
+"остао. Знајте да B<killall> може да чека заувек ако је сигнал занемарен, "
+"није деловао или ако процес остане у зомби стању."
+
+#. type: IP
+#: ../doc/killall.1:133
+#, no-wrap
+msgid "B<-y>, B<--younger-than>"
+msgstr "B<-y>, B<--younger-than>"
+
+#. type: Plain text
+#: ../doc/killall.1:138
+msgid ""
+"Match only processes that are younger (started after) the time specified.  "
+"The time is specified as a float then a unit.  The units are s,m,h,d,w,M,y "
+"for seconds, minutes, hours, days, weeks, Months and years respectively."
+msgstr ""
+"Упоређује само процесе који су млађи (започети након) наведеног времена. "
+"Време је назначено као вредност са покретним зарезом а затим јединица. "
+"Јединице су „s,m,h,d,w,M,y“ за секунде, минуте, сате, дане, недеље, месеце и "
+"године."
+
+#. type: IP
+#: ../doc/killall.1:138
+#, no-wrap
+msgid "B<-Z>, B<--context>"
+msgstr "B<-Z>, B<--context>"
+
+#. type: Plain text
+#: ../doc/killall.1:143
+msgid ""
+"Specify security context: kill only processes having security context that "
+"match with given extended regular expression pattern.  Must precede other "
+"arguments on the command line.  Command names are optional."
+msgstr ""
+"Наводи контекст безбедности: убија само процесе који имају контекст "
+"безбедности који се подударају са датим шаблоном проширеног регуларног "
+"израза. Мора да претходи осталим аргументима на линији наредби. Називи "
+"наредби нису обавезни."
+
+#. type: SH
+#: ../doc/killall.1:147
+#, no-wrap
+msgid "KNOWN BUGS"
+msgstr "ПОЗНАТЕ ГРЕШКЕ"
+
+#. type: Plain text
+#: ../doc/killall.1:150
+msgid ""
+"Killing by file only works for executables that are kept open during "
+"execution, i.e. impure executables can't be killed this way."
+msgstr ""
+"Убијање по датотеци ради само за извршне које су остале отворене за време "
+"изврашавање, тј. нечисте извршне се не могу убити на овај начин."
+
+#. type: Plain text
+#: ../doc/killall.1:156
+msgid ""
+"Be warned that typing B<killall> I<name> may not have the desired effect on "
+"non-Linux systems, especially when done by a privileged user."
+msgstr ""
+"Знајте да уписивање B<killall> I<назив> не може имати жељеног дејства на не-"
+"Линукс системима, нарочито када се ради са привилегованим корисником."
+
+#. type: Plain text
+#: ../doc/killall.1:160
+msgid ""
+"B<killall -w> doesn't detect if a process disappears and is replaced by a "
+"new process with the same PID between scans."
+msgstr ""
+"B<killall -w> не открива ако процес нестане и буде замењен новим процесом са "
+"истим ПИБ-ом између претраживања."
+
+#. type: Plain text
+#: ../doc/killall.1:164
+msgid ""
+"If processes change their name, B<killall> may not be able to match them "
+"correctly."
+msgstr ""
+"Ако процеси промене своје називе, B<killall> не може бити у могућности да их "
+"исправно упореди."
+
+#. type: Plain text
+#: ../doc/killall.1:170
+msgid ""
+"B<killall> has a limit of names that can be specified on the command line.  "
+"This figure is the size of an unsigned long integer multiplied by 8.  For "
+"most 32 bit systems the limit is 32 and similarly for a 64 bit system the "
+"limit is usually 64."
+msgstr ""
+"B<killall> има ограничење назива који се могу навести на линији наредби. Ова "
+"бројка је величина великог целог броја без знака помножена са 8. За већину "
+"32-битних система ограничење је 32, а слично за 64-битни систем ограничење "
+"је обично 64."
+
+#. type: Plain text
+#: ../doc/killall.1:178
+msgid ""
+"B<kill>(1), B<fuser>(1), B<pgrep>(1), B<pidof>(1), B<pkill>(1), B<ps>(1), "
+"B<kill>(2), B<regex>(3)."
+msgstr ""
+"B<kill>(1), B<fuser>(1), B<pgrep>(1), B<pidof>(1), B<pkill>(1), B<ps>(1), "
+"B<kill>(2), B<regex>(3)."
+
+#. type: TH
+#: ../doc/peekfd.1:9
+#, no-wrap
+msgid "PEEKFD"
+msgstr "PEEKFD"
+
+#. type: TH
+#: ../doc/peekfd.1:9
+#, no-wrap
+msgid "2021-12-01"
+msgstr "01.12.2021."
+
+#. type: Plain text
+#: ../doc/peekfd.1:12
+msgid "peekfd - peek at file descriptors of running processes"
+msgstr "peekfd – вири у описнике датотека радних процеса"
+
+#. type: Plain text
+#: ../doc/peekfd.1:23
+msgid ""
+"B<peekfd> [B<-8>,B<--eight-bit-clean>] [B<-n>,B<--no-headers>] [B<-c>,B<--"
+"follow>] [B<-d>,B<--duplicates-removed>] [B<-V>,B<--version>] [B<-h>,B<--"
+"help>] I<pid> [I<fd>] [I<fd>] ..."
+msgstr ""
+"B<peekfd> [B<-8>,B<--eight-bit-clean>] [B<-n>,B<--no-headers>] [B<-c>,B<--"
+"follow>] [B<-d>,B<--duplicates-removed>] [B<-V>,B<--version>] [B<-h>,B<--"
+"help>] I<пид> [I<од>] [I<од>] ..."
+
+#. type: Plain text
+#: ../doc/peekfd.1:28
+msgid ""
+"B<peekfd> attaches to a running process and intercepts all reads and writes "
+"to file descriptors.  You can specify the desired file descriptor numbers or "
+"dump all of them."
+msgstr ""
+"B<peekfd> се каћи за радни процес и пресреће сва читања и писања у описнике "
+"датотека. Можете одредити жељене бројеве описника датотека или их све "
+"избацити."
+
+#. type: IP
+#: ../doc/peekfd.1:29
+#, no-wrap
+msgid "-8"
+msgstr "-8"
+
+#. type: Plain text
+#: ../doc/peekfd.1:31
+msgid "Do no post-processing on the bytes being read or written."
+msgstr "Не обавља постобраду на бајтовима који се читају или записују."
+
+#. type: IP
+#: ../doc/peekfd.1:31
+#, no-wrap
+msgid "-n"
+msgstr "-n"
+
+#. type: Plain text
+#: ../doc/peekfd.1:33
+msgid "Do not display headers indicating the source of the bytes dumped."
+msgstr "Не приказује заглавља која означавају извор избачених бајтова."
+
+#. type: IP
+#: ../doc/peekfd.1:33
+#, no-wrap
+msgid "-c"
+msgstr "-c"
+
+#. type: Plain text
+#: ../doc/peekfd.1:36
+msgid ""
+"Also dump the requested file descriptor activity in any new child processes "
+"that are created."
+msgstr ""
+"Такође избацује активност захтеваног описника датотеке у било ком изрођеном "
+"процесу који је створен."
+
+#. type: IP
+#: ../doc/peekfd.1:36
+#, no-wrap
+msgid "-d"
+msgstr "-d"
+
+#. type: Plain text
+#: ../doc/peekfd.1:39
+msgid ""
+"Remove duplicate read/writes from the output.  If you're looking at a tty "
+"with echo, you might want this."
+msgstr ""
+"Уклања удвостручена читања/записивања из излаза. Ако гледате у конзолу са "
+"ехом, можда ћете желети ово."
+
+#. type: IP
+#: ../doc/peekfd.1:39
+#, no-wrap
+msgid "-v"
+msgstr "-v"
+
+#. type: Plain text
+#: ../doc/peekfd.1:41
+msgid "Display a version string."
+msgstr "Приказује ниску издања."
+
+#. type: IP
+#: ../doc/peekfd.1:41
+#, no-wrap
+msgid "-h"
+msgstr "-h"
+
+#. type: Plain text
+#: ../doc/peekfd.1:43
+msgid "Display a help message."
+msgstr "Приказује поруку помоћи."
+
+#. type: Plain text
+#: ../doc/peekfd.1:45
+msgid "B</proc/>I<*>B</fd>"
+msgstr "B</proc/>I<*>B</fd>"
+
+#. type: Plain text
+#: ../doc/peekfd.1:48
+msgid ""
+"Not used but useful for the user to look at to get good file descriptor "
+"numbers."
+msgstr ""
+"Не користи се али је корисно кориснику да погледа да добави добре бројеве "
+"описника датотека."
+
+#. type: SH
+#: ../doc/peekfd.1:48
+#, no-wrap
+msgid "ENVIRONMENT"
+msgstr "ОКРУЖЕЊЕ"
+
+#. type: Plain text
+#: ../doc/peekfd.1:50
+msgid "None."
+msgstr "Ништа."
+
+#. type: SH
+#: ../doc/peekfd.1:50
+#, no-wrap
+msgid "DIAGNOSTICS"
+msgstr "ДИЈАГНОСТИКА"
+
+#. type: Plain text
+#: ../doc/peekfd.1:52
+msgid "The following diagnostics may be issued on stderr:"
+msgstr "Следећа дијагностика се може појавити на стандардној грешки:"
+
+#. type: TP
+#: ../doc/peekfd.1:52
+#, no-wrap
+msgid "B<Error attaching to pid >I<E<lt>PIDE<gt>>"
+msgstr "B<Грешка прикачињања на пиб >I<E<lt>PIDE<gt>>"
+
+#. type: Plain text
+#: ../doc/peekfd.1:56
+msgid ""
+"An unknown error occurred while attempted to attach to a process, you may "
+"need to be root."
+msgstr ""
+"Непозната грешка која се догодила приликом покушаја прикачињања процесу, "
+"морате бити администратор."
+
+#. type: Plain text
+#: ../doc/peekfd.1:59
+msgid ""
+"Probably lots.  Don't be surprised if the process you are monitoring dies."
+msgstr ""
+"Вероватно много. Немојте се изненадити ако процес који надгледате оконча."
+
+#. type: SH
+#: ../doc/peekfd.1:59 ../doc/pslog.1:31
+#, no-wrap
+msgid "AUTHOR"
+msgstr "АУТОР"
+
+#. type: Plain text
+#: ../doc/peekfd.1:63
+msgid "E<.MT trent.waddington@gmail.com> Trent Waddington E<.ME>"
+msgstr "E<.MT trent.waddington@gmail.com> Трент Вадингтон E<.ME>"
+
+#. type: Plain text
+#: ../doc/peekfd.1:64
+msgid "B<ttysnoop>(8)"
+msgstr "B<ttysnoop>(8)"
+
+#. type: TH
+#: ../doc/pslog.1:9
+#, no-wrap
+msgid "PSLOG"
+msgstr "PSLOG"
+
+#. type: TH
+#: ../doc/pslog.1:9 ../doc/prtstat.1:9
+#, no-wrap
+msgid "2020-09-09"
+msgstr "09.09.2020."
+
+#. type: TH
+#: ../doc/pslog.1:9
+#, no-wrap
+msgid "Linux\""
+msgstr "Линукс\""
+
+#. type: TH
+#: ../doc/pslog.1:9
+#, no-wrap
+msgid "Linux User's Manual"
+msgstr "Корисничко упутство Линукса"
+
+#. type: Plain text
+#: ../doc/pslog.1:12
+msgid "pslog - report current logs path of a process"
+msgstr "pslog – извештава о тренутној путањи дневника процеса"
+
+#. type: Plain text
+#: ../doc/pslog.1:16
+msgid "B<pslog> I<pid> \\&...\""
+msgstr "B<pslog> I<pid> \\&...\""
+
+#. type: Plain text
+#: ../doc/pslog.1:18
+msgid "B<pslog -V>"
+msgstr "B<pslog -V>"
+
+#. type: Plain text
+#: ../doc/pslog.1:23
+msgid "The B<pslog> command reports the current working logs of a process."
+msgstr "Наредба B<pslog> извештава о тренутном радном дневнику процеса."
+
+#. type: IP
+#: ../doc/pslog.1:24 ../doc/pstree.1:163
+#, no-wrap
+msgid "B<-V>"
+msgstr "B<-V>"
+
+#. type: Plain text
+#: ../doc/pslog.1:31
+msgid "B<pgrep>(1), B<ps>(1), B<pwdx>(1)."
+msgstr "B<pgrep>(1), B<ps>(1), B<pwdx>(1)."
+
+#. type: Plain text
+#: ../doc/pslog.1:40
+msgid ""
+"Vito Mule\\(cq E<.MT mulevito@gmail.com> E<.ME> wrote B<pslog> in 2015. "
+"Please send bug reports to E<.MT mulevito@gmail.com> E<.ME .>"
+msgstr ""
+"Вито Муле\\(cq E<.MT mulevito@gmail.com> E<.ME> је написао B<pslog> 2015. "
+"Извештаје о грешкама пошаљите на E<.MT mulevito@gmail.com> E<.ME .>"
+
+#. type: TH
+#: ../doc/prtstat.1:9
+#, no-wrap
+msgid "PRTSTAT"
+msgstr "PRTSTAT"
+
+#. type: Plain text
+#: ../doc/prtstat.1:12
+msgid "prtstat - print statistics of a process"
+msgstr "prtstat – исписује статистику процеса"
+
+#. type: Plain text
+#: ../doc/prtstat.1:17
+msgid "B<prtstat> [B<-r>|B<--raw>] I<pid>"
+msgstr "B<prtstat> [B<-r>|B<--raw>] I<pid>"
+
+#. type: Plain text
+#: ../doc/prtstat.1:20
+msgid "B<prtstat> B<-V>|B<--version>"
+msgstr "B<prtstat> B<-V>|B<--version>"
+
+#. type: Plain text
+#: ../doc/prtstat.1:27
+msgid ""
+"B<prtstat> prints the statistics of the specified process.  This information "
+"comes from the B</proc/>I<pid>B</stat> file."
+msgstr ""
+"B<prtstat> исписује статистику наведног процеса. Ова информација долази из "
+"датотеке B</proc/>I<pid>B</stat>."
+
+#. type: TP
+#: ../doc/prtstat.1:28
+#, no-wrap
+msgid "B<-r>,B<\\ --raw>"
+msgstr "B<-r>,B<\\ --raw>"
+
+#. type: Plain text
+#: ../doc/prtstat.1:31
+msgid "Print the information in raw format."
+msgstr "Исписује информације у сировом формату."
+
+#. type: TP
+#: ../doc/prtstat.1:31
+#, no-wrap
+msgid "B<-V>,B<\\ --version>"
+msgstr "B<-V>,B<\\ --version>"
+
+#. type: Plain text
+#: ../doc/prtstat.1:35
+msgid "Show the version information for B<prtstat>."
+msgstr "Приказује информације о издању за B<prtstat>."
+
+#. type: TP
+#: ../doc/prtstat.1:36
+#, no-wrap
+msgid "B</proc/>I<pid>B</stat>"
+msgstr "B</proc/>I<pid>B</stat>"
+
+#. type: Plain text
+#: ../doc/prtstat.1:40
+msgid "source of the information B<prtstat> uses."
+msgstr "извор информација које користи B<prtstat>."
+
+#. type: TH
+#: ../doc/pstree.1:9
+#, no-wrap
+msgid "PSTREE"
+msgstr "PSTREE"
+
+#. type: TH
+#: ../doc/pstree.1:9
+#, no-wrap
+msgid "2021-06-21"
+msgstr "21.06.2021."
+
+#. type: Plain text
+#: ../doc/pstree.1:12
+msgid "pstree - display a tree of processes"
+msgstr "pstree – приказује стабло процеса"
+
+#. type: Plain text
+#: ../doc/pstree.1:32
+msgid ""
+"B<pstree> [B<-a>,B<\\ --arguments>] [B<-c>,B<\\ --compact-not>] [B<-C>,B<\\ "
+"--color\\ >I<attr>] [B<-g>,B<\\ --show-pgids>] [B<-h>,B<\\ --highlight-all>,"
+"B<\\ -H>I<\\ pid>,B<\\ --highlight-pid\\ >I<pid>] [B<-l>,B<\\ --long>] [B<-"
+"n>,B<\\ --numeric-sort>] [B<-N>,B<\\ --ns-sort\\ >I<ns>] [B<-p>,B<\\ --show-"
+"pids>] [B<-s>,B<\\ --show-parents>] [B<-S>,B<\\ --ns-changes>] [B<-t>,B<\\ --"
+"thread-names>] [B<-T>,B<\\ --hide-threads>] [B<-u>,B<\\ --uid-changes>] [B<-"
+"Z>,B<\\ --security-context>] [B<-A>,B<\\ --ascii>,B<\\ -G>,B<\\ --vt100>,"
+"B<\\ -U>,B<\\ --unicode>] [I<pid>,B<\\ >I<user>]"
+msgstr ""
+"B<pstree> [B<-a>,B<\\ --arguments>] [B<-c>,B<\\ --compact-not>] [B<-C>,B<\\ "
+"--color\\ >I<атрб>] [B<-g>,B<\\ --show-pgids>] [B<-h>,B<\\ --highlight-all>,"
+"B<\\ -H>I<\\ pid>,B<\\ --highlight-pid\\ >I<пид>] [B<-l>,B<\\ --long>] [B<-"
+"n>,B<\\ --numeric-sort>] [B<-N>,B<\\ --ns-sort\\ >I<ns>] [B<-p>,B<\\ --show-"
+"pids>] [B<-s>,B<\\ --show-parents>] [B<-S>,B<\\ --ns-changes>] [B<-t>,B<\\ --"
+"thread-names>] [B<-T>,B<\\ --hide-threads>] [B<-u>,B<\\ --uid-changes>] [B<-"
+"Z>,B<\\ --security-context>] [B<-A>,B<\\ --ascii>,B<\\ -G>,B<\\ --vt100>,"
+"B<\\ -U>,B<\\ --unicode>] [I<пид>,B<\\ >I<корисник>]"
+
+#. type: Plain text
+#: ../doc/pstree.1:35
+msgid "B<pstree> B<-V>,B<\\ --version>"
+msgstr "B<pstree> B<-V>,B<\\ --version>"
+
+#. type: Plain text
+#: ../doc/pstree.1:46
+msgid ""
+"B<pstree> shows running processes as a tree.  The tree is rooted at either "
+"I<pid> or B<init> if I<pid> is omitted.  If a user name is specified, all "
+"process trees rooted at processes owned by that user are shown."
+msgstr ""
+"B<pstree> приказује радне процесе као стабло. Стабло је укорењено или на "
+"I<пиб> или B<init> ако је I<пиб> изостављен. Ако је наведено име корисника, "
+"сва стабла процеса са кореном у процесима које поседује тај корисник биће "
+"приказана."
+
+#. type: Plain text
+#: ../doc/pstree.1:50
+msgid ""
+"B<pstree> visually merges identical branches by putting them in square "
+"brackets and prefixing them with the repetition count, e.g."
+msgstr ""
+"B<pstree> видљиво стапа истоветне гране стављајући их у средње заграде и "
+"додајући им префикс укупности понављања, нпр."
+
+#. type: Plain text
+#: ../doc/pstree.1:56
+#, no-wrap
+msgid ""
+"    init-+-getty\n"
+"         |-getty\n"
+"         |-getty\n"
+"         `-getty\n"
+msgstr ""
+"    init-+-getty\n"
+"         |-getty\n"
+"         |-getty\n"
+"         `-getty\n"
+
+#. type: Plain text
+#: ../doc/pstree.1:59
+msgid "becomes"
+msgstr "постаје"
+
+#. type: Plain text
+#: ../doc/pstree.1:62
+#, no-wrap
+msgid "    init---4*[getty]\n"
+msgstr "    init---4*[getty]\n"
+
+#. type: Plain text
+#: ../doc/pstree.1:68
+msgid ""
+"Child threads of a process are found under the parent process and are shown "
+"with the process name in curly braces, e.g."
+msgstr ""
+"Нити порода процеса се налазе под родитељским процесом и приказују се са "
+"називом процеса у великим заградама, нпр."
+
+#. type: Plain text
+#: ../doc/pstree.1:71
+#, no-wrap
+msgid "    icecast2---13*[{icecast2}]\n"
+msgstr "    icecast2---13*[{icecast2}]\n"
+
+#. type: Plain text
+#: ../doc/pstree.1:82
+msgid ""
+"If B<pstree> is called as B<pstree.x11> then it will prompt the user at the "
+"end of the line to press return and will not return until that has "
+"happened.  This is useful for when B<pstree> is run in a xterminal."
+msgstr ""
+"Ако је B<pstree> позван као B<pstree.x11>, тада ће на крају реда затражити "
+"од корисника да притисне „Унеси“ и неће дати резултат док се то не догоди. "
+"Ово је корисно када је B<pstree> покренут у х-терминалу."
+
+#. type: Plain text
+#: ../doc/pstree.1:88
+msgid ""
+"Certain kernel or mount parameters, such as the I<hidepid> option for "
+"procfs, will hide information for some processes. In these situations "
+"B<pstree> will attempt to build the tree without this information, showing "
+"process names as question marks."
+msgstr ""
+"Одређени параметри језгра или качења, као што је опција I<hidepid> за "
+"„procfs“, сакриће информације о неким процесима. У тим ситуацијама B<pstree> "
+"ће покушати да изгради стабло без ових информација, приказујући називе "
+"процеса као знаке упитника."
+
+#. type: IP
+#: ../doc/pstree.1:90
+#, no-wrap
+msgid "B<-a>"
+msgstr "B<-a>"
+
+#. type: Plain text
+#: ../doc/pstree.1:95
+msgid ""
+"Show command line arguments.  If the command line of a process is swapped "
+"out, that process is shown in parentheses.  B<-a> implicitly disables "
+"compaction for processes but not threads."
+msgstr ""
+"Приказује аргументе линије наредби. Ако се линија наредби процеса замени, "
+"тај процес је приказан у заградама. B<-a> изричито онемогућава сабијање за "
+"процесе, али не и нити."
+
+#. type: IP
+#: ../doc/pstree.1:95
+#, no-wrap
+msgid "B<-A>"
+msgstr "B<-A>"
+
+#. type: Plain text
+#: ../doc/pstree.1:97
+msgid "Use ASCII characters to draw the tree."
+msgstr "Користи АСКРИ знакове за исцртавање стабла."
+
+#. type: Plain text
+#: ../doc/pstree.1:100
+msgid ""
+"Disable compaction of identical subtrees.  By default, subtrees are "
+"compacted whenever possible."
+msgstr ""
+"Онемогућава збијање истоветних подстабала. По основи, подстабла се сабијају "
+"кад год је то могуће."
+
+#. type: IP
+#: ../doc/pstree.1:100
+#, no-wrap
+msgid "B<-C>"
+msgstr "B<-C>"
+
+#. type: Plain text
+#: ../doc/pstree.1:105
+msgid ""
+"Color the process name by given attribute. Currently B<pstree> only accepts "
+"the value B<age> which colors by process age.  Processes newer than 60 "
+"seconds are green, newer than an hour yellow and the remaining red."
+msgstr ""
+"Боји назив процеса датим атрибутом. Тренутно B<pstree> прихвата само "
+"вредност B<age> која обојава према старости процеса. Процеси новији од 60 "
+"секунди су зелени, новији од једног сата су жути, а преостали су црвени."
+
+#. type: IP
+#: ../doc/pstree.1:105
+#, no-wrap
+msgid "B<-g>"
+msgstr "B<-g>"
+
+#. type: Plain text
+#: ../doc/pstree.1:109
+msgid ""
+"Show PGIDs.  Process Group IDs are shown as decimal numbers in parentheses "
+"after each process name.  If both PIDs and PGIDs are displayed then PIDs are "
+"shown first."
+msgstr ""
+"Приказује ПГИД-ое. ИД-ови група процеса су приказани као децимални бројеви у "
+"заградама након сваког назива процеса. Ако су приказани и ПИД-ови и ПГИД-"
+"ови, тада се прво приказују ПИД-ови."
+
+#. type: IP
+#: ../doc/pstree.1:109
+#, no-wrap
+msgid "B<-G>"
+msgstr "B<-G>"
+
+#. type: Plain text
+#: ../doc/pstree.1:111
+msgid "Use VT100 line drawing characters."
+msgstr "Користи знакове исцртавања „VT100“ линије."
+
+#. type: IP
+#: ../doc/pstree.1:111
+#, no-wrap
+msgid "B<-h>"
+msgstr "B<-h>"
+
+#. type: Plain text
+#: ../doc/pstree.1:115
+msgid ""
+"Highlight the current process and its ancestors.  This is a no-op if the "
+"terminal doesn't support highlighting or if neither the current process nor "
+"any of its ancestors are in the subtree being shown."
+msgstr ""
+"Истиче тренутни процес и његове претходнике. Ово није опција ако терминал не "
+"подржава истицање или ако ни тренутни процес ни било који од његових "
+"претходника нису у приказаном подстаблу."
+
+#. type: IP
+#: ../doc/pstree.1:115
+#, no-wrap
+msgid "B<-H>"
+msgstr "B<-H>"
+
+#. type: Plain text
+#: ../doc/pstree.1:125
+msgid ""
+"Like B<-h>, but highlight the specified process instead.  Unlike with B<-h>, "
+"B<pstree> fails when using B<-H> if highlighting is not available."
+msgstr ""
+"Као B<-h>, али уместо тога истиче наведени процес.  Супротно од B<-h>, "
+"B<pstree> не успева када се корсити B<-H> када истицање није доступно."
+
+#. type: IP
+#: ../doc/pstree.1:125
+#, no-wrap
+msgid "B<-l>"
+msgstr "B<-l>"
+
+#. type: Plain text
+#: ../doc/pstree.1:129
+msgid ""
+"Display long lines.  By default, lines are truncated to either the COLUMNS "
+"environment variable or the display width.  If neither of these methods "
+"work, the default of 132 columns is used."
+msgstr ""
+"Приказује дуге редове. По основи, редови се скраћују или на променљиву "
+"окружења КОЛОНЕ или на ширину приказа. Ако ниједна од ових метода не "
+"функционише, користе се 132 колоне по основи."
+
+#. type: IP
+#: ../doc/pstree.1:129
+#, no-wrap
+msgid "B<-n>"
+msgstr "B<-n>"
+
+#. type: Plain text
+#: ../doc/pstree.1:132
+msgid ""
+"Sort processes with the same parent by PID instead of by name.  (Numeric "
+"sort.)"
+msgstr ""
+"Ређа процесе са истим почетним према ПИБ-у уместо према називу. (Бројевно "
+"ређање.)"
+
+#. type: IP
+#: ../doc/pstree.1:132
+#, no-wrap
+msgid "B<-N>"
+msgstr "B<-N>"
+
+#. type: Plain text
+#: ../doc/pstree.1:139
+msgid ""
+"Show individual trees for each namespace of the type specified.  The "
+"available types are: I<ipc>, I<mnt>, I<net>, I<pid>, I<time>, I<user>, "
+"I<uts>.  Regular users don't have access to other users' processes "
+"information, so the output will be limited."
+msgstr ""
+"Приказује појединачна стабла за сваки називни прозор наведене врсте: I<ipc>, "
+"I<mnt>, I<net>, I<pid>, I<time>, I<user>, I<uts>.  Обични корисници немају "
+"приступ информацијама процеса других корисника, тако да ће излаз бити "
+"ограничен."
+
+#. type: IP
+#: ../doc/pstree.1:139
+#, no-wrap
+msgid "B<-p>"
+msgstr "B<-p>"
+
+#. type: Plain text
+#: ../doc/pstree.1:144
+msgid ""
+"Show PIDs.  PIDs are shown as decimal numbers in parentheses after each "
+"process name.  B<-p> implicitly disables compaction."
+msgstr ""
+"Приказује ПИБ-ове. ПИБ-ови се приказују као децимални бројеви у заградама "
+"након сваког назива процеса. B<-p> изричито онемогућава збијање."
+
+#. type: IP
+#: ../doc/pstree.1:144
+#, no-wrap
+msgid "B<-s>"
+msgstr "B<-s>"
+
+#. type: Plain text
+#: ../doc/pstree.1:146
+msgid "Show parent processes of the specified process."
+msgstr "Показује полазне процесе наведеног процеса."
+
+#. type: IP
+#: ../doc/pstree.1:146
+#, no-wrap
+msgid "B<-S>"
+msgstr "B<-S>"
+
+#. type: Plain text
+#: ../doc/pstree.1:149
+msgid ""
+"Show namespaces transitions.  Like B<-N>, the output is limited when running "
+"as a regular user."
+msgstr ""
+"Приказује прелазе просторних назива. Коа B<-N>, излаз је ограничен када "
+"радите као обичан корисник."
+
+#. type: IP
+#: ../doc/pstree.1:149
+#, no-wrap
+msgid "B<-t>"
+msgstr "B<-t>"
+
+#. type: Plain text
+#: ../doc/pstree.1:151
+msgid "Show full names for threads when available."
+msgstr "Приказује пуне називе за нити када су доступни."
+
+#. type: IP
+#: ../doc/pstree.1:151
+#, no-wrap
+msgid "B<-T>"
+msgstr "B<-T>"
+
+#. type: Plain text
+#: ../doc/pstree.1:153
+msgid "Hide threads and only show processes."
+msgstr "Скрива нити и приказује само процесе."
+
+#. type: IP
+#: ../doc/pstree.1:153
+#, no-wrap
+msgid "B<-u>"
+msgstr "B<-u>"
+
+#. type: Plain text
+#: ../doc/pstree.1:157
+msgid ""
+"Show uid transitions.  Whenever the uid of a process differs from the uid of "
+"its parent, the new uid is shown in parentheses after the process name."
+msgstr ""
+"Приказује прелазе уиб-а. Гад год се уиб процеса разликује од уиб-а свог "
+"родитеља, тада се нови уиб приказује у заградама након назива процеса."
+
+#. type: IP
+#: ../doc/pstree.1:157
+#, no-wrap
+msgid "B<-U>"
+msgstr "B<-U>"
+
+#. type: Plain text
+#: ../doc/pstree.1:163
+msgid ""
+"Use UTF-8 (Unicode) line drawing characters.  Under Linux 1.1-54 and above, "
+"UTF-8 mode is entered on the console with B<echo -e '\\033%8'> and left with "
+"B<echo -e '\\033%@'>."
+msgstr ""
+"Користи УТФ-8 (Јуникод) знакове исцртавања. Под Линуксом 1.1-54 и новијим, "
+"УТФ-8 режиму се приступа на конзоли опцијом B<echo -e '\\033%8'> и напушта "
+"са B<echo -e '\\033%@'>."
+
+#. type: IP
+#: ../doc/pstree.1:165
+#, no-wrap
+msgid "B<-Z>"
+msgstr "B<-Z>"
+
+#. type: Plain text
+#: ../doc/pstree.1:168
+msgid ""
+"Show the current security attributes of the process. For SELinux systems "
+"this will be the security context."
+msgstr ""
+"Приказује текуће атрибуте безбедности процеса. За СЕЛинукс системе ово ће "
+"бити безбедносни контекст."
+
+#. type: Plain text
+#: ../doc/pstree.1:174
+msgid "Some character sets may be incompatible with the VT100 characters."
+msgstr "Неки скупови знакова могу бити несагласни са „VT100“ знаковима."
+
+#. type: Plain text
+#: ../doc/pstree.1:177
+msgid "B<ps>(1), B<top>(1), B<proc>(5)."
+msgstr "B<ps>(1), B<top>(1), B<proc>(5)."
+
+#, no-wrap
+#~ msgid "2021-01-11"
+#~ msgstr "11.01.2021."
+
+#~ msgid "B<killall> -l"
+#~ msgstr "B<killall> -l"
+
+#~ msgid "B<->"
+#~ msgstr "B<->"
+
+#~ msgid "Reset all options and set the signal back to SIGKILL."
+#~ msgstr "Враћа све опције и поставља сигнал назад на „SIGKILL“."
+
+#~ msgid ""
+#~ "(SELinux) Show security context for each process.  This flag will only "
+#~ "work if B<pstree> is compiled with SELinux support."
+#~ msgstr ""
+#~ "(СЕЛинукс) Приказује контекст безбедности за сваки процес. Ова опција ће "
+#~ "радити само ако је B<pstree> преведено са СЕЛинукс подршком."

@@ -1,0 +1,242 @@
+'\" t
+.\" Copyright, the authors of the Linux man-pages project
+.\"
+.\" SPDX-License-Identifier: GPL-2.0-or-later
+.\"
+.TH fd 4 2025-05-17 "Linux man-pages (unreleased)"
+.SH NAME
+fd \- floppy disk device
+.SH CONFIGURATION
+Floppy drives are block devices with major number 2.
+Typically they
+are owned by
+root:floppy
+(i.e., user root, group floppy) and have
+either mode 0660 (access checking via group membership) or mode 0666
+(everybody has access).
+The minor
+numbers encode the device type, drive number, and controller number.
+For each device type (that is, combination of density and track count)
+there is a base minor number.
+To this base number, add the drive's
+number on its controller and 128 if the drive is on the secondary
+controller.
+In the following device tables,
+.I n
+represents the
+drive number.
+.P
+.B Warning:
+.B if you use formats with more tracks
+.B than supported by your drive,
+.B you may cause it mechanical damage.
+Trying once if more tracks than the usual 40/80 are supported should not
+damage it, but no warranty is given for that.
+If you are not sure, don't create device
+entries for those formats, so as to prevent their usage.
+.P
+Drive-independent device files which automatically detect the media
+format and capacity:
+.TS
+l c
+l c.
+Name	Base
+	minor #
+_
+\f[B]fd\f[]\f[I]n\f[]	0
+.TE
+.P
+5.25 inch double-density device files:
+.TS
+lw(1i) l l l l c
+lw(1i) c c c c c.
+Name	Capacity	Cyl.	Sect.	Heads	Base
+	KiB				minor #
+_
+\f[B]fd\f[]\f[I]n\f[]\f[B]d360\f[]	360	40	9	2	4
+.TE
+.P
+5.25 inch high-density device files:
+.TS
+lw(1i) l l l l c
+lw(1i) c c c c c.
+Name	Capacity	Cyl.	Sect.	Heads	Base
+	KiB				minor #
+_
+\f[B]fd\f[]\f[I]n\f[]\f[B]h360\f[]	360	40	9	2	20
+\f[B]fd\f[]\f[I]n\f[]\f[B]h410\f[]	410	41	10	2	48
+\f[B]fd\f[]\f[I]n\f[]\f[B]h420\f[]	420	42	10	2	64
+\f[B]fd\f[]\f[I]n\f[]\f[B]h720\f[]	720	80	9	2	24
+\f[B]fd\f[]\f[I]n\f[]\f[B]h880\f[]	880	80	11	2	80
+\f[B]fd\f[]\f[I]n\f[]\f[B]h1200\f[]	1200	80	15	2	8
+\f[B]fd\f[]\f[I]n\f[]\f[B]h1440\f[]	1440	80	18	2	40
+\f[B]fd\f[]\f[I]n\f[]\f[B]h1476\f[]	1476	82	18	2	56
+\f[B]fd\f[]\f[I]n\f[]\f[B]h1494\f[]	1494	83	18	2	72
+\f[B]fd\f[]\f[I]n\f[]\f[B]h1600\f[]	1600	80	20	2	92
+.TE
+.P
+3.5 inch double-density device files:
+.TS
+lw(1i) l l l l c
+lw(1i) c c c c c.
+Name	Capacity	Cyl.	Sect.	Heads	Base
+	KiB				minor #
+_
+\f[B]fd\f[]\f[I]n\f[]\f[B]u360\f[]	360	80	9	1	12
+\f[B]fd\f[]\f[I]n\f[]\f[B]u720\f[]	720	80	9	2	16
+\f[B]fd\f[]\f[I]n\f[]\f[B]u800\f[]	800	80	10	2	120
+\f[B]fd\f[]\f[I]n\f[]\f[B]u1040\f[]	1040	80	13	2	84
+\f[B]fd\f[]\f[I]n\f[]\f[B]u1120\f[]	1120	80	14	2	88
+.TE
+.P
+3.5 inch high-density device files:
+.TS
+lw(1i) l l l l c
+lw(1i) c c c c c.
+Name	Capacity	Cyl.	Sect.	Heads	Base
+	KiB				minor #
+_
+\f[B]fd\f[]\f[I]n\f[]\f[B]u360\f[]	360	40	9	2	12
+\f[B]fd\f[]\f[I]n\f[]\f[B]u720\f[]	720	80	9	2	16
+\f[B]fd\f[]\f[I]n\f[]\f[B]u820\f[]	820	82	10	2	52
+\f[B]fd\f[]\f[I]n\f[]\f[B]u830\f[]	830	83	10	2	68
+\f[B]fd\f[]\f[I]n\f[]\f[B]u1440\f[]	1440	80	18	2	28
+\f[B]fd\f[]\f[I]n\f[]\f[B]u1600\f[]	1600	80	20	2	124
+\f[B]fd\f[]\f[I]n\f[]\f[B]u1680\f[]	1680	80	21	2	44
+\f[B]fd\f[]\f[I]n\f[]\f[B]u1722\f[]	1722	82	21	2	60
+\f[B]fd\f[]\f[I]n\f[]\f[B]u1743\f[]	1743	83	21	2	76
+\f[B]fd\f[]\f[I]n\f[]\f[B]u1760\f[]	1760	80	22	2	96
+\f[B]fd\f[]\f[I]n\f[]\f[B]u1840\f[]	1840	80	23	2	116
+\f[B]fd\f[]\f[I]n\f[]\f[B]u1920\f[]	1920	80	24	2	100
+.TE
+.P
+3.5 inch extra-density device files:
+.TS
+lw(1i) l l l l c
+lw(1i) c c c c c.
+Name	Capacity	Cyl.	Sect.	Heads	Base
+	KiB				minor #
+_
+\f[B]fd\f[]\f[I]n\f[]\f[B]u2880\f[]	2880	80	36	2	32
+\f[B]fd\f[]\f[I]n\f[]\f[B]CompaQ\f[]	2880	80	36	2	36
+\f[B]fd\f[]\f[I]n\f[]\f[B]u3200\f[]	3200	80	40	2	104
+\f[B]fd\f[]\f[I]n\f[]\f[B]u3520\f[]	3520	80	44	2	108
+\f[B]fd\f[]\f[I]n\f[]\f[B]u3840\f[]	3840	80	48	2	112
+.TE
+.SH DESCRIPTION
+.B fd
+special files access the floppy disk drives in raw mode.
+The following
+.BR ioctl (2)
+calls are supported by
+.B fd
+devices:
+.TP
+.B FDCLRPRM
+clears the media information of a drive (geometry of disk in drive).
+.TP
+.B FDSETPRM
+sets the media information of a drive.
+The media information will be
+lost when the media is changed.
+.TP
+.B FDDEFPRM
+sets the media information of a drive (geometry of disk in drive).
+The media information will not be lost when the media is changed.
+This will disable autodetection.
+In order to reenable autodetection, you
+have to issue an
+.BR FDCLRPRM .
+.TP
+.B FDGETDRVTYP
+returns the type of a drive (name parameter).
+For formats which work
+in several drive types,
+.B FDGETDRVTYP
+returns a name which is
+appropriate for the oldest drive type which supports this format.
+.TP
+.B FDFLUSH
+invalidates the buffer cache for the given drive.
+.TP
+.B FDSETMAXERRS
+sets the error thresholds for reporting errors, aborting the operation,
+recalibrating, resetting, and reading sector by sector.
+.TP
+.B FDSETMAXERRS
+gets the current error thresholds.
+.TP
+.B FDGETDRVTYP
+gets the internal name of the drive.
+.TP
+.B FDWERRORCLR
+clears the write error statistics.
+.TP
+.B FDWERRORGET
+reads the write error statistics.
+These include the total number of
+write errors, the location and disk of the first write error, and the
+location and disk of the last write error.
+Disks are identified by a
+generation number which is incremented at (almost) each disk change.
+.TP
+.B FDTWADDLE
+Switch the drive motor off for a few microseconds.
+This might be
+needed in order to access a disk whose sectors are too close together.
+.TP
+.B FDSETDRVPRM
+sets various drive parameters.
+.TP
+.B FDGETDRVPRM
+reads these parameters back.
+.TP
+.B FDGETDRVSTAT
+gets the cached drive state (disk changed, write protected et al.)
+.TP
+.B FDPOLLDRVSTAT
+polls the drive and return its state.
+.TP
+.B FDGETFDCSTAT
+gets the floppy controller state.
+.TP
+.B FDRESET
+resets the floppy controller under certain conditions.
+.TP
+.B FDRAWCMD
+sends a raw command to the floppy controller.
+.P
+For more precise information, consult also the
+.I <linux/fd.h>
+and
+.I <linux/fdreg.h>
+include files, as well as the
+.BR floppycontrol (1)
+manual page.
+.SH FILES
+.I /dev/fd*
+.SH NOTES
+The various formats permit reading and writing many types of disks.
+However, if a floppy is formatted with an inter-sector gap that is too small,
+performance may drop,
+to the point of needing a few seconds to access an entire track.
+To prevent this, use interleaved formats.
+.P
+It is not possible to
+read floppies which are formatted using GCR (group code recording),
+which is used by Apple II and Macintosh computers (800k disks).
+.P
+Reading floppies which are hard sectored (one hole per sector, with
+the index hole being a little skewed) is not supported.
+This used to be common with older 8-inch floppies.
+.\" .SH AUTHORS
+.\" Alain Knaff (Alain.Knaff@imag.fr), David Niemi
+.\" (niemidc@clark.net), Bill Broadhurst (bbroad@netcom.com).
+.SH SEE ALSO
+.BR chown (1),
+.BR floppycontrol (1),
+.BR getfdprm (1),
+.BR mknod (1),
+.BR superformat (1),
+.BR mount (8),
+.BR setfdprm (8)

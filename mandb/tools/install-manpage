@@ -1,0 +1,102 @@
+#!/usr/bin/perl   -d
+
+# install-manpage - (c) 1998 by Fabrizio Polacco <fpolacco@debian.org>
+# This program is under GPL License, see /usr/doc/copyright/GPL .
+#
+# this utility "installs" (copies) a manpage into his "right[TM]"
+# location, using the "right[TM]" name, depending on its content
+# (mainly the .TH and the .SH NAME sections).
+# Allowed modifiers are --local, --debian for the location,
+# -section <sect> and --name <name> for the name.
+# option --link creates symlinks for alternative names and
+# --gzip compresses the manpage.
+# --debian implies --link and --gzip .
+#
+#
+
+die "work in progress: don't use!";
+
+my $version='0.1';
+
+my $usage = "Usage:\t"."install-manpage [options] <file> ...\n".
+"    Installs <file> into its correct location, \n".
+"    with its correct name, depending on the  \n".
+"    content of the .TH and .SH NAME sections. \n".
+"    '-' as <file> means stdin; both are filtered to text.\n".
+"options:\n".
+"    --local		installs in /usr/local instead of /usr;\n".
+"    --debian [<path>]	installs in ./debian/<path>/usr\n".
+"			<path> is optional and defaults to 'tmp'\n".
+"			implies --link and --gzip .\n".
+"    --section <sect>	uses <sect> in name. (deprecated)\n".
+"    --name <name>	uses <name> in name. (deprecated)\n".
+"    --LANG <lang>	forces installation in <lang> subdirectory.\n".
+"    --[no]link		creates one symlink for each name in .SH NAME.\n".
+"    --[no]gzip		compresses the page using gzip -9 .\n".
+"    --help --VERSION --quiet --verbose\n";
+
+use Getopt::Long;
+$Getopt::Long::ignorecase = 0;	# distinct Upper 
+
+local $opt_help;	# used only once
+
+die $usage if !		# in case of error
+&GetOptions 
+	(''		# -	<stdin>
+	,'local'	# -l	--local
+	,'debian:s'	# -d	--debian [<path>|"tmp"]
+	,'section=s'	# -s	--section <string>
+	,'name=s'	# -n	--name <string>
+	,'LANG=s'	# -L	--LANG <string>
+	,'link!'	# -l	--link --nolink
+	,'gzip!'	# -g	--gzip --nogzip
+	#
+	,'help'		# -h		--help
+	,'VERSION'	# -V		--VERSION
+	,'quiet'	# -q		--quiet
+	,'verbose'	# -v		--verbose
+	);
+die $usage if $opt_help;
+
+die "lang name missing\n" . $usage if ! $opt_lang;
+die "action flag missing (--add, --remove).\n" . $usage
+	if ((! $opt_add) and (! $opt_remove));
+die "too much action flags (--add and --remove).\n" . $usage
+	if ( $opt_add and $opt_remove);
+
+$OUT = " $opt_file";
+open( OUT) or die "cannot copy file $OUT\n";
+$IN = " $opt_file" . ".bak";
+open( IN, "> $IN") or die "cannot copy to $IN\n";
+print IN <OUT>;		# copy original file
+close( IN); close( OUT);
+
+open( IN,  "< $IN ") or die "cannot open input file $IN\n";
+open( OUT, "> $OUT") or die "cannot open output file $OUT\n";
+while( <IN>) {
+	print OUT $_ and next if ! m|$opt_keyword| ;
+
+	# process lines containing the keyword
+	print OUT $_ and next if m|^[\t ]*#| ;
+	#print OUT "# ", $_ and next if m|$base/$opt_lang| ;
+	next if m|$base/$opt_lang| ;
+	print OUT $_ and next if ! m|[\t ]*$base[\t ]*| ;
+	print OUT $_ and next if m|[\t ]*$base/| ;
+
+	# process only lines declaring $base as global_manpath
+	($key, $global, $relative) = split;
+	print OUT "$key\t$global/$opt_lang\t\t$relative/$opt_lang\n" if $opt_add;
+	print OUT ;
+	print OUT <IN>;
+}
+close( IN); close( OUT);
+
+# catman dirs MUST be owned by man
+#if ( $opt_add ) {
+#	# create the cat directories only if the man directories exist
+#	$res=`mkcatdirs man root 0755`;
+#	print $res if $opt_verbose;
+#} else {
+#	system "su man -c \"rm -rf $relative/$opt_lang \"";
+#}
+

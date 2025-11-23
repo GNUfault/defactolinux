@@ -1,0 +1,41 @@
+.\" Copyright, the authors of the Linux man-pages project
+.\"
+.\" SPDX-License-Identifier: Linux-man-pages-copyleft
+.\"
+.TH timeval 3type 2025-10-29 "Linux man-pages (unreleased)"
+.SH NAME
+timeval \- time in seconds and microseconds
+.SH LIBRARY
+Standard C library
+.RI ( libc )
+.SH SYNOPSIS
+.EX
+.B #include <sys/time.h>
+.P
+.B struct timeval {
+.BR "    time_t       tv_sec;" "   /* Seconds */"
+.BR "    suseconds_t  tv_usec;" "  /* Microseconds */"
+.B };
+.EE
+.SH DESCRIPTION
+Describes times in seconds and microseconds.
+.SH STANDARDS
+POSIX.1-2024.
+.SH HISTORY
+POSIX.1-2001.
+.SH NOTES
+The following headers also provide this type:
+.IR <sys/resource.h> ,
+.IR <sys/select.h> ,
+and
+.IR <utmpx.h> .
+.SH SEE ALSO
+.BR gettimeofday (2),
+.BR select (2),
+.BR utimes (2),
+.BR adjtime (3),
+.BR futimes (3),
+.BR timeradd (3),
+.BR suseconds_t (3type),
+.BR time_t (3type),
+.BR timespec (3type)

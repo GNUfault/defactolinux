@@ -1,0 +1,100 @@
+.\" Copyright, the authors of the Linux man-pages project
+.\"
+.\" SPDX-License-Identifier: Linux-man-pages-copyleft
+.\"
+.TH F_DUPFD 2const 2025-10-29 "Linux man-pages (unreleased)"
+.SH NAME
+F_DUPFD,
+F_DUPFD_CLOEXEC
+\-
+duplicate a file descriptor
+.SH LIBRARY
+Standard C library
+.RI ( libc ,\~ \-lc )
+.SH SYNOPSIS
+.nf
+.B #include <fcntl.h>
+.P
+.BI "int fcntl(int " fd ", F_DUPFD, int " arg );
+.BI "int fcntl(int " fd ", F_DUPFD_CLOEXEC, int " arg );
+.fi
+.SH DESCRIPTION
+.TP
+.B F_DUPFD
+Duplicate the file descriptor
+.I fd
+using the lowest-numbered available file descriptor greater than or equal to
+.IR arg .
+This is different from
+.BR dup2 (2),
+which uses exactly the file descriptor specified.
+.IP
+On success, the new file descriptor is returned.
+.IP
+See
+.BR dup (2)
+for further details.
+.TP
+.B F_DUPFD_CLOEXEC
+As for
+.BR F_DUPFD ,
+but additionally set the
+close-on-exec flag for the duplicate file descriptor.
+Specifying this flag permits a program to avoid an additional
+.BR F_SETFD (2const)
+operation to set the
+.B FD_CLOEXEC
+flag.
+For an explanation of why this flag is useful,
+see the description of
+.B O_CLOEXEC
+in
+.BR open (2).
+.SH RETURN VALUE
+The new file descriptor.
+.P
+On error, \-1 is returned, and
+.I errno
+is set to indicate the error.
+.SH ERRORS
+See
+.BR fcntl (2).
+.TP
+.B EINVAL
+.I arg
+is negative or is greater than the maximum allowable value
+(see the discussion of
+.B RLIMIT_NOFILE
+in
+.BR getrlimit (2)).
+.TP
+.B EMFILE
+The per-process limit on the number of open file descriptors
+has been reached.
+.SH VERSIONS
+POSIX.1-2024 specifies
+.BR F_DUPFD_CLOFORK ,
+but Linux doesn't support it.
+.SH STANDARDS
+POSIX.1-2024.
+.SH HISTORY
+.TP
+.B F_DUPFD
+SVr4, 4.3BSD, POSIX.1-2001.
+.TP
+.B F_DUPFD_CLOEXEC
+Linux 2.6.24.
+POSIX.1-2008.
+(To get this definition, define
+.B _POSIX_C_SOURCE
+with the value 200809L or greater, or
+.B _XOPEN_SOURCE
+with the value 700 or greater.)
+.SH CAVEATS
+The errors returned by
+.BR dup2 (2)
+are different from those returned by
+.BR F_DUPFD .
+.SH SEE ALSO
+.BR dup2 (2),
+.BR fcntl (2)

@@ -1,0 +1,18 @@
+#
+# Testsuite for prtstat
+#
+
+set prtstat "${topdir}src/prtstat"
+set fake_pid "27000"
+
+set test "prtstat with no arguments"
+spawn $prtstat
+expect_pass "$test" "^You must provide at least one PID\."
+
+set test "prtstat pid not found"
+if { [ file exists "/proc/$fake_pid" ] } {
+    untested "$test (PID exists)"
+} else {
+    spawn $prtstat ${fake_pid}
+    expect_pass "$test" "^Process with pid $fake_pid does not exist\."
+}

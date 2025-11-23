@@ -1,0 +1,63 @@
+'\" t
+.\" Copyright, the authors of the Linux man-pages project
+.\"
+.\" SPDX-License-Identifier: GPL-2.0-or-later
+.\"
+.TH wcschr 3 2025-05-17 "Linux man-pages (unreleased)"
+.SH NAME
+wcschr \- search a wide character in a wide-character string
+.SH LIBRARY
+Standard C library
+.RI ( libc ,\~ \-lc )
+.SH SYNOPSIS
+.nf
+.B #include <wchar.h>
+.P
+.BI "wchar_t *wcschr(const wchar_t *" wcs ", wchar_t " wc );
+.fi
+.SH DESCRIPTION
+The
+.BR wcschr ()
+function is the wide-character equivalent
+of the
+.BR strchr (3)
+function.
+It searches the first occurrence of
+.I wc
+in the wide-character
+string pointed to by
+.IR wcs .
+.SH RETURN VALUE
+The
+.BR wcschr ()
+function returns a pointer to the first occurrence of
+.I wc
+in the wide-character string pointed to by
+.IR wcs ,
+or NULL if
+.I wc
+does not occur in the string.
+.SH ATTRIBUTES
+For an explanation of the terms used in this section, see
+.BR attributes (7).
+.TS
+allbox;
+lbx lb lb
+l l l.
+Interface	Attribute	Value
+T{
+.na
+.nh
+.BR wcschr ()
+T}	Thread safety	MT-Safe
+.TE
+.SH STANDARDS
+C11, POSIX.1-2008.
+.SH HISTORY
+POSIX.1-2001, C99.
+.SH SEE ALSO
+.BR strchr (3),
+.BR wcspbrk (3),
+.BR wcsrchr (3),
+.BR wcsstr (3),
+.BR wmemchr (3)

@@ -1,0 +1,56 @@
+'\" t
+.\" Copyright, the authors of the Linux man-pages project
+.\"
+.\" SPDX-License-Identifier: Linux-man-pages-copyleft
+.\"
+.TH memset 3 2025-06-28 "Linux man-pages (unreleased)"
+.SH NAME
+memset \- fill memory with a constant byte
+.SH LIBRARY
+Standard C library
+.RI ( libc ,\~ \-lc )
+.SH SYNOPSIS
+.nf
+.B #include <string.h>
+.P
+.BR "void *memset(" "size_t n;"
+.BI "             void " s [ n "], int " c ", size_t " n );
+.fi
+.SH DESCRIPTION
+The
+.BR memset ()
+function fills the first
+.I n
+bytes of the
+memory area pointed to by
+.I s
+with the constant byte
+.IR c .
+.SH RETURN VALUE
+The
+.BR memset ()
+function returns a pointer to the memory area
+.IR s .
+.SH ATTRIBUTES
+For an explanation of the terms used in this section, see
+.BR attributes (7).
+.TS
+allbox;
+lbx lb lb
+l l l.
+Interface	Attribute	Value
+T{
+.na
+.nh
+.BR memset ()
+T}	Thread safety	MT-Safe
+.TE
+.SH STANDARDS
+C11, POSIX.1-2008.
+.SH HISTORY
+POSIX.1-2001, C89, SVr4, 4.3BSD.
+.SH SEE ALSO
+.BR bstring (3),
+.BR bzero (3),
+.BR swab (3),
+.BR wmemset (3)

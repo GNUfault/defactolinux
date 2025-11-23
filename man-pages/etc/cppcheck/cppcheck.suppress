@@ -1,0 +1,15 @@
+checkersReport
+ConfigurationNotChecked
+constParameter
+constParameterCallback
+knownConditionTrueFalse
+missingIncludeSystem
+nullPointerOutOfMemory
+redundantContinue
+staticFunction
+unassignedVariable
+uninitvar
+unknownMacro
+unmatchedSuppression
+unusedStructMember
+variableScope

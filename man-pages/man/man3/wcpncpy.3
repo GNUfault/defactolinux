@@ -1,0 +1,104 @@
+'\" t
+.\" Copyright, the authors of the Linux man-pages project
+.\"
+.\" SPDX-License-Identifier: GPL-2.0-or-later
+.\"
+.TH wcpncpy 3 2025-07-11 "Linux man-pages (unreleased)"
+.SH NAME
+wcpncpy \- copy a fixed-size string of wide characters,
+returning a pointer to its end
+.SH LIBRARY
+Standard C library
+.RI ( libc ,\~ \-lc )
+.SH SYNOPSIS
+.nf
+.B #include <wchar.h>
+.P
+.BR "wchar_t *wcpncpy(" "size_t n;"
+.BI "                 wchar_t " dest "[restrict " n ],
+.BI "                 const wchar_t *restrict " src ,
+.BI "                 size_t " n );
+.fi
+.P
+.RS -4
+Feature Test Macro Requirements for glibc (see
+.BR feature_test_macros (7)):
+.RE
+.P
+.BR wcpncpy ():
+.nf
+    Since glibc 2.10:
+        _POSIX_C_SOURCE >= 200809L
+    Before glibc 2.10:
+        _GNU_SOURCE
+.fi
+.SH DESCRIPTION
+The
+.BR wcpncpy ()
+function is the wide-character equivalent
+of the
+.BR stpncpy (3)
+function.
+It copies at most
+.I n
+wide characters from the wide-character
+string pointed to by
+.IR src ,
+including the terminating null wide (L\[aq]\[rs]0\[aq]),
+to the array pointed to by
+.IR dest .
+Exactly
+.I n
+wide characters are
+written at
+.IR dest .
+If the length
+.I wcslen(src)
+is smaller than
+.IR n ,
+the remaining wide characters in the array pointed to
+by
+.I dest
+are filled with L\[aq]\[rs]0\[aq] characters.
+If the length
+.I wcslen(src)
+is greater than or equal
+to
+.IR n ,
+the string pointed to by
+.I dest
+will
+not be L\[aq]\[rs]0\[aq] terminated.
+.P
+The strings may not overlap.
+.P
+The programmer must ensure that there is room for at least
+.I n
+wide
+characters at
+.IR dest .
+.SH RETURN VALUE
+.BR wcpncpy ()
+returns a pointer to
+one past the last non-null wide character written,
+that is,
+.IR dest\~+\~wcsnlen(src,\~n) .
+.SH ATTRIBUTES
+For an explanation of the terms used in this section, see
+.BR attributes (7).
+.TS
+allbox;
+lbx lb lb
+l l l.
+Interface	Attribute	Value
+T{
+.na
+.nh
+.BR wcpncpy ()
+T}	Thread safety	MT-Safe
+.TE
+.SH STANDARDS
+POSIX.1-2008.
+.SH SEE ALSO
+.BR stpncpy (3),
+.BR wcsncpy (3)

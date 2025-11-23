@@ -1,0 +1,6 @@
+Here is my soelim replacement. It is required as the first *roff
+pre-processor if we want to be able to deal with 100% of compressed src
+nroff files correctly. Most other ways only guarantee ~90% success.
+
+A replacement tmac.andoc was considered, but would not have been portable to
+all systems.

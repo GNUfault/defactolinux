@@ -1,0 +1,24 @@
+This directory contains various shell scripts:
+
+chconfig:	Converts a man_db configuration file to the FHS.
+
+checkman:	Can be run to inform of manual pages duplicated across
+		hierarchies.
+
+install-manpage:
+		Installs a manual page into its correct location.
+
+install-sh:	Used by configure if a BSD-like install program is not
+		found.
+
+mandb_[nt]fmt-script: 
+		An example of a per manual page hierarchy formatter
+		script.
+
+mkcatdirs:	Can be used to create all of the required cat directories
+		after installation.
+
+mkinstalldirs:	Used by the Makefiles to create any install dirctories that
+		do not already exist.
+
+nroff-script:	A script suitable to emulate nroff on systems using groff.

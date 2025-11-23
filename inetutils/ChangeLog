@@ -1,0 +1,508 @@
+2025-02-21  Simon Josefsson  <simon@josefsson.org>
+
+	version 2.6
+	* NEWS: Record release date.
+
+	maint: Run './bootstrap  --bootstrap-sync'.
+
+2025-02-21  Dario Niedermann  <dnied@tiscali.it>
+
+	doc: mention syslog.conf ftp/info (tiny patch).
+
+2025-02-20  Simon Josefsson  <simon@josefsson.org>
+
+	doc: Improve README-release.
+	* gl/top/README-release.diff: Update.
+
+	maint: Append srcdist to DIST_ARCHIVES.
+	* cfg.mk (DIST_ARCHIVES): Add.
+
+	maint: Prefer base64 SHA256 checksums.
+	* cfg.mk (announce_gen_args): Add --cksum-checksums.
+
+	maint: Add .tarball-version-git for git-version-gen.
+	* .tarball-version-git: New file, with git Format cookie.
+	.gitattributes: Mark .tarball-version-git as export-subst.
+
+	maint: Re-run automake to improve reproducible tarballs.
+	* bootstrap.conf (bootstrap_epilogue): Run automake --no-force.
+
+2025-02-20  Simon Josefsson  <simon@josefsson.org>
+
+	maint: Use AC_CONFIG_MACRO_DIRS instead of ACLOCAL_AMFLAGS.
+	Also arrange order of directories so that am__aclocal_m4_deps
+	in Makefile.in is generated the same by ./bootstrap and
+	autoreconf.  The latter is invoked by 'make release' (via the
+	_version rule in GNUmakefile) to change the version number.
+	We want am__aclocal_m4_deps to be identical so that the
+	"make dist" and "make release" tarballs are identical.
+
+	* Makefile.am (ACLOCAL_AMFLAGS): Remove.
+	configure.ac (AC_CONFIG_MACRO_DIRS): Add.
+	bootstrap.conf (ACLOCAL_AMFLAGS): Remove.
+
+2025-02-20  Simon Josefsson  <simon@josefsson.org>
+
+	maint: Use tar --format=ustar.
+	* configure.ac (AM_INIT_AUTOMAKE): Add tar-ustar.
+	cfg.mk (TAR_OPTIONS): Fix NEWS path.
+	NEWS: Document it.
+
+	maint: Generate minimal source tarballs using git-archive.
+	Makefile.am (srcdist): Add.
+
+	maint: Reproducible tarball fixes for Texinfo manual.
+	Makefile.am (texi-stamps-to-mtime-NEWS): Set modtime of
+	doc/inetutils.texi to that of NEWS file on "make dist", so that
+	stamp-vti and version.texi have a reproducible time stamp.
+
+	maint: Fix VPATH and macOS builds
+	Makefile.am (mtime-NEWS-to-git-HEAD): Use git -C and touch -t.
+
+	NEWS: Mention ChangeLog fix.
+
+	maint: Update ChangeLog.2.
+	* ChangeLog.2: Generate.
+
+	maint: Store released ChangeLog entries in git.
+	* Makefile.am (EXTRA_DIST): Add ChangeLog.2
+	(gen-ChangeLog): Only include unreleased entries.
+	(ChangeLog.2): New rule to re-generate file.
+
+	NEWS: Mention libls.sh fixes.
+
+	maint: Bump GNULIB_REVISION for new maint.mk.
+	* bootstrap.conf (GNULIB_REVISION): Update.
+
+	maint: Add guix to bootstrapping tools, for announce-gen.
+	* cfg.mk (guix): New variable.
+	(bootstrap-tools): Use it.
+
+	tests/liblsh.sh: Curate our own LSDIR instead of using "..".
+	* tests/libls.sh: Customize a LSDIR and clean it up.
+
+	tests/libls.sh: Don't fail "ls -l" vs "ls -n" on empty /etc/passwd.
+	* tests/libls.sh: Let check pass if "id -u -n" fails.
+
+2025-01-02  Simon Josefsson  <simon@josefsson.org>
+
+	Disable rexecd/uucpd on systems without crypt().
+	* configure.ac: Do it.
+
+2025-01-01  Simon Josefsson  <simon@josefsson.org>
+
+	maint: Run './bootstrap  --bootstrap-sync'.
+
+	maint: Update gnulib revision.
+
+	maint: Run 'make update-copyright'.
+
+2024-10-31  Bruno Haible  <bruno@clisp.org>
+
+	maint: Use realloc-posix instead of realloc-gnu.
+	* bootstrap.conf (gnulib_modules): Update.
+
+2024-10-05  Jeffrey Cliff  <jeffrey.cliff@gmail.com>
+
+	rshd.c: Fix gcc15 warning.
+	* rshd.c (path): Increase size.
+
+2024-09-03  Simon Josefsson  <simon@josefsson.org>
+
+	Update gnulib revision.
+	* bootstrap.conf (GNULIB_REVISION): Update.
+
+2024-09-03  Collin Funk  <collin.funk1@gmail.com>
+
+	maint: Use stat-time from Gnulib.
+	* bootstrap.conf (gnulib_modules): Add stat-time.
+	* configure.ac: Prefer Gnulib checks for struct stat.
+	* libls/cmp.c (off_cmp): New function.
+	(modcmp, acccmp, statcmp, sizecmp): Use functions from stat-time.
+	* src/rcp.c (write_stat_time): Likewise.
+
+2024-08-31  Erik Auerswald  <auerswal@unix-ag.uni-kl.de>
+
+	NEWS: mention telnet integer overflow handling fix
+	* NEWS: Mention the recent fix for signed integer overflow
+	handling.
+
+2024-08-25  Erik Auerswald  <auerswal@unix-ag.uni-kl.de>
+
+	tests: check for regression of overflow fix
+	Commit a6d9848a32fafa763548e54b44cb094abdac915d fixed an
+	integer overflow when parsing a numerical value given to
+	the send do, send dont, send will, and send wont commands.
+	Check that overly large or small values are caught and
+	reported as 'bad value' even if they cannot be stored in
+	a 64-bit integer.
+
+	* tests/telnet-localhost.sh: New check to detect regressions
+	in the recent integer overflow fix.
+
+2024-08-25  Erik Auerswald  <auerswal@unix-ag.uni-kl.de>
+
+	tests: avoid spurious output from telnet tests
+	Avoid spurious output when manually running telnet-localhost.sh.
+	Standard output is already suppressed for the respective tests,
+	but suppressing output to standard error was overlooked.
+
+	* tests/telnet-localhost.sh: Redirect uninteresting error output
+	from parser regression tests to /dev/null.
+
+2024-08-24  Collin Funk  <collin.funk1@gmail.com>
+
+	telnet: Handle integer overflow gracefully.
+	* bootstrap.conf (gnulib_modules): Add inttypes and xstrtoimax.
+	* telnet/commands.c (send_tncmd): Don't allow the integer argument to
+	'send dont' to overflow.
+
+2024-08-03  Collin Funk  <collin.funk1@gmail.com>
+
+	ftp: Cleanup port number to string conversion.
+	* bootstrap.conf (gnulib_modules): Add intprops.
+	* ftp/ftp.c: Include intprops.h.
+	(portstr): Size buffer to fit exactly 'in_port_t' and a NUL byte.
+	(hookup): Use 'in_port_t' to represent the port instead of int. Use
+	sprintf since the buffer size is safe.
+	* ftp/extern.h (hookup): Adjust deceleration.
+	* ftp/ftp_var.h: Include netinet/in.h for type definitions.
+
+2024-07-28  Collin Funk  <collin.funk1@gmail.com>
+
+	rcp: Don't call va_start without calling va_end.
+	* src/rcp.c (run_err): Move va_start call after the early return.
+
+2024-07-18  Simon Josefsson  <simon@josefsson.org>
+
+	Cleanup susp/ayt definitions, inspired by NetBSD.
+	sys_bsd.c:680:12: warning: a function declaration without a prototype is deprecated in all versions of C and is treated as a zero-parameter prototype in C2x, conflicting with a subsequent definition [-Wdeprecated-non-prototype]
+	      void ayt ();
+	           ^
+	sys_bsd.c:1003:1: note: conflicting prototype is here
+	ayt (int sig MAYBE_UNUSED)
+	^
+
+	Fix MacOSX build error, adopting NetBSD's "solution" to cast the function.
+	sys_bsd.c:734:24: error: incompatible function pointer types passing 'void (void)' to parameter of type 'void (*)(int)' [-Wincompatible-function-pointer-types]
+	      signal (SIGINFO, ayt_status);
+	                       ^~~~~~~~~~
+
+2024-07-18  Flavio Cruz  <flaviocruz@gmail.com>
+
+	Hurd: use mach_msg_type_number_t for file_get_fs_options since its size is not the same as size_t for x86_64. (tiny patch)
+	This fixes an incompatible-pointer-types error on GCC14.
+
+2024-07-09  Erik Auerswald  <auerswal@unix-ag.uni-kl.de>
+
+	tests: allow unprivileged ping to localhost
+	Some operating systems, e.g., GNU/Linux (with appropriate
+	configuration) and macOS, support unprivileged ICMP echo
+	operation.  Since commit 05a2f938e3f56ce0136966136410c5f9e20c37a7
+	from 2016-02-12, this is supported for the IPv4 ping program.
+	But the test for basic ping functionality still requires to be
+	run with an effective user id of root and is skipped otherwise.
+	Change this to test IPv4 ping operation without root privileges
+	if supported.
+
+	The IPv6 version of ping, 'ping6', does not (yet) allow use
+	without root privileges, thus skip the IPv6 part of the test
+	unless having root privileges.
+
+	* tests/ping-localhost.sh: Do not skip the test for IPv4 if
+	run without root privileges unless they are required.
+
+2024-06-30  Collin Funk  <collin.funk1@gmail.com>
+
+	ping, ping6: Fix mistake in previous change.
+	* ping/ping.c (ping_run): Set the timespec to zero if it is negative
+	before calling pselect.
+	* ping/ping6.c (ping_run): Likewise.
+
+2024-06-28  Collin Funk  <collin.funk1@gmail.com>
+
+	doc: Fix typos.
+	* README: Fix spelling of similarly.
+	* doc/inetutils.texi (ifconfig invocation): Fox spelling of or.
+	(logger invocation): Fix spelling of influential.
+	(Ftp commands): Fix spelling of intended.
+	(Configuration file): Fix spelling of limited.
+	(telnetd invocation): Fix spelling of construct.
+	(tftpd invocation): Fix spelling of suppress. Use "in spite of"
+	instead of "inspite".
+
+	ftp: Modernize time functions.
+	* ftp/Makefile.am (LDADD): Add $(CLOCK_TIME_LIB).
+	* ftp/extern.h (struct timespec): Add a forward declaration.
+	(ptransfer): Use timespec instead of timeval.
+	(tvsub): Remove declaration.
+	* ftp/ftp.c: Include <float.h> and <timespec.h>
+	(sendrequest): Use current_timespec instead of gettimeofday.
+	(recvrequest): Likewise.
+	(ptransfer): Use timespec_sub instead of tvsub. Divide by FLT_MIN
+	instead of 1 if seconds is zero.
+	(tvsub): Remove function.
+
+2024-06-27  Collin Funk  <collin.funk1@gmail.com>
+
+	ping, ping6: Modernize time functions.
+	* bootstrap.conf (gnulib_modules): Add timespec-add.
+	* ping/Makefile.am (LDADD): Add $(CLOCK_TIME_LIB),
+	$(PTHREAD_SIGMASK_LIB), and $(SELECT_LIB).
+	* ping/libping.c (ping_init): Use current_timespec instead of
+	gettimeofday.
+	* ping/ping_common.c (tvsub): Remove function.
+	(ping_timeout_p): Return a bool. Use timespec_sub and
+	current_timespec.
+	* ping/ping_common.h (PING_SET_INTERVAL): Expect a timespec instead of
+	a timeval.
+	(struct ping_data): Store the start time in a timespec instead of a
+	timeval.
+	(tvsub): Remove declaration.
+	(ping_timeout_p): Adjust prototype.
+	* ping/ping.c (send_echo): Use current_timespec.
+	(ping_init): Likewise.
+	(ping_run): Likewise. Use pselect.
+	* ping/ping6.c (send_echo): Use current_timespec.
+	(print_echo): Likewise.
+	(ping_init): Likewise.
+	(ping_run): Likewise. Use pselect.
+	* ping/ping_echo.c (print_echo): Use current_timespec.
+
+2024-06-26  Collin Funk  <collin.funk1@gmail.com>
+
+	traceroute: Modernize time functions.
+	* bootstrap.conf (gnulib_modules): Add gettime, pselect, timespec, and
+	timespec-sub.
+	* src/Makefile.am (traceroute_LDADD): Add $(CLOCK_TIME_LIB),
+	$(PTHREAD_SIGMASK_LIB), and $(SELECT_LIB).
+	* src/traceroute.c (trace_t): Use a timespec instead of timeval.
+	(do_try): Use pselect instead of select. Use current_timespec instead
+	of gettimeofday. Use timespec_sub.
+	(trace_write): Use current_timespec instead of gettimeofday.
+
+2024-05-12  Simon Josefsson  <simon@josefsson.org>
+
+	NEWS: Mention reproducible tarballs.
+
+	telnetd: Make --help output reproducible.
+	* telnetd/telnetd.c (argp_options): Don't use PATH_LOGIN.
+
+	maint: Make tarball reproducible.
+	* cfg.mk (TAR_OPTIONS): Hard code mode and mtime.
+	* Makefile.am (mtime-NEWS-to-git-HEAD): Add.
+	(dist-hook): Use it.
+
+2024-05-11  Collin Funk  <collin.funk1@gmail.com>
+
+	telnet: Make function declarations C23 compatible.
+	* NEWS: Mention C23 support.
+	* telnet/commands.c (Sendlist, Togglelist, Setlist, ModeList, SlcList)
+	(EnvList): Replace '0' pointers with NULL.
+	(struct authlist, struct encryptlist): Add types to function
+	prototypes.
+	(AuthList, EncryptList): Cast some function pointers. Replace '0'
+	pointers with NULL.
+	(auth_cmd, encrypt_cmd): Fix number of arguments passed to functions.
+
+2024-05-10  Collin Funk  <collin.funk1@gmail.com>
+
+	libtelnet: Make encryption decls compatible with C23.
+	* libtelnet/enc-proto.h (findencryption, finddecryption): Add
+	prototypes.
+	* libtelnet/encrypt.c (struct key_info): Add the parameter type.
+
+	maint: Fix most instances of '-Wstrict-prototypes'.
+	* libinetutils/des_rw.c (des_clear_key, des_read, des_write): Don't
+	use K&R-style function declarations.
+	* ifconfig/system/linux.c (pnd_read): Use void instead of an empty
+	argument list.
+	* libtelnet/auth.c (auth_status, auth_request, auth_send_retry):
+	Likewise.
+	* libtelnet/kerberos5.c (kerberos5_cleanup): Likewise.
+	* ping/ping.c (ping_run): Likewise.
+	* ping/ping6.c (ping_run): Likewise.
+	* ping/ping6.h (ping_run): Likewise.
+	* ping/ping_impl.h (ping_run): Likewise.
+	* telnet/authenc.c (net_encrypt, telnet_spin): Likewise.
+	* telnet/commands.c (_setlist_init, auth_help, EncryptHelp)
+	(ayt_status): Likewise.
+	* telnet/sys_bsd.c (TerminalNewMode): Likewise.
+	* telnet/tn3270.c (outputPurge, Push3270, Finish3270, SetIn3270)
+	(tn3270_ttype): Likewise.
+	* telnetd/state.c (willoption): Likewise.
+	* telnetd/telnetd.h (pty_buffer_level): Likewise.
+	* telnetd/term.c (term_send_eof, term_change_eof, tty_linemode)
+	(tty_isecho, tty_flowmode, tty_restartany, tty_israw)
+	(tty_isbinaryin, tty_isbinaryout, tty_isediting, tty_istrapsig)
+	(tty_issofttab, tty_islitecho, tty_iscrnl, copy_termbuf): Likewise.
+	* telnetd/termstat.c (termstat, _termstat): Likewise.
+	* telnetd/utility.c (net_encrypt, telnet_spin): Likewise.
+	* src/rcp.c (krb_realmofhost): Add the parameter type.
+	* telnet/ring.c (ring_encrypt): Likewise.
+	* telnet/ring.h (ring_encrypt): Likewise.
+
+2024-05-09  Collin Funk  <collin.funk1@gmail.com>
+
+	maint: Remove uses of the 'register' keyword.
+	* libicmp/*.c: Don't use the 'register' keyword when declaring
+	variables or arguments.
+	* libinetutils/*.c: Likewise.
+	* libtelnet/*.h: Likewise.
+	* libtelnet/*.c: Likewise.
+	* src/*.c: Likewise.
+	* talk/*.c: Likewise.
+	* telnet/*.c: Likewise.
+	* telnetd/*.c: Likewise.
+
+	maint: Remove unnecessary standard library extern function decls.
+	* ftp/cmds.c (account, user): Don't declare getpass since it is
+	defined in unistd.h.
+	* ftp/ftp.c (login): Likewise. Don't declare fclose and pclose since
+	they are defined in stdio.h.
+	* ftpd/extern.h: Don't declare getusershell since it is defined in
+	unistd.h.
+	* ftpd/ftpd.c: Don't declare fclose since it is defined in stdio.h.
+	* libinetutils/logwtmp.c: Don't declare errno since it is defined in
+	errno.h.
+	* libtelnet/misc.c (auth_encrypt_user): Include string.h and don't
+	declare strdup.
+	* telnet/authenc.c (telnet_gets):  Don't declare getpass since it is
+	defined in unistd.h.
+	* telnet/commands.c (hostname): Use NULL instead of 0.
+	(env_init, shell): Include string.h and don't redeclare functions.
+
+2024-05-08  Simon Josefsson  <simon@josefsson.org>
+
+	maint: Add bootstrap* to EXTRA_DIST.
+	Suggested by Guillem Jover.
+
+2024-05-07  Collin Funk  <collin.funk1@gmail.com>
+
+	maint: Update NEWS and run 'make indent'.
+	* NEWS: Mention the AddressSanitizer error fixed by the previous
+	commit.
+	* ifconfig/printif.c (print_interfaceX): Run 'make indent' to satisfy
+	syntax-check.
+
+	ifconfig: Fix ASAN 'dynamic-stack-buffer-overflow' in formatting.
+	* ifconfig/printif.c (print_interfaceX): Allocate the argv array on
+	the heap as the format string is being processed. The previous
+	'alloca' leads to invalid writes detected by ASAN and Valgrind when
+	using the --format and --short options.
+
+2024-05-06  Collin Funk  <collin.funk1@gmail.com>
+
+	Fix sc_bsd_caddr checks.
+	* libinetutils/if_index.c (if_nameindex): Don't cast non-void pointer
+	arithmetic.
+	* ftp/ftp.c (hookup): Don't cast pointers to memmove and memset.
+	* src/inetd.c (getconfigent): Likewise.
+	* telnet/commands.c (tn): Likewise.
+
+	cfg.mk: Add checks for 'caddr_t'.
+	* cfg.mk (sc_bsd_caddr): New rule to check for use of the 'caddr_t'
+	type. This is an old BSD type representing a 'void *' or similar.
+
+2024-05-06  Simon Josefsson  <simon@josefsson.org>
+
+	maint: Run ./bootstrap --bootstrap-sync.
+
+	cfg.mk: Remove upstreamed syntax checks.
+
+	maint: Use GNULIB_REVISION instead of git submodule.
+
+2024-05-04  Collin Funk  <collin.funk1@gmail.com>
+
+	Fix sc_unsigned_int checks.
+	* ftpd/ftpd.c (send_data, receive_data): Convert 'u_int' to
+	'unsigned int'.
+	* libinetutils/ttymsg.c (inetutils_ttymsg): Likewise.
+	* libls/extern.h: Likewise.
+	* libls/print.c (minor, printtype): Likewise.
+	* libls/stat_flags.c (flags_to_string, string_to_flags): Likewise.
+	* src/rlogin.c (winsize, get_window_size, getescape): Likewise.
+	* src/rsh.c (copyargs): Likewise.
+
+	cfg.mk: Add checks for 'u_int'.
+	* cfg.mk (sc_unsigned_int): New rule.
+	(sc_unsigned_short): Correct type in error message.
+
+2024-05-02  Collin Funk  <collin.funk1@gmail.com>
+
+	maint: Remove redundant 'environ' declarations.
+	* src/rexecd.c: Remove 'extern char **environ' and instead rely on the
+	gnulib declaration in unistd.h.
+	* src/rshd.c: Likewise.
+	* src/uucpd.c: Likewise.
+	* telnet/commands.c: Likewise.
+	* telnetd/pty.c: Likewise.
+	* tests/addrpeek.c: Likewise.
+
+2024-05-02  Erik Auerswald  <auerswal@unix-ag.uni-kl.de>
+
+	maint: fix "make syntax-check"
+	The changes to ifconfig/options.c from the last commit broke the "indent"
+	part of "make syntax-check".  Fix this.
+
+	* ifconfig/options.c (parse_opt): Adjust indentation, no functional
+	changes.
+
+2024-04-24  Erik Auerswald  <auerswal@unix-ag.uni-kl.de>
+
+	ifconfig: prefix length handling fixes for -A
+	With option -A, ifconfig accepted too small and too large prefix
+	length values.  It also accepted non-numeric values starting with
+	a number.  Depending on the given prefix length value, this could
+	result in undefined behavior.  Using a valid prefix length of 0
+	also resulted in undefined behavior and a wrong result on at least
+	the x86_64 architecture.
+
+	* NEWS: Mention ifconfig fixes.
+	* ifconfig/options.c (parse_opt): Reject non-numeric prefix length
+	values.  Reject too small and too large prefix length values for
+	IPv4 addresses.  Avoid undefined behavior with a prefix length of 0.
+	* tests/ifconfig.sh: Test rejection of invalid prefix length value
+	examples.
+
+2024-04-24  Simon Josefsson  <simon@josefsson.org>
+
+	telnetd/telnetd.h: Don't include config.h in a header file.
+	Reported by Collin Funk in
+	https://lists.gnu.org/archive/html/bug-gnulib/2024-04/msg00398.html
+
+	Drop HAVE_CONFIG_H.
+
+2024-03-22  Simon Josefsson  <simon@josefsson.org>
+
+	maint: Update gnulib submodule.
+
+2024-03-22  Collin Funk  <collin.funk1@gmail.com>
+
+	maint: Allow gnulib's readutmp module to use systemd. (tiny patch)
+
+2024-01-01  Simon Josefsson  <simon@josefsson.org>
+
+	maint: Run 'make update-copyright'.
+
+	Re-enable copyright-check to catch old copyright years.
+
+	maint: Update gnulib submodule.
+
+2023-12-30  Simon Josefsson  <simon@josefsson.org>
+
+	syslogd: Build fixes for macOS.
+	Thanks to Rui Chen and Caleb Xu, see
+	<https://savannah.gnu.org/bugs/?65093>.
+
+2023-12-29  Simon Josefsson  <simon@josefsson.org>
+
+	maint: post-release administrivia
+	* NEWS: Add header line for next release.
+	* .prev-version: Record previous version.
+	* cfg.mk (old_NEWS_hash): Auto-update.
+
+	version 2.5
+	* NEWS: Record release date.
+
+See ChangeLog.? for older entries

@@ -1,0 +1,234 @@
+.\" Copyright, the authors of the Linux man-pages project
+.\"
+.\" SPDX-License-Identifier: Linux-man-pages-copyleft
+.\"
+.TH F_GET_SEALS 2const 2025-07-20 "Linux man-pages (unreleased)"
+.SH NAME
+F_GET_SEALS,
+F_ADD_SEALS
+\-
+get/add file seals
+.SH LIBRARY
+Standard C library
+.RI ( libc ,\~ \-lc )
+.SH SYNOPSIS
+.nf
+.B #include <fcntl.h>
+.P
+.BI "int fcntl(int " fd ", F_ADD_SEALS, int " arg );
+.BI "int fcntl(int " fd ", F_GET_SEALS);"
+.fi
+.SH DESCRIPTION
+File seals limit the set of allowed operations on a given file.
+For each seal that is set on a file,
+a specific set of operations will fail with
+.B EPERM
+on this file from now on.
+The file is said to be sealed.
+The default set of seals depends on the type of the underlying
+file and filesystem.
+For an overview of file sealing, a discussion of its purpose,
+and some code examples, see
+.BR memfd_create (2).
+.P
+Currently,
+file seals can be applied only to a file descriptor returned by
+.BR memfd_create (2)
+(if the
+.B MFD_ALLOW_SEALING
+was employed).
+On other filesystems, all
+.BR fcntl ()
+operations that operate on seals will return
+.BR EINVAL .
+.P
+Seals are a property of an inode.
+Thus, all open file descriptors referring to the same inode share
+the same set of seals.
+Furthermore, seals can never be removed, only added.
+.TP
+.B F_ADD_SEALS
+Add the seals given in the bit-mask argument
+.I arg
+to the set of seals of the inode referred to by the file descriptor
+.IR fd .
+Seals cannot be removed again.
+Once this call succeeds, the seals are enforced by the kernel immediately.
+If the current set of seals includes
+.B F_SEAL_SEAL
+(see below), then this call will be rejected with
+.BR EPERM .
+Adding a seal that is already set is a no-op, in case
+.B F_SEAL_SEAL
+is not set already.
+In order to place a seal, the file descriptor
+.I fd
+must be writable.
+.TP
+.B F_GET_SEALS
+Return (as the function result) the current set of seals
+of the inode referred to by
+.IR fd .
+If no seals are set, 0 is returned.
+If the file does not support sealing, \-1 is returned and
+.I errno
+is set to
+.BR EINVAL .
+.P
+The following seals are available:
+.TP
+.B F_SEAL_SEAL
+If this seal is set, any further call to
+.BR fcntl ()
+with
+.B F_ADD_SEALS
+fails with the error
+.BR EPERM .
+Therefore, this seal prevents any modifications to the set of seals itself.
+If the initial set of seals of a file includes
+.BR F_SEAL_SEAL ,
+then this effectively causes the set of seals to be constant and locked.
+.TP
+.B F_SEAL_SHRINK
+If this seal is set, the file in question cannot be reduced in size.
+This affects
+.BR open (2)
+with the
+.B O_TRUNC
+flag as well as
+.BR truncate (2)
+and
+.BR ftruncate (2).
+Those calls fail with
+.B EPERM
+if you try to shrink the file in question.
+Increasing the file size is still possible.
+.TP
+.B F_SEAL_GROW
+If this seal is set, the size of the file in question cannot be increased.
+This affects
+.BR write (2)
+beyond the end of the file,
+.BR truncate (2),
+.BR ftruncate (2),
+and
+.BR fallocate (2).
+These calls fail with
+.B EPERM
+if you use them to increase the file size.
+If you keep the size or shrink it, those calls still work as expected.
+.TP
+.B F_SEAL_WRITE
+If this seal is set, you cannot modify the contents of the file.
+Note that shrinking or growing the size of the file is
+still possible and allowed.
+.\" One or more other seals are typically used with F_SEAL_WRITE
+.\" because, given a file with the F_SEAL_WRITE seal set, then,
+.\" while it would no longer be possible to (say) write zeros into
+.\" the last 100 bytes of a file, it would still be possible
+.\" to (say) shrink the file by 100 bytes using ftruncate(), and
+.\" then increase the file size by 100 bytes, which would have
+.\" the effect of replacing the last hundred bytes by zeros.
+.\"
+Thus, this seal is normally used in combination with one of the other seals.
+This seal affects
+.BR write (2)
+and
+.BR fallocate (2)
+(only in combination with the
+.B FALLOC_FL_PUNCH_HOLE
+flag).
+Those calls fail with
+.B EPERM
+if this seal is set.
+Furthermore, trying to create new shared, writable memory-mappings via
+.BR mmap (2)
+will also fail with
+.BR EPERM .
+.IP
+Using the
+.B F_ADD_SEALS
+operation to set the
+.B F_SEAL_WRITE
+seal fails with
+.B EBUSY
+if any writable, shared mapping exists.
+Such mappings must be unmapped before you can add this seal.
+Furthermore, if there are any asynchronous I/O operations
+.RB ( io_submit (2))
+pending on the file,
+all outstanding writes will be discarded.
+.TP
+.BR F_SEAL_FUTURE_WRITE " (since Linux 5.1)"
+The effect of this seal is similar to
+.BR F_SEAL_WRITE ,
+but the contents of the file can still be modified via
+shared writable mappings that were created prior to the seal being set.
+Any attempt to create a new writable mapping on the file via
+.BR mmap (2)
+will fail with
+.BR EPERM .
+Likewise, an attempt to write to the file via
+.BR write (2)
+will fail with
+.BR EPERM .
+.IP
+Using this seal,
+one process can create a memory buffer that it can continue to modify
+while sharing that buffer on a "read-only" basis with other processes.
+.SH RETURN VALUE
+.TP
+.B F_GET_SEALS
+A bit mask identifying the seals that have been set
+for the inode referred to by
+.IR fd .
+.TP
+.B F_ADD_SEALS
+Zero.
+.P
+On error, \-1 is returned, and
+.I errno
+is set to indicate the error.
+.SH ERRORS
+See
+.BR fcntl (2).
+.TP
+.B EBUSY
+.I op
+is
+.BR F_ADD_SEALS ,
+.I arg
+includes
+.BR F_SEAL_WRITE ,
+and there exists a writable, shared mapping on the file referred to by
+.IR fd .
+.TP
+.B EINVAL
+.I op
+is
+.B F_ADD_SEALS
+and
+.I arg
+includes an unrecognized sealing bit.
+.TP
+.B EINVAL
+The filesystem containing the inode referred to by
+.I fd
+does not support sealing.
+.TP
+.B EPERM
+.I op
+was
+.BR F_ADD_SEALS ,
+but
+.I fd
+was not open for writing
+or the current set of seals on the file already includes
+.BR F_SEAL_SEAL .
+.SH STANDARDS
+Linux.
+.\" FIXME . Once glibc adds support, add a note about FTM requirements
+.SH HISTORY
+Linux 3.17.
+.SH SEE ALSO
+.BR fcntl (2)
